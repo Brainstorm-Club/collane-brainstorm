@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anatomia di una skill</title>
+<style>
+  :root{
+    --carta:#f6f1e7; --carta-2:#efe8da; --inchiostro:#1c1a18; --inchiostro-2:#4a443d;
+    --rosso:#9e2b23; --rosso-chiaro:#c2332b; --bordo:#d8cfbd; --codice:#efe9dc;
+    --ombra:0 1px 0 rgba(0,0,0,.04), 0 8px 24px -18px rgba(0,0,0,.4);
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --testo:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --carta:#17161a; --carta-2:#1f1e23; --inchiostro:#e9e4db; --inchiostro-2:#a9a299;
+      --rosso:#e0655c; --rosso-chiaro:#e0655c; --bordo:#33313a; --codice:#232228;
+      --ombra:0 1px 0 rgba(255,255,255,.03), 0 8px 28px -20px #000;
+    }
+  }
+  :root[data-theme="dark"]{
+    --carta:#17161a; --carta-2:#1f1e23; --inchiostro:#e9e4db; --inchiostro-2:#a9a299;
+    --rosso:#e0655c; --rosso-chiaro:#e0655c; --bordo:#33313a; --codice:#232228;
+    --ombra:0 1px 0 rgba(255,255,255,.03), 0 8px 28px -20px #000;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--carta); color:var(--inchiostro);
+    font-family:var(--testo); font-size:18px; line-height:1.65;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:62rem; margin:0 auto; padding:0 16px 6rem}
+  header.testa{
+    border-bottom:3px double var(--bordo); margin-bottom:2.5rem;
+    padding:3.5rem 0 1.5rem;
+  }
+  .occhiello{
+    font-family:var(--mono); font-size:.72rem; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--rosso); margin:0 0 .6rem;
+  }
+  h1{font-size:clamp(2rem,6vw,3.1rem); line-height:1.08; margin:0 0 .6rem; font-weight:600}
+  h2{
+    font-size:clamp(1.35rem,3.4vw,1.8rem); margin:3.5rem 0 .4rem; font-weight:600;
+    padding-top:1.2rem; border-top:1px solid var(--bordo);
+  }
+  h2 .num{font-family:var(--mono); font-size:.8rem; color:var(--rosso); display:block; letter-spacing:.14em}
+  h3{font-size:1.1rem; margin:2rem 0 .3rem; font-weight:600}
+  p{margin:.7rem 0}
+  .sommario{color:var(--inchiostro-2); font-size:1.08rem; max-width:44rem}
+  a{color:var(--rosso)}
+  code{font-family:var(--mono); font-size:.86em; background:var(--codice); padding:.12em .36em; border-radius:4px}
+  pre{
+    background:var(--codice); border:1px solid var(--bordo); border-radius:8px;
+    padding:1rem 1.1rem; overflow-x:auto; font-size:.84rem; line-height:1.55;
+    font-family:var(--mono); box-shadow:var(--ombra);
+  }
+  pre code{background:none; padding:0; font-size:inherit}
+  figure{margin:2rem 0; padding:0}
+  figure svg{width:100%; height:auto; display:block}
+  figcaption{
+    font-family:var(--mono); font-size:.74rem; color:var(--inchiostro-2);
+    margin-top:.7rem; letter-spacing:.02em;
+  }
+  .scheda{
+    background:var(--carta-2); border:1px solid var(--bordo); border-left:4px solid var(--rosso);
+    border-radius:0 8px 8px 0; padding:1rem 1.2rem; margin:1.8rem 0; box-shadow:var(--ombra);
+  }
+  .scheda p:first-child{margin-top:0} .scheda p:last-child{margin-bottom:0}
+  .scheda .et{
+    font-family:var(--mono); font-size:.7rem; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--rosso); display:block; margin-bottom:.3rem;
+  }
+  table{width:100%; border-collapse:collapse; margin:1.5rem 0; font-size:.94rem}
+  th,td{text-align:left; padding:.6rem .7rem; border-bottom:1px solid var(--bordo); vertical-align:top}
+  th{font-family:var(--mono); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--inchiostro-2)}
+  td code{white-space:nowrap}
+  ul,ol{padding-left:1.3rem} li{margin:.35rem 0}
+  .indice{
+    background:var(--carta-2); border:1px solid var(--bordo); border-radius:8px;
+    padding:1.1rem 1.3rem; margin:2rem 0; columns:2; column-gap:2rem;
+  }
+  .indice ol{margin:0; padding-left:1.1rem; font-size:.94rem}
+  .indice li{break-inside:avoid}
+  @media (max-width:640px){
+    .indice{columns:1} body{font-size:17px}
+    table{display:block; overflow-x:auto; font-size:.88rem}
+    td code{white-space:normal}
+  }
+  .lede{font-size:1.1rem}
+  .firma{
+    margin-top:4rem; padding-top:1.2rem; border-top:3px double var(--bordo);
+    font-family:var(--mono); font-size:.76rem; color:var(--inchiostro-2);
+  }
+  .tema{
+    position:fixed; top:12px; right:12px; font-family:var(--mono); font-size:.7rem;
+    background:var(--carta-2); color:var(--inchiostro-2); border:1px solid var(--bordo);
+    border-radius:999px; padding:.35rem .8rem; cursor:pointer;
+  }
+  svg text{font-family:var(--mono); fill:var(--inchiostro)}
+  svg .et{font-size:11px; fill:var(--inchiostro-2)}
+  svg .tit{font-size:13px; font-weight:600}
+  svg .box{fill:var(--carta-2); stroke:var(--bordo); stroke-width:1.5}
+  svg .box-r{fill:var(--carta-2); stroke:var(--rosso); stroke-width:2}
+  svg .linea{stroke:var(--bordo); stroke-width:2; fill:none}
+  svg .linea-r{stroke:var(--rosso); stroke-width:2; fill:none}
+</style>
+</head>
+<body>
+<button class="tema" id="tema">tema</button>
+<div class="wrap">
+
+<header class="testa">
+  <p class="occhiello">Brainstorm Club · note di bottega</p>
+  <h1>Anatomia di una skill</h1>
+  <p class="sommario lede">Come è fatto il plugin <code>collane-brainstorm</code> — sette comandi,
+  una skill, nove reference, tre script e quattro agenti — e che cosa se ne impara per costruirne
+  uno proprio. Il caso di studio è vero: trasformare i log di una campagna di gioco di ruolo in
+  libri pubblicati.</p>
+</header>
+
+<nav class="indice">
+  <ol>
+    <li><a href="#problema">Il problema da cui nasce</a></li>
+    <li><a href="#anatomia">Anatomia: cinque pezzi</a></li>
+    <li><a href="#contesto">I tre livelli di contesto</a></li>
+    <li><a href="#flusso">Il flusso che la skill difende</a></li>
+    <li><a href="#script">Gli script: misurare, non giudicare</a></li>
+    <li><a href="#agenti">Gli agenti: mandati, non ruoli</a></li>
+    <li><a href="#registro">Il registro: una sola fonte di verità</a></li>
+    <li><a href="#costruire">Costruirne una: sette passi</a></li>
+    <li><a href="#trappole">Trappole</a></li>
+    <li><a href="#installare">Installare e distribuire</a></li>
+  </ol>
+</nav>
+
+<h2 id="problema"><span class="num">01</span>Il problema da cui nasce</h2>
+
+<p>Sei campagne di gioco di ruolo, sei collane di libri. Ogni collana ha la sua voce (un narratore
+unico, oppure una voce diversa per racconto, oppure una cornice burocratica con deposizioni), la sua
+confezione (un tascabile del 1982, una fanzine anni '90, un fascicolo di polizia) e le sue trappole.
+Ma il <em>gesto</em> è sempre lo stesso: <strong>un log di gioco diventa un libro</strong>.</p>
+
+<p>Quel gesto era già scritto, sparso in sei file <code>CLAUDE.md</code>, nelle istruzioni del sito,
+nel README dell'impaginatore e in una dozzina di note di memoria. Funzionava, ma ogni sessione
+ricominciava a cercarlo. E alcune cose sfuggivano sempre alle stesse crepe: un EPUB costruito senza
+copertina, una nota a piè di pagina orfana, un <code>[BOZZA…]</code> finito dentro un libro
+pubblicato, un file corretto nel repository e sbagliato sul sito.</p>
+
+<div class="scheda">
+  <span class="et">La domanda giusta</span>
+  <p>Non «quali istruzioni do al modello», ma: <strong>quali errori continuano a ripetersi, e in che
+  punto esatto del lavoro si potevano fermare?</strong> Una skill che nasce da questa domanda ha già
+  la sua struttura: una fase per ogni punto, un controllo per ogni crepa.</p>
+</div>
+
+<h2 id="anatomia"><span class="num">02</span>Anatomia: cinque pezzi</h2>
+
+<p>Un plugin complesso non è una skill lunga. È <strong>cinque cose diverse</strong> che fanno
+mestieri diversi, e la difficoltà sta nel non confonderli.</p>
+
+<figure>
+<svg viewBox="0 0 860 470" role="img" aria-label="Schema dei cinque componenti del plugin: comandi, skill, reference, script, agenti">
+  <!-- comandi -->
+  <rect class="box-r" x="20" y="20" width="200" height="110" rx="8"/>
+  <text class="tit" x="36" y="46">commands/ · 7</text>
+  <text class="et" x="36" y="68">/korvaal /heroes …</text>
+  <text class="et" x="36" y="86">chi sei, dove sei,</text>
+  <text class="et" x="36" y="104">quale fase</text>
+  <text class="et" x="36" y="122" style="fill:var(--rosso)">~40 righe l'uno</text>
+
+  <!-- skill -->
+  <rect class="box" x="330" y="20" width="200" height="110" rx="8"/>
+  <text class="tit" x="346" y="46">SKILL.md</text>
+  <text class="et" x="346" y="68">il registro, le fasi,</text>
+  <text class="et" x="346" y="86">le regole ferme</text>
+  <text class="et" x="346" y="104">— la mappa, non</text>
+  <text class="et" x="346" y="122">il territorio</text>
+
+  <!-- references -->
+  <rect class="box" x="640" y="20" width="200" height="110" rx="8"/>
+  <text class="tit" x="656" y="46">references/ · 9</text>
+  <text class="et" x="656" y="68">una per fase</text>
+  <text class="et" x="656" y="86">+ giochi.md</text>
+  <text class="et" x="656" y="104">+ regole-ferme.md</text>
+  <text class="et" x="656" y="122" style="fill:var(--rosso)">si carica una sola</text>
+
+  <!-- frecce riga 1 -->
+  <path class="linea-r" d="M220 75 H322"/>
+  <path class="linea-r" d="M314 69 l10 6 -10 6" fill="var(--rosso)"/>
+  <path class="linea" d="M530 75 H632"/>
+  <path class="linea" d="M624 69 l10 6 -10 6" fill="var(--bordo)"/>
+
+  <!-- scripts -->
+  <rect class="box" x="175" y="250" width="220" height="120" rx="8"/>
+  <text class="tit" x="191" y="276">scripts/ · 3 + registro</text>
+  <text class="et" x="191" y="298">stato.py</text>
+  <text class="et" x="191" y="316">controlla_volume.py</text>
+  <text class="et" x="191" y="334">controlla_copertina.py</text>
+  <text class="et" x="191" y="356" style="fill:var(--rosso)">misurano, non giudicano</text>
+
+  <!-- agents -->
+  <rect class="box" x="465" y="250" width="220" height="120" rx="8"/>
+  <text class="tit" x="481" y="276">agents/ · 4</text>
+  <text class="et" x="481" y="298">lettore-log</text>
+  <text class="et" x="481" y="316">redattore · correttore</text>
+  <text class="et" x="481" y="334">revisore-stile</text>
+  <text class="et" x="481" y="356" style="fill:var(--rosso)">sola lettura, referto</text>
+
+  <path class="linea" d="M430 130 V210 H285 V242"/>
+  <path class="linea" d="M279 234 l6 10 6 -10" fill="var(--bordo)"/>
+  <path class="linea" d="M430 130 V210 H575 V242"/>
+  <path class="linea" d="M569 234 l6 10 6 -10" fill="var(--bordo)"/>
+
+  <!-- fonte di verità -->
+  <rect class="box" x="175" y="405" width="510" height="50" rx="8" stroke-dasharray="6 5"/>
+  <text class="tit" x="191" y="428">fuori dal plugin: i CLAUDE.md delle sei campagne</text>
+  <text class="et" x="191" y="446">l'autorità su che cosa è vero — la skill dice solo come si lavora</text>
+</svg>
+<figcaption>I cinque pezzi, e la sesta cosa che resta deliberatamente fuori.</figcaption>
+</figure>
+
+<table>
+  <tr><th>pezzo</th><th>mestiere</th><th>regola di scrittura</th></tr>
+  <tr><td><strong>comando</strong></td><td>dire al modello <em>dove si trova</em> e che cosa gli è stato chiesto</td><td>corto. Un comando è un contesto, non un manuale</td></tr>
+  <tr><td><strong>skill</strong></td><td>il registro e il metodo: quali collane esistono, quali fasi, quali regole non si negoziano</td><td>una mappa che rimanda, non un trattato</td></tr>
+  <tr><td><strong>reference</strong></td><td>come si fa <em>una</em> fase, nei dettagli che servono solo lì</td><td>una per fase, caricata solo quando quella fase comincia</td></tr>
+  <tr><td><strong>script</strong></td><td>misurare quello che si può misurare</td><td>deterministico, read-only, exit code parlante</td></tr>
+  <tr><td><strong>agente</strong></td><td>un mestiere intero delegato, che torna come referto</td><td>mandato scritto, strumenti minimi</td></tr>
+</table>
+
+<h2 id="contesto"><span class="num">03</span>I tre livelli di contesto</h2>
+
+<p>Il vincolo vero di una skill complessa non è che cosa sa: è <strong>quanto ne carica in una
+volta</strong>. Se tutto quello che il plugin sa entrasse in sessione a ogni invocazione, la
+sessione sarebbe piena prima di aver letto un racconto.</p>
+
+<p>La soluzione è la stessa degli indici di un libro: tre livelli, ognuno carica solo il
+successivo.</p>
+
+<figure>
+<svg viewBox="0 0 860 320" role="img" aria-label="Tre livelli di contesto: comando, skill, reference di fase">
+  <rect class="box-r" x="30" y="30" width="800" height="62" rx="8"/>
+  <text class="tit" x="50" y="56">1 · il comando  —  sempre</text>
+  <text class="et" x="50" y="78">/heroes epub taglie-di-londra → collana, cartella, voce, schema, fase richiesta. Poche righe.</text>
+
+  <rect class="box" x="90" y="118" width="740" height="62" rx="8"/>
+  <text class="tit" x="110" y="144">2 · SKILL.md  —  quando il comando lo dice</text>
+  <text class="et" x="110" y="166">il registro delle sei collane, l'elenco delle fasi, le dieci regole ferme. Una pagina.</text>
+
+  <rect class="box" x="150" y="206" width="680" height="62" rx="8"/>
+  <text class="tit" x="170" y="232">3 · la reference della fase  —  una sola</text>
+  <text class="et" x="170" y="254">fase-epub.md. Le altre otto restano su disco, non in sessione.</text>
+
+  <path class="linea-r" d="M60 92 V118"/><path class="linea-r" d="M54 110 l6 10 6 -10" fill="var(--rosso)"/>
+  <path class="linea" d="M120 180 V206"/><path class="linea" d="M114 198 l6 10 6 -10" fill="var(--bordo)"/>
+
+  <text class="et" x="150" y="298" style="fill:var(--rosso)">+ il CLAUDE.md della collana: la fonte di verità, letta sempre, perché cambia e la skill no.</text>
+</svg>
+<figcaption>Rivelazione progressiva: ogni livello nomina il successivo e si ferma lì.</figcaption>
+</figure>
+
+<div class="scheda">
+  <span class="et">Il principio</span>
+  <p><strong>La skill dice <em>come si lavora</em>; i file del progetto dicono <em>che cosa è
+  vero</em>.</strong> Qui i sei <code>CLAUDE.md</code> restano l'autorità su voce, tono e stato del
+  ciclo, e la skill lo dichiara: «se divergono, vince la collana — e segnalalo». Così una skill
+  distribuita non invecchia ogni volta che il progetto cambia.</p>
+</div>
+
+<h2 id="flusso"><span class="num">04</span>Il flusso che la skill difende</h2>
+
+<p>Le fasi non sono capitoli di un manuale: sono <strong>gli stati in cui può trovarsi il
+lavoro</strong>. Ognuna ha un ingresso, un'uscita e — questo è il punto — i cancelli che non si
+saltano.</p>
+
+<figure>
+<svg viewBox="0 0 860 400" role="img" aria-label="Pipeline: log, racconto, revisione, copertina, attesa, epub, sito">
+  <!-- riga 1 -->
+  <rect class="box" x="20" y="30" width="150" height="70" rx="8"/>
+  <text class="tit" x="36" y="58">log</text><text class="et" x="36" y="78">eventi, morti,</text><text class="et" x="36" y="94">scarti, discrepanze</text>
+
+  <rect class="box" x="210" y="30" width="150" height="70" rx="8"/>
+  <text class="tit" x="226" y="58">racconto</text><text class="et" x="226" y="78">domande → outline</text><text class="et" x="226" y="94">→ bibbia → prosa</text>
+
+  <rect class="box" x="400" y="30" width="150" height="70" rx="8"/>
+  <text class="tit" x="416" y="58">revisione</text><text class="et" x="416" y="78">redattore → bozze</text><text class="et" x="416" y="94">→ stile</text>
+
+  <rect class="box" x="590" y="30" width="150" height="70" rx="8"/>
+  <text class="tit" x="606" y="58">copertina</text><text class="et" x="606" y="78">prompt scritto,</text><text class="et" x="606" y="94">poi ci si ferma</text>
+
+  <path class="linea" d="M170 65 H202"/><path class="linea" d="M194 59 l10 6 -10 6" fill="var(--bordo)"/>
+  <path class="linea" d="M360 65 H392"/><path class="linea" d="M384 59 l10 6 -10 6" fill="var(--bordo)"/>
+  <path class="linea" d="M550 65 H582"/><path class="linea" d="M542 59 l10 6 -10 6" fill="var(--bordo)"/>
+  <!-- loop revisione -->
+  <path class="linea" d="M475 100 V128 H285 V104"/>
+  <path class="linea" d="M279 112 l6 -10 6 10" fill="var(--bordo)"/>
+  <text class="et" x="300" y="146">ogni modifica al testo rimanda alle tre passate</text>
+
+  <!-- cancello -->
+  <rect class="box-r" x="590" y="178" width="250" height="78" rx="8"/>
+  <text class="tit" x="606" y="204" style="fill:var(--rosso)">⟂ cancello umano</text>
+  <text class="et" x="606" y="224">l'immagine la genera e la carica</text>
+  <text class="et" x="606" y="240">l'utente. Niente EPUB senza copertina.</text>
+  <path class="linea-r" d="M665 100 V170"/><path class="linea-r" d="M659 162 l6 10 6 -10" fill="var(--rosso)"/>
+
+  <!-- riga 2 -->
+  <rect class="box" x="330" y="300" width="180" height="70" rx="8"/>
+  <text class="tit" x="346" y="328">epub</text><text class="et" x="346" y="348">pre-build → build</text><text class="et" x="346" y="364">→ verifica</text>
+
+  <rect class="box" x="560" y="300" width="180" height="70" rx="8"/>
+  <text class="tit" x="576" y="328">sito</text><text class="et" x="576" y="348">rigenera le pagine;</text><text class="et" x="576" y="364">l'FTP lo fa l'utente</text>
+
+  <path class="linea-r" d="M665 256 V276 H420 V292"/><path class="linea-r" d="M414 284 l6 10 6 -10" fill="var(--rosso)"/>
+  <path class="linea" d="M510 335 H552"/><path class="linea" d="M544 329 l10 6 -10 6" fill="var(--bordo)"/>
+
+  <rect class="box" x="30" y="300" width="250" height="70" rx="8" stroke-dasharray="6 5"/>
+  <text class="tit" x="46" y="328">controlli automatici</text>
+  <text class="et" x="46" y="348">controlla_volume · controlla_copertina</text>
+  <text class="et" x="46" y="364">prima del build, non dopo</text>
+  <path class="linea" d="M280 335 H322"/><path class="linea" d="M314 329 l10 6 -10 6" fill="var(--bordo)"/>
+</svg>
+<figcaption>Due cancelli rossi: il primo è umano (la copertina), il secondo è meccanico (il pre-build).
+Il resto è una catena ordinaria.</figcaption>
+</figure>
+
+<p>Vale la pena isolare il cancello umano, perché è il pezzo che più spesso manca nelle skill scritte
+in fretta: <strong>un punto in cui la cosa giusta da fare è fermarsi e dirlo</strong>. Qui è la
+copertina — la genera l'utente, e finché non c'è non si costruisce niente. Scritto nella skill,
+ripetuto in ogni comando, e fatto fallire dagli script dei progetti.</p>
+
+<h2 id="script"><span class="num">05</span>Gli script: misurare, non giudicare</h2>
+
+<p>La divisione del lavoro che regge: <strong>lo script misura quello che si misura, il modello
+giudica quello che si giudica.</strong> Un controllo di note orfane non va chiesto al modello (le
+conta male e costa); il tono di un racconto non va chiesto a uno script (non ce l'ha).</p>
+
+<table>
+  <tr><th>script</th><th>che cosa misura</th><th>che cosa <em>non</em> dice</th></tr>
+  <tr>
+    <td><code>stato.py</code></td>
+    <td>per ogni volume: prompt, copertina, EPUB, allineamento col sito, EPUB più vecchio delle fonti</td>
+    <td>che cosa conviene fare per primo</td>
+  </tr>
+  <tr>
+    <td><code>controlla_volume.py</code></td>
+    <td>manifest completo, prefissi-note che collidono, note orfane, <code>description:</code> mancante, spie di bozza nell'apparato</td>
+    <td>se quella frase è davvero fuori posto o è in voce</td>
+  </tr>
+  <tr>
+    <td><code>controlla_copertina.py</code></td>
+    <td>formato, 2:3, risoluzione, peso, tetto di 3 MB dell'EPUB</td>
+    <td>se la copertina è <em>quella giusta</em>: va guardata</td>
+  </tr>
+</table>
+
+<p>Tre scelte che hanno fatto la differenza:</p>
+
+<ul>
+  <li><strong>Exit code a tre valori</strong> — <code>0</code> pulito, <code>1</code> avvisi,
+  <code>2</code> bloccante. Il modello può decidere senza interpretare la prosa dell'uscita, e il
+  bloccante è bloccante davvero.</li>
+  <li><strong>Nessuna dipendenza.</strong> Python della libreria standard, anche per leggere le
+  dimensioni di un PNG o di un JPEG dall'intestazione. Una skill distribuibile che chiede
+  <code>pip install</code> non si installa.</li>
+  <li><strong>Uscita in italiano, con il rimedio dentro.</strong> Non «cover too large», ma il
+  comando <code>sips</code> già scritto con i parametri giusti. Il messaggio di errore è la
+  documentazione che viene letta davvero.</li>
+</ul>
+
+<div class="scheda">
+  <span class="et">Prova sul campo</span>
+  <p>Gli script, lanciati sui dati veri, hanno trovato in dieci secondi: due EPUB più vecchi delle
+  loro fonti, un volume senza prompt di copertina, una copertina da 848 px e un PNG da 2,99 MB che
+  spinge l'EPUB al limite dei 3. <strong>Se uno script nuovo non trova niente la prima volta che lo
+  lanci, probabilmente stai misurando la cosa sbagliata.</strong></p>
+</div>
+
+<h2 id="agenti"><span class="num">06</span>Gli agenti: mandati, non ruoli</h2>
+
+<p>Un agente conviene quando c'è <strong>un mestiere intero</strong> da delegare, che legge molto e
+restituisce poco. Qui erano già scritti nel lavoro: le tre passate di revisione sono tre mestieri
+diversi, e leggere i log è un quarto.</p>
+
+<figure>
+<svg viewBox="0 0 860 330" role="img" aria-label="Le tre passate in sequenza su un racconto, in parallelo su racconti diversi">
+  <text class="et" x="20" y="24" style="fill:var(--rosso)">sullo stesso racconto: in sequenza</text>
+  <rect class="box" x="20" y="38" width="190" height="62" rx="8"/>
+  <text class="tit" x="36" y="64">redattore</text><text class="et" x="36" y="84">il mondo tiene</text>
+  <rect class="box" x="250" y="38" width="190" height="62" rx="8"/>
+  <text class="tit" x="266" y="64">correttore-bozze</text><text class="et" x="266" y="84">la lingua tiene</text>
+  <rect class="box" x="480" y="38" width="190" height="62" rx="8"/>
+  <text class="tit" x="496" y="64">revisore-stile</text><text class="et" x="496" y="84">la voce tiene</text>
+  <path class="linea" d="M210 69 H242"/><path class="linea" d="M234 63 l10 6 -10 6" fill="var(--bordo)"/>
+  <path class="linea" d="M440 69 H472"/><path class="linea" d="M432 63 l10 6 -10 6" fill="var(--bordo)"/>
+  <text class="et" x="690" y="62">un refuso dentro</text>
+  <text class="et" x="690" y="78">una scena da tagliare</text>
+  <text class="et" x="690" y="94">è lavoro buttato</text>
+
+  <text class="et" x="20" y="156" style="fill:var(--rosso)">su racconti diversi: in parallelo</text>
+  <rect class="box" x="20" y="170" width="150" height="56" rx="8"/><text class="et" x="36" y="194">racconto A</text><text class="et" x="36" y="212">→ 3 passate</text>
+  <rect class="box" x="195" y="170" width="150" height="56" rx="8"/><text class="et" x="211" y="194">racconto B</text><text class="et" x="211" y="212">→ 3 passate</text>
+  <rect class="box" x="370" y="170" width="150" height="56" rx="8"/><text class="et" x="386" y="194">racconto C</text><text class="et" x="386" y="212">→ 3 passate</text>
+  <rect class="box-r" x="580" y="160" width="250" height="76" rx="8"/>
+  <text class="tit" x="596" y="186">consolidi tu</text>
+  <text class="et" x="596" y="206">i referti si leggono,</text>
+  <text class="et" x="596" y="222">non si inoltrano</text>
+  <path class="linea" d="M520 198 H572"/><path class="linea" d="M564 192 l10 6 -10 6" fill="var(--bordo)"/>
+
+  <rect class="box" x="20" y="262" width="810" height="52" rx="8" stroke-dasharray="6 5"/>
+  <text class="et" x="38" y="284">strumenti: Read · Grep · Glob — e Bash solo al correttore, che deve lanciare lo script.</text>
+  <text class="et" x="38" y="302">Nessuno dei tre può scrivere: un revisore che riscrive il testo non è più un revisore.</text>
+</svg>
+<figcaption>La sequenza non è burocrazia: è l'ordine in cui il lavoro non si spreca.</figcaption>
+</figure>
+
+<p>Che cosa rende utile un agente, qui:</p>
+<ul>
+  <li><strong>Il mandato, non il ruolo.</strong> Non «sei un revisore esperto», ma l'elenco esatto di
+  che cosa controllare, contro quale file, e in che forma consegnare il referto.</li>
+  <li><strong>Strumenti minimi.</strong> Sola lettura. La tentazione di dare <code>Edit</code> a un
+  revisore produce testo riscritto da tre mani diverse.</li>
+  <li><strong>Un formato di uscita fisso.</strong> «Bloccanti / da sistemare / effetti a catena / da
+  aggiornare nel canone»: chi riceve il referto sa già dove guardare.</li>
+  <li><strong>Il permesso di non sapere.</strong> «Se ti sembra sbagliato ma non hai la fonte,
+  marcalo <code>[da verificare]</code>»: è la riga che evita i referti inventati.</li>
+</ul>
+
+<h2 id="registro"><span class="num">07</span>Il registro: una sola fonte di verità</h2>
+
+<p>Sei collane, sei cartelle, sei convenzioni di nomi — e il sito che le ribattezza tutte. Il
+volume che sul disco si chiama <code>5-teste</code> produce <code>le_cinque_teste.epub</code> e
+online diventa <code>le-cinque-teste</code>.</p>
+
+<p>Questa conoscenza non va ripetuta in sette comandi e nove reference: va in
+<strong>un file di dati</strong>, <code>scripts/collane.json</code>, che gli script leggono e la
+prosa cita.</p>
+
+<pre><code>"brancalonia": {
+  "progetto": "brancalonia",
+  "schema": "capitoli",
+  "slug_sito": "regno-di-taglia",
+  "alias": {
+    "5-teste": { "epub": "le_cinque_teste", "sito": "le-cinque-teste" },
+    …
+  }
+}</code></pre>
+
+<p>Un dato che vive in un posto solo si corregge in un posto solo. E quando il registro mente — lo
+farà, perché il progetto cambia — lo si scopre subito: lo script dice «da pubblicare sul sito» per
+un libro che online c'è già.</p>
+
+<h2 id="costruire"><span class="num">08</span>Costruirne una: sette passi</h2>
+
+<ol>
+  <li><strong>Censire il lavoro vero, non immaginarlo.</strong> Qui: sei <code>CLAUDE.md</code>, le
+  istruzioni del sito, il README dell'impaginatore, le note di memoria sui feedback già dati. Se non
+  esiste materiale del genere, la skill è prematura: fai il lavoro una volta e annota.</li>
+  <li><strong>Estrarre gli invarianti.</strong> Che cosa è uguale in tutti i casi (la pipeline), che
+  cosa cambia (voce, confezione, schema). L'uguale diventa la skill, il diverso diventa il registro
+  e i comandi.</li>
+  <li><strong>Separare le regole dai dati.</strong> Le regole con il <em>perché</em> in una
+  reference; i percorsi, gli slug e gli alias in un JSON.</li>
+  <li><strong>Scrivere gli script per le crepe note.</strong> Una crepa = un controllo. Exit code
+  parlante, nessuna dipendenza, rimedio nel messaggio.</li>
+  <li><strong>Provarli sui dati veri prima di scrivere la prosa.</strong> Quel che trovano cambia
+  quello che la reference deve dire — e scopre i falsi positivi (qui: il Master che parla
+  legittimamente del suo tavolo).</li>
+  <li><strong>Scrivere i comandi per ultimi.</strong> Sono la superficie: si scrivono bene solo
+  quando sotto c'è qualcosa. Generarli da un template con i dati per caso evita sei divergenze.</li>
+  <li><strong>Dichiarare che cosa resta fuori.</strong> La skill non possiede la verità del
+  progetto: la indica. È la differenza fra uno strumento che invecchia e uno che accompagna.</li>
+</ol>
+
+<h2 id="trappole"><span class="num">09</span>Trappole</h2>
+
+<table>
+  <tr><th>trappola</th><th>sintomo</th><th>rimedio</th></tr>
+  <tr><td>La skill-monolite</td><td>un SKILL.md di 400 righe che si carica sempre intero</td><td>tre livelli: comando → skill → una reference</td></tr>
+  <tr><td>Regole senza perché</td><td>vengono aggirate alla prima eccezione</td><td>ogni regola porta l'errore che l'ha generata</td></tr>
+  <tr><td>Script che giudicano</td><td>falsi positivi presi per verità</td><td>misurare; il giudizio resta al modello, e lo script lo dice</td></tr>
+  <tr><td>Dati duplicati nella prosa</td><td>un percorso corretto in tre file su cinque</td><td>un registro, citato</td></tr>
+  <tr><td>Agenti-ruolo</td><td>referti generici, complimenti</td><td>mandato, formato d'uscita, strumenti minimi</td></tr>
+  <tr><td>Nessun cancello umano</td><td>il lavoro procede oltre il punto in cui serviva una persona</td><td>scriverlo, ripeterlo, farlo fallire</td></tr>
+</table>
+
+<h2 id="installare"><span class="num">10</span>Installare e distribuire</h2>
+
+<p>La struttura minima perché una cartella sia un plugin installabile:</p>
+
+<pre><code>plugin-collane/
+├── .claude-plugin/
+│   ├── plugin.json        nome, descrizione, versione
+│   └── marketplace.json   perché la cartella sia anche un marketplace locale
+├── commands/*.md          frontmatter: description, argument-hint
+├── skills/&lt;nome&gt;/SKILL.md frontmatter: name, description (è ciò che fa scattare la skill)
+├── agents/*.md            frontmatter: name, description, tools, model
+└── scripts/               raggiungibili come ${CLAUDE_PLUGIN_ROOT}/scripts/…</code></pre>
+
+<pre><code>claude plugin marketplace add /percorso/plugin-collane
+claude plugin install collane-brainstorm@brainstorm-club</code></pre>
+
+<p>Il <code>description</code> della skill è la cosa più importante del file: è il testo su cui si
+decide se caricarla. Deve nominare i trigger reali — qui i nomi delle sei campagne e i verbi del
+lavoro (leggere un log, revisionare, costruire l'EPUB, pubblicare) — non descrivere l'eleganza
+dell'architettura.</p>
+
+<div class="scheda">
+  <span class="et">La prova del nove</span>
+  <p>Una skill complessa è fatta bene quando <strong>un estraneo competente, letta la sola
+  <code>SKILL.md</code>, sa dove andare a cercare il resto</strong> — e quando chi la usa tutti i
+  giorni non ha più bisogno di ricordarsi le cose che adesso sono scritte.</p>
+</div>
+
+<p class="firma">Brainstorm Club · plugin <code>collane-brainstorm</code> · documento interno di
+bottega. Il caso di studio è il plugin che contiene questa pagina: <code>docs/manuale.html</code>.</p>
+
+</div>
+<script>
+  (function(){
+    var b=document.getElementById('tema');
+    function corrente(){
+      var t=document.documentElement.getAttribute('data-theme');
+      if(t) return t;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light';
+    }
+    try{ var salvato=localStorage.getItem('manuale-tema'); if(salvato) document.documentElement.setAttribute('data-theme',salvato); }catch(e){}
+    b.addEventListener('click',function(){
+      var nuovo = corrente()==='dark' ? 'light':'dark';
+      document.documentElement.setAttribute('data-theme',nuovo);
+      try{ localStorage.setItem('manuale-tema',nuovo); }catch(e){}
+    });
+  })();
+</script>
+</body>
+</html>

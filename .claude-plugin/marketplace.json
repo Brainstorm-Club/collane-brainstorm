@@ -1,0 +1,17 @@
+{
+  "name": "brainstorm-club",
+  "owner": {
+    "name": "Brainstorm Club",
+    "url": "https://www.brainstormclub.it/"
+  },
+  "metadata": {
+    "description": "Strumenti del Brainstorm Club per trasformare i log delle campagne in libri confezionati."
+  },
+  "plugins": [
+    {
+      "name": "collane-brainstorm",
+      "source": "./",
+      "description": "Pipeline delle collane narrative: log → racconto → revisione → copertina → EPUB → sito. Un comando per campagna."
+    }
+  ]
+}

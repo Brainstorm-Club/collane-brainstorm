@@ -1,0 +1,183 @@
+{
+  "_nota": "Registro delle collane: unica fonte di verità per gli script e per i comandi del plugin. I percorsi sono relativi alla radice del repo brainstorm (la cartella che contiene apocalisse/, brancalonia/, sito/ ...).",
+  "collane": {
+    "brancalonia": {
+      "progetto": "brancalonia",
+      "collana": "Regno di Taglia",
+      "slug_sito": "regno-di-taglia",
+      "prefisso_sito": "",
+      "schema": "capitoli",
+      "unita": "libri/<nome>/ con epigrafe.md + NN_*.md",
+      "gioco": "Brancalonia (Acheron Games)",
+      "voce": "narratore unico — Nanoc Orabrabli",
+      "confezione": "paperback italiano 1982",
+      "prompt_copertina": "copertine/prompt-libro-<nome>.md",
+      "copertina": "copertine/<nome>.png",
+      "build": "bash build_epub.sh <nome>",
+      "log": "log/*.txt",
+      "brief": "assets/prompt_nuovi_racconti.md",
+      "canone": "assets/canone_serie.md",
+      "alias": {
+        "rosaspina": {
+          "epub": "rosaspina",
+          "sito": "la-rosaspina"
+        },
+        "burattinaio": {
+          "epub": "burattinaio",
+          "sito": "il-figlio-del-burattinaio"
+        },
+        "cinghiali": {
+          "epub": "cinghiali",
+          "sito": "la-guerra-dei-cinghiali"
+        },
+        "zitellone": {
+          "epub": "la_cena_delle_zitellone",
+          "sito": "la-cena-delle-zitellone"
+        },
+        "5-teste": {
+          "epub": "le_cinque_teste",
+          "sito": "le-cinque-teste"
+        },
+        "grigione": {
+          "epub": "grigione",
+          "sito": "il-grigione"
+        },
+        "castellammare": {
+          "epub": "castellammare",
+          "sito": "grosso-guaio-a-castellammare"
+        },
+        "rosa-davorio": {
+          "epub": "la_rosa_davorio",
+          "sito": "la-rosa-davorio"
+        }
+      }
+    },
+    "korvaal": {
+      "progetto": "roguetrader/ciclo-korvaal",
+      "collana": "Il ciclo di Korvaal",
+      "slug_sito": "ciclo-di-korvaal",
+      "prefisso_sito": "korvaal-",
+      "schema": "volumi",
+      "unita": "racconti/<nome>.md composti da volumi/<vol>/manifest.txt",
+      "gioco": "Rogue Trader (Warhammer 40.000)",
+      "voce": "polifonia — una voce solista in prima persona per racconto",
+      "confezione": "falsa collana FANTAFLOTTA, Urania 1982",
+      "prompt_copertina": "copertine/prompt-copertina-<vol>.md",
+      "copertina": "copertine/<vol>.png|.jpg",
+      "build": "bash build_epub.sh <vol>",
+      "log": "log/*.txt",
+      "brief": "assets/PROMPT_nuovi_racconti.md",
+      "canone": "assets/canone_serie.md",
+      "alias": {
+        "omnibus": {
+          "epub": "omnibus",
+          "sito": "omnibus",
+          "nota": "EPUB sì, pagina web no: ripeterebbe i racconti degli altri volumi"
+        }
+      }
+    },
+    "dark-heresy": {
+      "progetto": "roguetrader/dark-heresy",
+      "collana": "ACTA HERETICA",
+      "slug_sito": "acta-heretica",
+      "prefisso_sito": "dh-",
+      "schema": "volumi",
+      "unita": "racconti/<nome>.md composti da volumi/<vol>/manifest.txt",
+      "gioco": "Dark Heresy (Settore Calixis, Warhammer 40.000)",
+      "voce": "cornice unica — verbale del sapiente Eruditus + deposizioni in blockquote",
+      "confezione": "dossier proibito dell'Ordo",
+      "prompt_copertina": "copertine/prompt-copertina-<vol>.md",
+      "copertina": "copertine/<vol>.png|.jpg",
+      "build": "bash build_epub.sh <vol>",
+      "log": "log/<n>.md",
+      "brief": "assets/PROMPT_nuovi_racconti.md",
+      "canone": "assets/canone_serie.md",
+      "alias": {
+        "eredita-haarlock": {
+          "epub": "eredita-haarlock",
+          "sito": null
+        }
+      }
+    },
+    "dnd-jr": {
+      "progetto": "dnd-jr",
+      "collana": "Tiro Salvezza",
+      "slug_sito": "tiro-salvezza",
+      "prefisso_sito": "dnd-",
+      "schema": "volumi",
+      "unita": "racconti/<nome>.md composti da volumi/<vol>/manifest.txt",
+      "gioco": "D&D 5e nel Vecchio Mondo di Warhammer",
+      "voce": "narratore unico — il Master, «Ozymandias il Grande»",
+      "confezione": "fanzine di GdR dei primi anni '90",
+      "prompt_copertina": "copertine/prompt-copertina-<vol>.md",
+      "copertina": "copertine/<vol>.png",
+      "build": "bash build_epub.sh <vol>",
+      "log": "log/NN.md",
+      "brief": "assets/PROMPT_nuovi_racconti.md",
+      "canone": "assets/canone_serie.md",
+      "alias": {
+        "omnibus": {
+          "epub": "omnibus",
+          "sito": null,
+          "nota": "sospeso"
+        }
+      }
+    },
+    "apocalisse": {
+      "progetto": "apocalisse",
+      "collana": "Terre Desolate — Codici del Silenzio",
+      "slug_sito": "terre-desolate",
+      "prefisso_sito": "apoc-",
+      "schema": "volumi",
+      "unita": "racconti/<nome>.md composti da volumi/<vol>/manifest.txt",
+      "gioco": "Apocalisse (Acheron)",
+      "voce": "polifonia — una voce in prima persona per codice; cornice dell'Archivista",
+      "confezione": "codice ritrovato / edizione della memoria",
+      "prompt_copertina": "copertine/prompt-copertina-<vol>.md",
+      "copertina": "copertine/<vol>.jpg|.png",
+      "build": "bash build_epub.sh <vol>",
+      "log": "log/a-NNN.txt",
+      "brief": "assets/PROMPT_nuovi_racconti.md",
+      "canone": "assets/canone_serie.md",
+      "alias": {
+        "ronan-di-kimmeria": {
+          "epub": "ronan-di-kimmeria",
+          "sito": "ronan"
+        }
+      }
+    },
+    "heroes": {
+      "progetto": "heroes",
+      "collana": "Dossier Scavengers",
+      "slug_sito": "dossier-scavengers",
+      "prefisso_sito": "hu-",
+      "schema": "volumi",
+      "unita": "racconti/<nome>.md composti da volumi/<vol>/manifest.txt",
+      "gioco": "Heroes Unlimited (Palladium Books)",
+      "voce": "cornice unica — referto dell'Analista + deposizioni in blockquote",
+      "confezione": "fascicolo riservato dei Cavalieri della Corona",
+      "prompt_copertina": "copertine/prompt-copertina-<vol>.md",
+      "copertina": "copertine/<vol>.jpg|.png",
+      "build": "bash build_epub.sh <vol>",
+      "log": "log/N.md",
+      "brief": "assets/PROMPT_nuovi_racconti.md",
+      "canone": "assets/canone_serie.md",
+      "alias": {
+        "dossier-scavengers": {
+          "epub": "dossier-scavengers",
+          "sito": null,
+          "nota": "omnibus sospeso"
+        }
+      }
+    }
+  },
+  "sito": {
+    "progetto": "sito",
+    "build": "python3 sito/build_leggi.py [collana]",
+    "epub_pubblicati": "sito/libri/<slug>.epub",
+    "copertina_pubblicata": "sito/libri/<slug>.jpg",
+    "home": "sito/index.html",
+    "deploy": "FTP a mano, fatto dall'utente: una build non è una pubblicazione"
+  },
+  "_alias": "alias: per i volumi il cui file EPUB o il cui slug sul sito non coincide col nome della cartella. sito=null → quel volume non va pubblicato come pagina web."
+}

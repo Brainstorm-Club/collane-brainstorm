@@ -1,0 +1,18 @@
+{
+  "name": "collane-brainstorm",
+  "description": "Pipeline delle collane narrative del Brainstorm Club: dai log di gioco al racconto, alla copertina, all'EPUB, al sito. Un comando per ogni campagna.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Brainstorm Club"
+  },
+  "keywords": [
+    "gdr",
+    "epub",
+    "narrativa",
+    "brainstorm-club",
+    "pandoc"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/Brainstorm-Club/collane-brainstorm",
+  "homepage": "https://www.brainstormclub.it/"
+}
