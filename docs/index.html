@@ -1,853 +1,786 @@
 <!doctype html>
-<html lang="it">
+<html lang="it" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Anatomia di una skill</title>
+<title>Dal tavolo al libro</title>
+<meta name="description" content="Come il Brainstorm Club trasforma le sessioni di gioco di ruolo in libri con Claude Code: un manuale per master curiosi, con i dettagli tecnici a portata di clic.">
+<script>try{var p=localStorage.getItem('bsc-theme-pref')||localStorage.getItem('bsc-theme')||'dark',e=p==='auto'?(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):p,d=document.documentElement;d.setAttribute('data-theme',e);d.setAttribute('data-theme-pref',p)}catch(e){}</script>
+<link rel="stylesheet" href="https://brainstorm-club.github.io/design-system/brainstorm.css">
 <style>
-  :root{
-    --carta:#f6f1e7; --carta-2:#efe8da; --inchiostro:#1c1a18; --inchiostro-2:#4a443d;
-    --rosso:#9e2b23; --rosso-chiaro:#c2332b; --bordo:#d8cfbd; --codice:#efe9dc;
-    --ombra:0 1px 0 rgba(0,0,0,.04), 0 8px 24px -18px rgba(0,0,0,.4);
-    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
-    --testo:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
-  }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --carta:#17161a; --carta-2:#1f1e23; --inchiostro:#e9e4db; --inchiostro-2:#a9a299;
-      --rosso:#e0655c; --rosso-chiaro:#e0655c; --bordo:#33313a; --codice:#232228;
-      --ombra:0 1px 0 rgba(255,255,255,.03), 0 8px 28px -20px #000;
-    }
-  }
-  :root[data-theme="dark"]{
-    --carta:#17161a; --carta-2:#1f1e23; --inchiostro:#e9e4db; --inchiostro-2:#a9a299;
-    --rosso:#e0655c; --rosso-chiaro:#e0655c; --bordo:#33313a; --codice:#232228;
-    --ombra:0 1px 0 rgba(255,255,255,.03), 0 8px 28px -20px #000;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0; background:var(--carta); color:var(--inchiostro);
-    font-family:var(--testo); font-size:18px; line-height:1.65;
-    -webkit-text-size-adjust:100%;
-  }
-  .wrap{max-width:62rem; margin:0 auto; padding:0 16px 6rem}
-  header.testa{
-    border-bottom:3px double var(--bordo); margin-bottom:2.5rem;
-    padding:3.5rem 0 1.5rem;
-  }
-  .occhiello{
-    font-family:var(--mono); font-size:.72rem; letter-spacing:.18em; text-transform:uppercase;
-    color:var(--rosso); margin:0 0 .6rem;
-  }
-  h1{font-size:clamp(2rem,6vw,3.1rem); line-height:1.08; margin:0 0 .6rem; font-weight:600}
-  h2{
-    font-size:clamp(1.35rem,3.4vw,1.8rem); margin:3.5rem 0 .4rem; font-weight:600;
-    padding-top:1.2rem; border-top:1px solid var(--bordo);
-  }
-  h2 .num{font-family:var(--mono); font-size:.8rem; color:var(--rosso); display:block; letter-spacing:.14em}
-  h3{font-size:1.1rem; margin:2rem 0 .3rem; font-weight:600}
-  p{margin:.7rem 0}
-  .sommario{color:var(--inchiostro-2); font-size:1.08rem; max-width:44rem}
-  a{color:var(--rosso)}
-  code{font-family:var(--mono); font-size:.86em; background:var(--codice); padding:.12em .36em; border-radius:4px}
-  pre{
-    background:var(--codice); border:1px solid var(--bordo); border-radius:8px;
-    padding:1rem 1.1rem; overflow-x:auto; font-size:.84rem; line-height:1.55;
-    font-family:var(--mono); box-shadow:var(--ombra);
-  }
-  pre code{background:none; padding:0; font-size:inherit}
-  figure{margin:2rem 0; padding:0}
-  figure svg{width:100%; height:auto; display:block}
-  figcaption{
-    font-family:var(--mono); font-size:.74rem; color:var(--inchiostro-2);
-    margin-top:.7rem; letter-spacing:.02em;
-  }
-  .scheda{
-    background:var(--carta-2); border:1px solid var(--bordo); border-left:4px solid var(--rosso);
-    border-radius:0 8px 8px 0; padding:1rem 1.2rem; margin:1.8rem 0; box-shadow:var(--ombra);
-  }
-  .scheda p:first-child{margin-top:0} .scheda p:last-child{margin-bottom:0}
-  .scheda .et{
-    font-family:var(--mono); font-size:.7rem; letter-spacing:.16em; text-transform:uppercase;
-    color:var(--rosso); display:block; margin-bottom:.3rem;
-  }
-  table{width:100%; border-collapse:collapse; margin:1.5rem 0; font-size:.94rem}
-  th,td{text-align:left; padding:.6rem .7rem; border-bottom:1px solid var(--bordo); vertical-align:top}
-  th{font-family:var(--mono); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--inchiostro-2)}
-  td code{white-space:nowrap}
-  ul,ol{padding-left:1.3rem} li{margin:.35rem 0}
-  .indice{
-    background:var(--carta-2); border:1px solid var(--bordo); border-radius:8px;
-    padding:1.1rem 1.3rem; margin:2rem 0; columns:2; column-gap:2rem;
-  }
-  .indice ol{margin:0; padding-left:1.1rem; font-size:.94rem}
-  .indice li{break-inside:avoid}
-  @media (max-width:640px){
-    .indice{columns:1} body{font-size:17px}
-    table{display:block; overflow-x:auto; font-size:.88rem}
-    td code{white-space:normal}
-  }
-  .lede{font-size:1.1rem}
-  .firma{
-    margin-top:4rem; padding-top:1.2rem; border-top:3px double var(--bordo);
-    font-family:var(--mono); font-size:.76rem; color:var(--inchiostro-2);
-  }
-  .tema{
-    position:fixed; top:12px; right:12px; font-family:var(--mono); font-size:.7rem;
-    background:var(--carta-2); color:var(--inchiostro-2); border:1px solid var(--bordo);
-    border-radius:999px; padding:.35rem .8rem; cursor:pointer;
-  }
-  svg text{font-family:var(--mono); fill:var(--inchiostro)}
-  svg .et{font-size:11px; fill:var(--inchiostro-2)}
-  svg .tit{font-size:13px; font-weight:600}
-  svg .box{fill:var(--carta-2); stroke:var(--bordo); stroke-width:1.5}
-  svg .box-r{fill:var(--carta-2); stroke:var(--rosso); stroke-width:2}
-  svg .linea{stroke:var(--bordo); stroke-width:2; fill:none}
-  svg .linea-r{stroke:var(--rosso); stroke-width:2; fill:none}
+  body{margin:0;background:var(--bsc-bg);color:var(--bsc-text);font-family:var(--bsc-font-body);line-height:var(--bsc-leading-body);-webkit-text-size-adjust:100%}
+  .pagina{max-width:46rem;margin:0 auto;padding:0 16px 6rem}
+  .barra{display:flex;justify-content:space-between;align-items:center;padding:var(--bsc-space-4) 0;border-bottom:1px solid var(--bsc-border);font-size:var(--bsc-text-lg)}
+  .barra a{color:inherit;text-decoration:none}
+  .testa{padding:var(--bsc-space-8) 0 var(--bsc-space-6)}
+  .occhiello{font-family:var(--bsc-font-mono);font-size:var(--bsc-text-xs);letter-spacing:var(--bsc-tracking-label);text-transform:uppercase;color:var(--bsc-text-muted);margin:0 0 var(--bsc-space-3)}
+  h1,h2,h3{font-family:var(--bsc-font-display);line-height:var(--bsc-leading-tight);text-wrap:balance}
+  h1{font-size:clamp(2rem,6vw,var(--bsc-text-4xl));margin:0 0 var(--bsc-space-4)}
+  h2{font-size:var(--bsc-text-2xl);margin:var(--bsc-space-8) 0 var(--bsc-space-4);padding-top:var(--bsc-space-5);border-top:1px solid var(--bsc-border)}
+  h2 .n{font-family:var(--bsc-font-mono);font-size:var(--bsc-text-sm);color:var(--bsc-text-muted);display:block;margin-bottom:var(--bsc-space-2);font-weight:400}
+  h3{font-size:var(--bsc-text-lg);margin:var(--bsc-space-6) 0 var(--bsc-space-2)}
+  p,li{max-width:var(--bsc-measure)}
+  a{color:var(--bsc-primary);text-underline-offset:3px}
+  .indice{margin:var(--bsc-space-6) 0;padding:var(--bsc-space-4) var(--bsc-space-5)}
+  .indice ol{margin:0;padding-left:1.4em;columns:2 16rem;column-gap:var(--bsc-space-6)}
+  .indice li{margin:.15em 0;break-inside:avoid}
+  .indice a{color:var(--bsc-text)}
+  .riquadro{margin:var(--bsc-space-5) 0;padding:var(--bsc-space-4) var(--bsc-space-5)}
+  .riquadro p:first-child{margin-top:0}.riquadro p:last-child{margin-bottom:0}
+  figure{margin:var(--bsc-space-6) 0}
+  figure svg{width:100%;height:auto;display:block}
+  figcaption{font-size:var(--bsc-text-sm);color:var(--bsc-text-muted);margin-top:var(--bsc-space-2)}
+  .tab-scorri{overflow-x:auto;margin:var(--bsc-space-5) 0}
+  .tab-scorri table{width:100%;min-width:32rem}
+  dl.parole{margin:var(--bsc-space-4) 0}
+  dl.parole dt{font-family:var(--bsc-font-display);font-weight:700;margin-top:var(--bsc-space-4)}
+  dl.parole dd{margin:var(--bsc-space-1) 0 0 0;max-width:var(--bsc-measure)}
+  /* riquadro tecnico comprimibile */
+  details.tecnico{margin:var(--bsc-space-6) 0 var(--bsc-space-4);border:1px solid var(--bsc-border);border-left:3px solid var(--bsc-text-muted);border-radius:var(--bsc-radius-sm);background:var(--bsc-surface)}
+  details.tecnico>summary{cursor:pointer;list-style:none;padding:var(--bsc-space-3) var(--bsc-space-4);font-family:var(--bsc-font-mono);font-size:var(--bsc-text-sm);display:flex;gap:.6em;align-items:center;min-height:var(--bsc-tap-min)}
+  details.tecnico>summary::-webkit-details-marker{display:none}
+  details.tecnico>summary::before{content:"▸";transition:transform var(--bsc-dur-fast) var(--bsc-ease)}
+  details.tecnico[open]>summary::before{transform:rotate(90deg)}
+  details.tecnico>summary .t{color:var(--bsc-text-muted)}
+  .md{padding:0 var(--bsc-space-4) var(--bsc-space-4);font-size:var(--bsc-text-sm)}
+  .md h4{font-family:var(--bsc-font-mono);font-size:var(--bsc-text-sm);margin:var(--bsc-space-4) 0 var(--bsc-space-2)}
+  .md h4::before{content:"## ";color:var(--bsc-text-muted)}
+  .md p,.md li{max-width:none}
+  .md ul{padding-left:1.2em}
+  .md table{font-size:var(--bsc-text-xs)}
+  code{font-family:var(--bsc-font-mono);font-size:.92em}
+  pre{font-family:var(--bsc-font-mono);font-size:var(--bsc-text-xs);line-height:1.5;background:var(--bsc-surface-2);border:1px solid var(--bsc-border);border-radius:var(--bsc-radius-sm);padding:var(--bsc-space-3) var(--bsc-space-4);overflow-x:auto;margin:var(--bsc-space-3) 0}
+  .md .fonti{border-top:1px dashed var(--bsc-border);margin-top:var(--bsc-space-4);padding-top:var(--bsc-space-2)}
+  /* schemi: colori dai token, così seguono il tema */
+  .sk{font-family:var(--bsc-font-body)}
+  .sk .linea{stroke:var(--bsc-text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .sk .tenue{stroke:var(--bsc-text-muted);fill:none;stroke-width:1.5;stroke-dasharray:5 5}
+  .sk .scatola{fill:var(--bsc-surface);stroke:var(--bsc-text);stroke-width:2}
+  .sk .scatola2{fill:var(--bsc-surface-2);stroke:var(--bsc-text-muted);stroke-width:1.5}
+  .sk .mano{fill:var(--bsc-surface);stroke:var(--bsc-rosso);stroke-width:2.5}
+  .sk .t{fill:var(--bsc-text);font-size:15px}
+  .sk .tb{fill:var(--bsc-text);font-size:15px;font-weight:700;font-family:var(--bsc-font-display)}
+  .sk .tm{fill:var(--bsc-text-muted);font-size:12.5px}
+  .sk .tr{fill:var(--bsc-rosso);font-size:13px;font-weight:700}
+  .sk .punta{fill:var(--bsc-text)}
+  .piede{margin-top:var(--bsc-space-9);padding-top:var(--bsc-space-5);border-top:1px solid var(--bsc-border);font-size:var(--bsc-text-sm);color:var(--bsc-text-muted)}
+  @media (max-width:560px){h2{font-size:var(--bsc-text-xl)}.indice ol{columns:1}}
 </style>
 </head>
-<body>
-<button class="tema" id="tema">tema</button>
-<div class="wrap">
+<body class="bsc-body">
+<div class="pagina">
+
+<div class="barra">
+  <a href="https://www.brainstormclub.it/" class="bsc-wordmark"><span class="bsc-brandmark" aria-hidden="true"></span><span class="bsc-r">brainstorm</span>club</a>
+  <button class="bsc-theme-toggle" data-bsc-theme-toggle aria-label="Cambia tema"></button>
+</div>
 
 <header class="testa">
-  <p class="occhiello">Brainstorm Club · note di bottega</p>
-  <h1>Anatomia di una skill</h1>
-  <p class="sommario lede">Come è fatto il plugin <code>brainstormclub</code> — dieci comandi,
-  una skill, dodici reference, sette script e cinque agenti — e che cosa se ne impara per costruirne
-  uno proprio. Il caso di studio è vero: trasformare i log di una campagna di gioco di ruolo in
-  libri pubblicati — senza che il modello finisca per pensare al posto di chi firma.</p>
+  <p class="occhiello">Manuale del plugin brainstormclub · versione 1.4</p>
+  <h1>Dal tavolo al libro</h1>
+  <p class="bsc-lead">Al Brainstorm Club alcune campagne di gioco di ruolo diventano libri. Questo manuale racconta come lo facciamo con l'aiuto di un'intelligenza artificiale, chi decide che cosa, e come un altro master può costruire qualcosa di simile per il proprio tavolo.</p>
 </header>
 
-<nav class="indice">
+<nav class="indice bsc-card bsc-card--sketch" aria-label="Indice">
+  <p class="occhiello">Indice</p>
   <ol>
-    <li><a href="#problema">Il problema da cui nasce</a></li>
-    <li><a href="#comandi">I comandi, uno per uno</a></li>
-    <li><a href="#anatomia">Anatomia: cinque pezzi</a></li>
-    <li><a href="#contesto">I tre livelli di contesto</a></li>
-    <li><a href="#flusso">Il flusso che la skill difende</a></li>
-    <li><a href="#triangolo">Il Triangolo dentro la pipeline</a></li>
-    <li><a href="#script">Gli script: misurare, non giudicare</a></li>
-    <li><a href="#agenti">Gli agenti: mandati, non ruoli</a></li>
-    <li><a href="#registro">Il registro: una sola fonte di verità</a></li>
-    <li><a href="#anagrafe">L'anagrafe: un registro che cambia nel tempo</a></li>
-    <li><a href="#nuova">Creare una collana nuova</a></li>
-    <li><a href="#pianificate">Le attività pianificate</a></li>
-    <li><a href="#costruire">Costruirne una: otto passi</a></li>
-    <li><a href="#trappole">Trappole</a></li>
-    <li><a href="#installare">Installare e distribuire</a></li>
+    <li><a href="#leggere">Come leggere questo manuale</a></li>
+    <li><a href="#club">Chi siamo e perché lo facciamo</a></li>
+    <li><a href="#parole">Le parole che servono</a></li>
+    <li><a href="#differenze">Prompt, skill, plugin, agente, comando, script</a></li>
+    <li><a href="#collane">Le sei collane</a></li>
+    <li><a href="#percorso">Il percorso di un libro</a></li>
+    <li><a href="#decide">Chi decide che cosa</a></li>
+    <li><a href="#controlli">Come si controlla il lavoro</a></li>
+    <li><a href="#personaggi">I personaggi nel tempo</a></li>
+    <li><a href="#sito">Il sito</a></li>
+    <li><a href="#nuove">Nuove collane e lavori pianificati</a></li>
+    <li><a href="#insegna">Che cosa abbiamo imparato</a></li>
+    <li><a href="#installare">Installarlo e adattarlo</a></li>
+    <li><a href="#glossario">Glossario</a></li>
+    <li><a href="#riferimenti">Riferimenti</a></li>
   </ol>
 </nav>
 
-<h2 id="problema"><span class="num">01</span>Il problema da cui nasce</h2>
+<!-- ============================================================ 1 -->
+<section id="leggere">
+<h2><span class="n">01</span>Come leggere questo manuale</h2>
+<p>Ogni capitolo ha due livelli. Il testo principale è scritto per chi non si occupa di informatica: spiega che cosa succede e perché, e introduce ogni parola tecnica la prima volta che compare. Per seguirlo basta sapere che cos'è una campagna di gioco di ruolo.</p>
+<p>In fondo a ogni capitolo c'è un riquadro chiuso con l'etichetta «Dettagli tecnici». Contiene i nomi dei file, i comandi esatti, gli esempi di codice e i collegamenti alla documentazione. Chi vuole costruire un progetto simile troverà lì quello che serve. Chi vuole soltanto capire l'idea può lasciarlo chiuso senza perdere niente del racconto.</p>
+<p>Gli schemi stanno nella parte descrittiva quando aiutano a vedere un'idea astratta. I dettagli più tecnici, come l'albero delle cartelle, stanno nei riquadri.</p>
 
-<p>Sei campagne di gioco di ruolo, sei collane di libri. Ogni collana ha la sua voce (un narratore
-unico, oppure una voce diversa per racconto, oppure una cornice burocratica con deposizioni), la sua
-confezione (un tascabile del 1982, una fanzine anni '90, un fascicolo di polizia) e le sue trappole.
-Ma il <em>gesto</em> è sempre lo stesso: <strong>un log di gioco diventa un libro</strong>.</p>
-
-<p>Quel gesto era già scritto, sparso in sei file <code>CLAUDE.md</code>, nelle istruzioni del sito,
-nel README dell'impaginatore e in una dozzina di note di memoria. Funzionava, ma ogni sessione
-ricominciava a cercarlo. E alcune cose sfuggivano sempre alle stesse crepe: un EPUB costruito senza
-copertina, una nota a piè di pagina orfana, un <code>[BOZZA…]</code> finito dentro un libro
-pubblicato, un file corretto nel repository e sbagliato sul sito.</p>
-
-<div class="scheda">
-  <span class="et">La domanda giusta</span>
-  <p>Non «quali istruzioni do al modello», ma: <strong>quali errori continuano a ripetersi, e in che
-  punto esatto del lavoro si potevano fermare?</strong> Una skill che nasce da questa domanda ha già
-  la sua struttura: una fase per ogni punto, un controllo per ogni crepa.</p>
-</div>
-
-<h2 id="comandi"><span class="num">02</span>I comandi, uno per uno</h2>
-
-<p>Prima di vedere come è fatto, ecco che cosa si può chiedere. Dieci comandi: uno per guardare
-tutte le collane, sei per le collane del club, uno per qualunque altra collana, uno per crearne
-una nuova, uno per l'anagrafe dei personaggi. Si
-lanciano dalla radice <code>brainstorm/</code>; installati come plugin compaiono anche con il
-prefisso <code>/brainstormclub:collane-brainstorm:</code>.</p>
-
-<table>
-  <tr><th>comando</th><th>collana · gioco</th><th>a che cosa serve</th></tr>
-  <tr><td><code>/brainstormclub:collane [collana]</code></td><td>tutte</td><td>mostra dove si è fermata la pipeline di ogni volume e propone <strong>una</strong> mossa da fare adesso</td></tr>
-  <tr><td><code>/brainstormclub:brancalonia &lt;fase&gt;</code></td><td>Regno di Taglia · Brancalonia</td><td>libri a capitoli firmati Nanoc Orabrabli; in più i fascicoli giocabili di <code>avventure/</code></td></tr>
-  <tr><td><code>/brainstormclub:korvaal &lt;fase&gt;</code></td><td>Il ciclo di Korvaal · Rogue Trader</td><td>polifonia, una voce solista per racconto, tascabili FANTAFLOTTA</td></tr>
-  <tr><td><code>/brainstormclub:dark-heresy &lt;fase&gt;</code></td><td>ACTA HERETICA · Dark Heresy</td><td>verbale di Eruditus più deposizioni, arco Haarlock</td></tr>
-  <tr><td><code>/brainstormclub:dnd-jr &lt;fase&gt;</code></td><td>Tiro Salvezza · D&amp;D 5e nel Vecchio Mondo</td><td>la fanzine del Master Ozymandias il Grande</td></tr>
-  <tr><td><code>/brainstormclub:apocalisse &lt;fase&gt;</code></td><td>Terre Desolate · Apocalisse</td><td>codici ritrovati, una voce per codice, cornice dell'Archivista</td></tr>
-  <tr><td><code>/brainstormclub:heroes &lt;fase&gt;</code></td><td>Dossier Scavengers · Heroes Unlimited</td><td>referto dell'Analista più deposizioni, nero-comico di scarto</td></tr>
-  <tr><td><code>/brainstormclub:collana &lt;chiave&gt; &lt;fase&gt;</code></td><td>qualunque</td><td>la stessa pipeline per ogni collana, comprese quelle create in locale</td></tr>
-  <tr><td><code>/brainstormclub:nuova-collana</code></td><td>—</td><td>progetta una collana da zero con dieci domande e ne crea lo scheletro</td></tr>
-  <tr><td><code>/brainstormclub:personaggi &lt;collana&gt; &lt;lavoro&gt;</code></td><td>una a scelta</td><td>l'anagrafe dei personaggi: chi compare dove, come cambia nell'ordine della storia, ritratti</td></tr>
-</table>
-
-<h3>Le fasi dei comandi di collana</h3>
-
-<p>Ogni comando di collana prende una fase, per esempio <code>/brainstormclub:heroes epub taglie-di-londra</code>.
-Prima di tutto il modello riformula la richiesta in <strong>una riga d'intento</strong> e te la fa
-confermare.</p>
-
-<table>
-  <tr><th>fase</th><th>che cosa fa</th><th>dove si ferma</th></tr>
-  <tr><td><code>stato</code></td><td>per ogni volume: prompt, copertina, firma, EPUB, sito; EPUB più vecchi delle fonti</td><td>non modifica niente</td></tr>
-  <tr><td><code>log</code></td><td>legge i log: eventi cardine, registro morti, materiale mai usato, discrepanze, grafie, proposta di racconto</td><td>consegna un referto, non prosa</td></tr>
-  <tr><td><code>racconto</code></td><td>co-design socratico → outline → bibbia con le «Verifiche» → stesura a blocchi</td><td>l'outline va approvato prima di scrivere</td></tr>
-  <tr><td><code>revisione</code></td><td>le tre passate in ordine: redattore, correttore di bozze, revisore di stile (che chiude col contrario)</td><td>i referti sono materiale per l'autore</td></tr>
-  <tr><td><code>personaggi</code></td><td>rimanda a <code>/brainstormclub:personaggi</code> per allineare le schede del racconto</td><td>prima della firma</td></tr>
-  <tr><td><code>copertina</code></td><td>scrive il prompt di copertina; quando l'immagine arriva, la misura e la guarda</td><td><strong>si ferma</strong>: l'immagine la genera l'autore</td></tr>
-  <tr><td><code>epub</code></td><td>pre-build (firma, note orfane, manifest, apparato), build, verifica del peso e dell'indice</td><td>senza firma o copertina non costruisce</td></tr>
-  <tr><td><code>sito</code></td><td>copia EPUB e copertina, rigenera le pagine di lettura, elenca i file da caricare</td><td>l'FTP lo fa l'autore</td></tr>
-  <tr><td><code>fascicolo</code></td><td>avventure, bestiari, manuali da tavolo impaginati in PDF con l'impaginatore</td><td>senza <code>--url</code> resta interno</td></tr>
-</table>
-
-<h3>I lavori di <code>/brainstormclub:personaggi</code></h3>
-
-<table>
-  <tr><th>lavoro</th><th>che cosa fa</th></tr>
-  <tr><td><code>censisci</code></td><td>costruisce l'anagrafe di una collana: scheletri delle schede, poi l'agente <code>anagrafe</code> propone i contenuti con le fonti</td></tr>
-  <tr><td><code>aggiorna</code></td><td>allinea le schede dopo un racconto nuovo o un cambio di canone</td></tr>
-  <tr><td><code>verifica</code></td><td>controlla un racconto contro le schede: tratti contraddetti, morti che ricompaiono, alias mancanti</td></tr>
-  <tr><td><code>ritratto</code></td><td>compone il prompt dell'immagine da <code>_stile.md</code> più il soggetto, e avvisa se è scaduto</td></tr>
-  <tr><td><code>stato</code></td><td>mostra l'anagrafe confrontata con i testi</td></tr>
-</table>
-
-<h3>Gli script, anche senza comandi</h3>
-
-<pre><code>python3 scripts/stato.py .                                  # tutte le collane
-python3 scripts/controlla_volume.py heroes taglie-di-londra # pre-build
-python3 scripts/controlla_copertina.py apocalisse appestato # formato, 2:3, peso
-python3 scripts/personaggi.py . dnd-jr stato                # anagrafe contro i testi
-python3 scripts/personaggi.py . heroes prompt darko         # ritratto
-python3 scripts/log_nuovi.py .                              # log senza racconto o cambiati
-python3 scripts/sentinella_sito.py .                        # sito locale contro dominio
-python3 scripts/nuova_collana.py . scheda.json --prova      # scheletro di collana</code></pre>
-
-<h2 id="anatomia"><span class="num">03</span>Anatomia: cinque pezzi</h2>
-
-<p>Un plugin complesso non è una skill lunga. È <strong>cinque cose diverse</strong> che fanno
-mestieri diversi, e la difficoltà sta nel non confonderli.</p>
-
-<figure>
-<svg viewBox="0 0 860 470" role="img" aria-label="Schema dei cinque componenti del plugin: comandi, skill, reference, script, agenti">
-  <!-- comandi -->
-  <rect class="box-r" x="20" y="20" width="200" height="110" rx="8"/>
-  <text class="tit" x="36" y="46">commands/ · 10</text>
-  <text class="et" x="36" y="68">/brainstormclub:korvaal /brainstormclub:heroes …</text>
-  <text class="et" x="36" y="86">chi sei, dove sei,</text>
-  <text class="et" x="36" y="104">quale fase</text>
-  <text class="et" x="36" y="122" style="fill:var(--rosso)">~40 righe l'uno</text>
-
-  <!-- skill -->
-  <rect class="box" x="330" y="20" width="200" height="110" rx="8"/>
-  <text class="tit" x="346" y="46">SKILL.md</text>
-  <text class="et" x="346" y="68">il registro, le fasi,</text>
-  <text class="et" x="346" y="86">le regole ferme</text>
-  <text class="et" x="346" y="104">— la mappa, non</text>
-  <text class="et" x="346" y="122">il territorio</text>
-
-  <!-- references -->
-  <rect class="box" x="640" y="20" width="200" height="110" rx="8"/>
-  <text class="tit" x="656" y="46">references/ · 12</text>
-  <text class="et" x="656" y="68">una per fase</text>
-  <text class="et" x="656" y="86">+ giochi.md</text>
-  <text class="et" x="656" y="104">+ patto · regole-ferme</text>
-  <text class="et" x="656" y="122" style="fill:var(--rosso)">si carica una sola</text>
-
-  <!-- frecce riga 1 -->
-  <path class="linea-r" d="M220 75 H322"/>
-  <path class="linea-r" d="M314 69 l10 6 -10 6" fill="var(--rosso)"/>
-  <path class="linea" d="M530 75 H632"/>
-  <path class="linea" d="M624 69 l10 6 -10 6" fill="var(--bordo)"/>
-
-  <!-- scripts -->
-  <rect class="box" x="175" y="250" width="220" height="140" rx="8"/>
-  <text class="tit" x="191" y="276">scripts/ · 7 + registro</text>
-  <text class="et" x="191" y="298">stato.py</text>
-  <text class="et" x="191" y="316">controlla_volume.py</text>
-  <text class="et" x="191" y="334">controlla_copertina.py</text>
-  <text class="et" x="191" y="352">personaggi · log_nuovi · …</text>
-  <text class="et" x="191" y="376" style="fill:var(--rosso)">misurano, non giudicano</text>
-
-  <!-- agents -->
-  <rect class="box" x="465" y="250" width="220" height="140" rx="8"/>
-  <text class="tit" x="481" y="276">agents/ · 5</text>
-  <text class="et" x="481" y="298">lettore-log</text>
-  <text class="et" x="481" y="316">redattore · correttore</text>
-  <text class="et" x="481" y="334">revisore-stile</text>
-  <text class="et" x="481" y="352">anagrafe</text>
-  <text class="et" x="481" y="376" style="fill:var(--rosso)">sola lettura, referto</text>
-
-  <path class="linea" d="M430 130 V210 H285 V242"/>
-  <path class="linea" d="M279 234 l6 10 6 -10" fill="var(--bordo)"/>
-  <path class="linea" d="M430 130 V210 H575 V242"/>
-  <path class="linea" d="M569 234 l6 10 6 -10" fill="var(--bordo)"/>
-
-  <!-- fonte di verità -->
-  <rect class="box" x="175" y="405" width="510" height="50" rx="8" stroke-dasharray="6 5"/>
-  <text class="tit" x="191" y="428">fuori dal plugin: i CLAUDE.md delle sei campagne</text>
-  <text class="et" x="191" y="446">l'autorità su che cosa è vero — la skill dice solo come si lavora</text>
-</svg>
-<figcaption>I cinque pezzi, e la sesta cosa che resta deliberatamente fuori.</figcaption>
-</figure>
-
-<table>
-  <tr><th>pezzo</th><th>mestiere</th><th>regola di scrittura</th></tr>
-  <tr><td><strong>comando</strong></td><td>dire al modello <em>dove si trova</em> e che cosa gli è stato chiesto</td><td>corto. Un comando è un contesto, non un manuale</td></tr>
-  <tr><td><strong>skill</strong></td><td>il registro e il metodo: quali collane esistono, quali fasi, quali regole non si negoziano</td><td>una mappa che rimanda, non un trattato</td></tr>
-  <tr><td><strong>reference</strong></td><td>come si fa <em>una</em> fase, nei dettagli che servono solo lì</td><td>una per fase, caricata solo quando quella fase comincia</td></tr>
-  <tr><td><strong>script</strong></td><td>misurare quello che si può misurare</td><td>deterministico, read-only, exit code parlante</td></tr>
-  <tr><td><strong>agente</strong></td><td>un mestiere intero delegato, che torna come referto</td><td>mandato scritto, strumenti minimi</td></tr>
-</table>
-
-<h2 id="contesto"><span class="num">04</span>I tre livelli di contesto</h2>
-
-<p>Il vincolo vero di una skill complessa non è che cosa sa: è <strong>quanto ne carica in una
-volta</strong>. Se tutto quello che il plugin sa entrasse in sessione a ogni invocazione, la
-sessione sarebbe piena prima di aver letto un racconto.</p>
-
-<p>La soluzione è la stessa degli indici di un libro: tre livelli, ognuno carica solo il
-successivo.</p>
-
-<figure>
-<svg viewBox="0 0 860 320" role="img" aria-label="Tre livelli di contesto: comando, skill, reference di fase">
-  <rect class="box-r" x="30" y="30" width="800" height="62" rx="8"/>
-  <text class="tit" x="50" y="56">1 · il comando  —  sempre</text>
-  <text class="et" x="50" y="78">/brainstormclub:heroes epub taglie-di-londra → collana, cartella, voce, schema, fase richiesta. Poche righe.</text>
-
-  <rect class="box" x="90" y="118" width="740" height="62" rx="8"/>
-  <text class="tit" x="110" y="144">2 · SKILL.md  —  quando il comando lo dice</text>
-  <text class="et" x="110" y="166">il registro delle sei collane, l'elenco delle fasi, le dieci regole ferme. Una pagina.</text>
-
-  <rect class="box" x="150" y="206" width="680" height="62" rx="8"/>
-  <text class="tit" x="170" y="232">3 · la reference della fase  —  una sola</text>
-  <text class="et" x="170" y="254">fase-epub.md. Le altre otto restano su disco, non in sessione.</text>
-
-  <path class="linea-r" d="M60 92 V118"/><path class="linea-r" d="M54 110 l6 10 6 -10" fill="var(--rosso)"/>
-  <path class="linea" d="M120 180 V206"/><path class="linea" d="M114 198 l6 10 6 -10" fill="var(--bordo)"/>
-
-  <text class="et" x="150" y="290" style="fill:var(--rosso)">+ il CLAUDE.md della collana: la fonte di verità, letta sempre, perché cambia e la skill no.</text>
-  <text class="et" x="150" y="308" style="fill:var(--rosso)">+ patto.md, la prima volta in sessione: chi pensa, chi verifica, chi firma.</text>
-</svg>
-<figcaption>Rivelazione progressiva: ogni livello nomina il successivo e si ferma lì.</figcaption>
-</figure>
-
-<div class="scheda">
-  <span class="et">Il principio</span>
-  <p><strong>La skill dice <em>come si lavora</em>; i file del progetto dicono <em>che cosa è
-  vero</em>.</strong> Qui i sei <code>CLAUDE.md</code> restano l'autorità su voce, tono e stato del
-  ciclo, e la skill lo dichiara: «se divergono, vince la collana — e segnalalo». Così una skill
-  distribuita non invecchia ogni volta che il progetto cambia.</p>
-</div>
-
-<h2 id="flusso"><span class="num">05</span>Il flusso che la skill difende</h2>
-
-<p>Le fasi non sono capitoli di un manuale: sono <strong>gli stati in cui può trovarsi il
-lavoro</strong>. Ognuna ha un ingresso, un'uscita e — questo è il punto — i cancelli che non si
-saltano.</p>
-
-<figure>
-<svg viewBox="0 0 860 430" role="img" aria-label="Pipeline: intento, log, racconto, revisione, firma dell'autore, copertina, controlli, epub, sito">
-  <!-- riga 1 -->
-  <rect class="box" x="20" y="30" width="140" height="74" rx="8" stroke-dasharray="6 5"/>
-  <text class="tit" x="34" y="56">intento</text><text class="et" x="34" y="76">una riga</text><text class="et" x="34" y="92">confermata</text>
-
-  <rect class="box" x="185" y="30" width="140" height="74" rx="8"/>
-  <text class="tit" x="199" y="56">log</text><text class="et" x="199" y="76">eventi, morti,</text><text class="et" x="199" y="92">scarti</text>
-
-  <rect class="box" x="350" y="30" width="140" height="74" rx="8"/>
-  <text class="tit" x="364" y="56">racconto</text><text class="et" x="364" y="76">outline, bibbia</text><text class="et" x="364" y="92">+ verifiche, prosa</text>
-
-  <rect class="box" x="515" y="30" width="140" height="74" rx="8"/>
-  <text class="tit" x="529" y="56">revisione</text><text class="et" x="529" y="76">tre passate</text><text class="et" x="529" y="92">+ il contrario</text>
-
-  <rect class="box-r" x="680" y="30" width="160" height="74" rx="8"/>
-  <text class="tit" x="694" y="56" style="fill:var(--rosso)">⟂ firma</text><text class="et" x="694" y="76">l'autore legge</text><text class="et" x="694" y="92">tutto e firma</text>
-
-  <path class="linea" d="M160 67 H177"/><path class="linea" d="M171 61 l10 6 -10 6" fill="var(--bordo)"/>
-  <path class="linea" d="M325 67 H342"/><path class="linea" d="M336 61 l10 6 -10 6" fill="var(--bordo)"/>
-  <path class="linea" d="M490 67 H507"/><path class="linea" d="M501 61 l10 6 -10 6" fill="var(--bordo)"/>
-  <path class="linea-r" d="M655 67 H672"/><path class="linea-r" d="M666 61 l10 6 -10 6" fill="var(--rosso)"/>
-
-  <!-- loop revisione + soglia -->
-  <path class="linea" d="M585 104 V132 H420 V108"/>
-  <path class="linea" d="M414 116 l6 -10 6 10" fill="var(--bordo)"/>
-  <text class="et" x="352" y="150">ogni modifica rimanda alle tre passate;</text>
-  <text class="et" x="352" y="166">una soglia scattata rimanda all'outline</text>
-
-  <!-- cancello copertina -->
-  <rect class="box-r" x="580" y="196" width="260" height="74" rx="8"/>
-  <text class="tit" x="594" y="222" style="fill:var(--rosso)">⟂ copertina</text>
-  <text class="et" x="594" y="242">prompt scritto, poi ci si ferma:</text>
-  <text class="et" x="594" y="258">l'immagine la carica l'utente</text>
-  <path class="linea-r" d="M760 104 V188"/><path class="linea-r" d="M754 180 l6 10 6 -10" fill="var(--rosso)"/>
-
-  <!-- riga 3 -->
-  <rect class="box" x="20" y="330" width="250" height="74" rx="8" stroke-dasharray="6 5"/>
-  <text class="tit" x="34" y="356">⟂ controlli automatici</text>
-  <text class="et" x="34" y="376">firma · note · manifest · copertina</text>
-  <text class="et" x="34" y="392">prima del build, non dopo</text>
-
-  <rect class="box" x="320" y="330" width="200" height="74" rx="8"/>
-  <text class="tit" x="334" y="356">epub</text><text class="et" x="334" y="376">build → verifica</text><text class="et" x="334" y="392">tetto 3 MB</text>
-
-  <rect class="box" x="570" y="330" width="270" height="74" rx="8"/>
-  <text class="tit" x="584" y="356">sito</text><text class="et" x="584" y="376">rigenera le pagine;</text><text class="et" x="584" y="392">l'FTP lo fa l'utente</text>
-
-  <path class="linea-r" d="M730 270 V300 H145 V322"/><path class="linea-r" d="M139 314 l6 10 6 -10" fill="var(--rosso)"/>
-  <path class="linea" d="M270 367 H312"/><path class="linea" d="M306 361 l10 6 -10 6" fill="var(--bordo)"/>
-  <path class="linea" d="M520 367 H562"/><path class="linea" d="M556 361 l10 6 -10 6" fill="var(--bordo)"/>
-</svg>
-<figcaption>Tre cancelli rossi: due umani (la firma sul testo, la copertina) e uno meccanico (il
-pre-build, che verifica anche la firma). L'intento, tratteggiato, apre ogni comando.</figcaption>
-</figure>
-
-<p>Vale la pena isolare i cancelli umani, perché sono il pezzo che più spesso manca nelle skill
-scritte in fretta: <strong>un punto in cui la cosa giusta da fare è fermarsi e dirlo</strong>. Qui
-sono due. La <strong>firma</strong>: l'autore legge il racconto per intero e scrive
-<code>firmato:</code> nel <code>meta.yaml</code> — il modello non scrive mai quel campo. La
-<strong>copertina</strong>: la genera l'utente, e finché non c'è non si costruisce niente. Tutti e
-due sono scritti nella skill, ripetuti in ogni comando e fatti fallire da uno script: un cancello
-che si può dimenticare non è un cancello.</p>
-
-<h2 id="triangolo"><span class="num">06</span>Il Triangolo dentro la pipeline</h2>
-
-<p>Una skill che fa scrivere prosa a un modello ha un rischio che non dipende dalla qualità dello
-strumento: che il testo venga <strong>firmato senza essere stato pensato</strong>. Questa skill lo
-affronta con il <strong>Triangolo del Pensare-Con</strong> di <em>Pensare con LLM — the right
-way</em> (cap. 2): tre posture da presidiare <em>insieme</em>, non in sequenza, più una soglia
-firmata in anticipo che decide dove grava la pressione.</p>
-
-<figure>
-<svg viewBox="0 0 860 470" role="img" aria-label="Triangolo del Pensare-Con: Intento in alto, Avversario in basso a sinistra, Editore in basso a destra, e dove ciascuno vive nella skill">
-  <polygon points="430,70 175,390 685,390" fill="none" stroke="var(--rosso)" stroke-width="2"/>
-  <!-- centro -->
-  <text class="tit" x="430" y="268" text-anchor="middle">la decisione resta</text>
-  <text class="tit" x="430" y="286" text-anchor="middle">dell'autore</text>
-  <text class="et" x="430" y="308" text-anchor="middle" style="fill:var(--rosso)">quale vertice presidio adesso?</text>
-  <!-- intento -->
-  <rect class="box-r" x="300" y="14" width="260" height="54" rx="8"/>
-  <text class="tit" x="430" y="36" text-anchor="middle">INTENTO</text>
-  <text class="et" x="430" y="56" text-anchor="middle">che cosa cerco, e che cosa ne farò</text>
-  <text class="et" x="578" y="30">· una riga d'intento in ogni comando</text>
-  <text class="et" x="578" y="46">· esplorare ≠ chiudere · bozza ≠ definitivo</text>
-  <text class="et" x="578" y="62">· co-design socratico, outline approvato</text>
-  <!-- avversario -->
-  <rect class="box-r" x="40" y="392" width="230" height="54" rx="8"/>
-  <text class="tit" x="155" y="414" text-anchor="middle">AVVERSARIO</text>
-  <text class="et" x="155" y="434" text-anchor="middle">la verifica si scrive prima</text>
-  <text class="et" x="20" y="180">· «Verifiche» nella bibbia,</text>
-  <text class="et" x="20" y="196">  prima della stesura</text>
-  <text class="et" x="20" y="214">· script: misurano</text>
-  <text class="et" x="20" y="232">· tre passate: referti,</text>
-  <text class="et" x="20" y="248">  non assoluzioni</text>
-  <text class="et" x="20" y="266">· il contrario (mirror-busting)</text>
-  <text class="et" x="20" y="284">· soglie di rinuncia</text>
-  <!-- editore -->
-  <rect class="box-r" x="590" y="392" width="230" height="54" rx="8"/>
-  <text class="tit" x="705" y="414" text-anchor="middle">EDITORE</text>
-  <text class="et" x="705" y="434" text-anchor="middle">la firma è dell'autore</text>
-  <text class="et" x="660" y="180">· firmato: nel meta.yaml,</text>
-  <text class="et" x="660" y="196">  il build si blocca senza</text>
-  <text class="et" x="660" y="214">· il modello non lo scrive mai</text>
-  <text class="et" x="660" y="232">· canone approvato riga</text>
-  <text class="et" x="660" y="248">  per riga</text>
-  <text class="et" x="660" y="266">· cosa va online e l'FTP:</text>
-  <text class="et" x="660" y="284">  decide l'autore</text>
-</svg>
-<figcaption>Tre vertici, una sola decisione al centro. Ogni pratica elencata è un file, un campo o
-un controllo della skill — non un'intenzione.</figcaption>
-</figure>
-
-<table>
-  <tr><th>vertice</th><th>se cede</th><th>che cosa lo tiene in piedi nella skill</th></tr>
-  <tr><td><strong>Intento</strong></td><td>«vediamo cosa esce»: ci si ritrova a difendere un racconto che non si è scelto</td><td>il passo 0 di ogni comando; la domanda esplorare/verificare nel lettore dei log</td></tr>
-  <tr><td><strong>Avversario</strong></td><td>«suona bene»: il testo convince per ragioni che non c'entrano con la sua qualità</td><td>le «Verifiche» in bibbia; gli script; il contrario nel revisore di stile; le soglie di rinuncia nel referto del redattore</td></tr>
-  <tr><td><strong>Editore</strong></td><td>«lo mando in build»: il libro è formalmente nostro, sostanzialmente di nessuno</td><td>il campo <code>firmato:</code> e il blocco in <code>controlla_volume.py</code>; <code>stato.py</code> che marca «non firmato»</td></tr>
-</table>
-
-<div class="scheda">
-  <span class="et">Il limite, detto ad alta voce</span>
-  <p>Le tre passate di revisione le fa lo stesso tipo di modello che ha scritto il testo. Il contesto
-  separato degli agenti attenua l'indulgenza, non la elimina: è un <strong>Avversario
-  delegato</strong>. Per questo la skill non lo spaccia per verifica finale. I referti sono
-  <em>materiale per l'autore</em>, il revisore chiude argomentando il contrario della scelta
-  principale, «nessun bloccante in un testo nuovo» è trattato come un'anomalia — e l'unica lettura
-  che vale come firma è quella dell'autore.</p>
-</div>
-
-<h3>Il baricentro: la pressione si decide per classe di output</h3>
-
-<p>Il Triangolo non è equilatero. Applicare il rigore massimo a tutto produce stanchezza e
-abbandono del metodo; applicarlo a niente produce firme per stanchezza. La skill dichiara la
-pressione <strong>prima</strong>, in base a quanto costa l'errore:</p>
-
-<table>
-  <tr><th>output</th><th>costo dell'errore</th><th>baricentro</th></tr>
-  <tr><td>prompt di copertina</td><td>basso: si rigenera</td><td>Intento — delega disciplinata</td></tr>
-  <tr><td>bozza di capitolo</td><td>medio: si riscrive</td><td>Intento</td></tr>
-  <tr><td>referto dei log</td><td>alto: tutto ci si appoggia</td><td>Avversario — niente invenzioni</td></tr>
-  <tr><td>racconto definitivo</td><td>alto: lo leggono i giocatori</td><td>Avversario + Editore — pensare-con pieno</td></tr>
-  <tr><td>canone di serie</td><td>altissimo: si propaga</td><td>Editore — riga per riga</td></tr>
-  <tr><td>fascicolo pubblicabile, sito</td><td>altissimo: online, diritti</td><td>Editore</td></tr>
-</table>
-
-<p>E le <strong>soglie di rinuncia</strong> sono scritte prima, per non rinegoziarle a fine serata:
-un morto che ricompare vivo fa rifare il capitolo dall'outline, non lo fa rattoppare; bloccanti in
-due revisioni di fila riportano all'outline; un ciclo intero in cui non si è mai buttato niente vuol
-dire che l'Avversario è collassato. Il tutto sta in <code>references/patto.md</code>, che a scala di
-collana è il <strong>patto delle quattro decisioni</strong>: cosa si delega, come si verifica, chi
-firma, con quale soglia ci si ferma.</p>
-
-<h2 id="script"><span class="num">07</span>Gli script: misurare, non giudicare</h2>
-
-<p>La divisione del lavoro che regge: <strong>lo script misura quello che si misura, il modello
-giudica quello che si giudica.</strong> Un controllo di note orfane non va chiesto al modello (le
-conta male e costa); il tono di un racconto non va chiesto a uno script (non ce l'ha).</p>
-
-<table>
-  <tr><th>script</th><th>che cosa misura</th><th>che cosa <em>non</em> dice</th></tr>
-  <tr>
-    <td><code>stato.py</code></td>
-    <td>per ogni volume: prompt, copertina, EPUB, allineamento col sito, EPUB più vecchio delle fonti</td>
-    <td>che cosa conviene fare per primo</td>
-  </tr>
-  <tr>
-    <td><code>controlla_volume.py</code></td>
-    <td>manifest completo, prefissi-note che collidono, note orfane, <code>description:</code> mancante, <strong>firma dell'autore assente</strong>, spie di bozza nell'apparato</td>
-    <td>se quella frase è davvero fuori posto o è in voce; se la firma è stata data <em>leggendo</em></td>
-  </tr>
-  <tr>
-    <td><code>controlla_copertina.py</code></td>
-    <td>formato, 2:3, risoluzione, peso, tetto di 3 MB dell'EPUB</td>
-    <td>se la copertina è <em>quella giusta</em>: va guardata</td>
-  </tr>
-  <tr>
-    <td><code>personaggi.py</code></td>
-    <td>dove un nome compare davvero nei testi, nell'ordine della storia; righe mancanti nelle schede; morti che ricompaiono; ritratti scaduti</td>
-    <td>se «la navigatrice» è un personaggio; se un tratto è permanente o di scena</td>
-  </tr>
-</table>
-
-<p>Tre scelte che hanno fatto la differenza:</p>
-
+<details class="tecnico"><summary>Dettagli tecnici <span class="t">· dove si trova tutto</span></summary><div class="md">
+<h4>Il progetto</h4>
 <ul>
-  <li><strong>Exit code a tre valori</strong> — <code>0</code> pulito, <code>1</code> avvisi,
-  <code>2</code> bloccante. Il modello può decidere senza interpretare la prosa dell'uscita, e il
-  bloccante è bloccante davvero.</li>
-  <li><strong>Nessuna dipendenza.</strong> Python della libreria standard, anche per leggere le
-  dimensioni di un PNG o di un JPEG dall'intestazione. Una skill distribuibile che chiede
-  <code>pip install</code> non si installa.</li>
-  <li><strong>Uscita in italiano, con il rimedio dentro.</strong> Non «cover too large», ma il
-  comando <code>sips</code> già scritto con i parametri giusti. Il messaggio di errore è la
-  documentazione che viene letta davvero.</li>
+<li>Codice sorgente pubblico: <a href="https://github.com/Brainstorm-Club/collane-brainstorm">github.com/Brainstorm-Club/collane-brainstorm</a> (licenza MIT).</li>
+<li>Questo manuale è il file <code>docs/index.html</code> del repository. È una pagina statica: si apre in qualunque browser e non richiede installazioni.</li>
+<li>Il riassunto per sviluppatori sta in <code>README.md</code>.</li>
+<li>La grafica usa il <a href="https://brainstorm-club.github.io/design-system/">design system del club</a>, caricato da <code>brainstorm-club.github.io/design-system/brainstorm.css</code>. Il pulsante in alto a destra alterna il tema scuro, quello chiaro e quello automatico.</li>
 </ul>
+</div></details>
+</section>
 
-<div class="scheda">
-  <span class="et">Prova sul campo</span>
-  <p>Gli script, lanciati sui dati veri, hanno trovato in dieci secondi: due EPUB più vecchi delle
-  loro fonti, un volume senza prompt di copertina, una copertina da 848 px e un PNG da 2,99 MB che
-  spinge l'EPUB al limite dei 3. <strong>Se uno script nuovo non trova niente la prima volta che lo
-  lanci, probabilmente stai misurando la cosa sbagliata.</strong></p>
+<!-- ============================================================ 2 -->
+<section id="club">
+<h2><span class="n">02</span>Chi siamo e perché lo facciamo</h2>
+<p>Il Brainstorm Club è un'associazione ludica di Faenza, attiva dal 1989. Ci troviamo a Palazzo Laderchi, in centro, quattro sere alla settimana, per giocare a giochi da tavolo, giochi di ruolo e wargame.</p>
+<p>Alcuni dei nostri tavoli di gioco di ruolo tengono un <strong>log</strong> di ogni sessione. Un log è il resoconto scritto di quello che è successo durante la partita: chi ha fatto che cosa, quali nemici sono caduti, quali frasi memorabili sono state dette. Dopo mesi di gioco i log diventano un archivio lungo e disordinato, che nessuno rilegge volentieri.</p>
+<p>Da qualche tempo trasformiamo quei log in racconti veri, con una voce narrante, dei capitoli e una copertina. I racconti si raccolgono in libri elettronici che i giocatori scaricano dal sito del club e leggono sul telefono o sull'e-reader. Per i giocatori è un modo di rivivere la campagna. Per il club è un modo di raccontare all'esterno che cosa succede ai nostri tavoli.</p>
+<p>Il lavoro di scrittura lo facciamo insieme a Claude, un'intelligenza artificiale. Nel tempo abbiamo raccolto il nostro metodo in uno strumento che si chiama <strong>plugin</strong>: un pacchetto di istruzioni e di piccoli programmi che Claude legge e segue. Questo manuale descrive quel plugin. Lo abbiamo scritto pensando agli altri master che vorrebbero fare qualcosa di simile con le proprie campagne.</p>
+
+<div class="riquadro bsc-card bsc-card--filo">
+<p><strong>Una premessa onesta.</strong> Il plugin non scrive i libri al posto nostro. Ci aiuta a leggere i log, a proporre una struttura, a scrivere le bozze e a trovare gli errori. Ogni libro però viene letto per intero e firmato da una persona del club prima di essere pubblicato. Il capitolo 7 spiega come questa regola è costruita dentro lo strumento.</p>
 </div>
 
-<h2 id="agenti"><span class="num">08</span>Gli agenti: mandati, non ruoli</h2>
-
-<p>Un agente conviene quando c'è <strong>un mestiere intero</strong> da delegare, che legge molto e
-restituisce poco. Qui erano già scritti nel lavoro: le tre passate di revisione sono tre mestieri
-diversi, e leggere i log è un quarto.</p>
-
-<figure>
-<svg viewBox="0 0 860 330" role="img" aria-label="Le tre passate in sequenza su un racconto, in parallelo su racconti diversi">
-  <text class="et" x="20" y="24" style="fill:var(--rosso)">sullo stesso racconto: in sequenza</text>
-  <rect class="box" x="20" y="38" width="190" height="62" rx="8"/>
-  <text class="tit" x="36" y="64">redattore</text><text class="et" x="36" y="84">il mondo tiene</text>
-  <rect class="box" x="250" y="38" width="190" height="62" rx="8"/>
-  <text class="tit" x="266" y="64">correttore-bozze</text><text class="et" x="266" y="84">la lingua tiene</text>
-  <rect class="box" x="480" y="38" width="190" height="62" rx="8"/>
-  <text class="tit" x="496" y="64">revisore-stile</text><text class="et" x="496" y="84">la voce tiene</text>
-  <path class="linea" d="M210 69 H242"/><path class="linea" d="M234 63 l10 6 -10 6" fill="var(--bordo)"/>
-  <path class="linea" d="M440 69 H472"/><path class="linea" d="M432 63 l10 6 -10 6" fill="var(--bordo)"/>
-  <text class="et" x="690" y="62">un refuso dentro</text>
-  <text class="et" x="690" y="78">una scena da tagliare</text>
-  <text class="et" x="690" y="94">è lavoro buttato</text>
-
-  <text class="et" x="20" y="156" style="fill:var(--rosso)">su racconti diversi: in parallelo</text>
-  <rect class="box" x="20" y="170" width="150" height="56" rx="8"/><text class="et" x="36" y="194">racconto A</text><text class="et" x="36" y="212">→ 3 passate</text>
-  <rect class="box" x="195" y="170" width="150" height="56" rx="8"/><text class="et" x="211" y="194">racconto B</text><text class="et" x="211" y="212">→ 3 passate</text>
-  <rect class="box" x="370" y="170" width="150" height="56" rx="8"/><text class="et" x="386" y="194">racconto C</text><text class="et" x="386" y="212">→ 3 passate</text>
-  <rect class="box-r" x="580" y="160" width="250" height="76" rx="8"/>
-  <text class="tit" x="596" y="186">consolidi tu</text>
-  <text class="et" x="596" y="206">i referti si leggono,</text>
-  <text class="et" x="596" y="222">non si inoltrano</text>
-  <path class="linea" d="M520 198 H572"/><path class="linea" d="M564 192 l10 6 -10 6" fill="var(--bordo)"/>
-
-  <rect class="box" x="20" y="262" width="810" height="52" rx="8" stroke-dasharray="6 5"/>
-  <text class="et" x="38" y="284">strumenti: Read · Grep · Glob — e Bash solo al correttore, che deve lanciare lo script.</text>
-  <text class="et" x="38" y="302">Nessuno dei tre può scrivere: un revisore che riscrive il testo non è più un revisore.</text>
-</svg>
-<figcaption>La sequenza non è burocrazia: è l'ordine in cui il lavoro non si spreca.</figcaption>
-</figure>
-
-<p>Che cosa rende utile un agente, qui:</p>
+<details class="tecnico"><summary>Dettagli tecnici <span class="t">· il pacchetto in breve</span></summary><div class="md">
+<h4>Identità del plugin</h4>
+<p>Il file <code>.claude-plugin/plugin.json</code> dichiara nome, versione e autore:</p>
+<pre>{
+  "name": "brainstormclub",
+  "version": "1.4.0",
+  "author": { "name": "Brainstorm Club" },
+  "license": "MIT",
+  "repository": "https://github.com/Brainstorm-Club/collane-brainstorm"
+}</pre>
+<p>Il nome del plugin diventa il prefisso di tutti i comandi: <code>/brainstormclub:korvaal</code>, <code>/brainstormclub:personaggi</code> e così via.</p>
+<h4>Che cosa presuppone</h4>
 <ul>
-  <li><strong>Il mandato, non il ruolo.</strong> Non «sei un revisore esperto», ma l'elenco esatto di
-  che cosa controllare, contro quale file, e in che forma consegnare il referto.</li>
-  <li><strong>Strumenti minimi.</strong> Sola lettura. La tentazione di dare <code>Edit</code> a un
-  revisore produce testo riscritto da tre mani diverse.</li>
-  <li><strong>Un formato di uscita fisso.</strong> «Bloccanti / da sistemare / effetti a catena / da
-  aggiornare nel canone»: chi riceve il referto sa già dove guardare.</li>
-  <li><strong>Il contrario, obbligatorio.</strong> Il revisore di stile chiude argomentando perché la
-  scelta principale di voce o di tono poteva essere sbagliata: l'autore vede la strada che non ha
-  preso, e la scelta diventa sua invece di trovarsela fatta.</li>
-  <li><strong>Il permesso di non sapere.</strong> «Se ti sembra sbagliato ma non hai la fonte,
-  marcalo <code>[da verificare]</code>»: è la riga che evita i referti inventati.</li>
+<li>Una cartella radice <code>brainstorm/</code> che contiene una cartella per campagna, più <code>sito/</code> e <code>impaginatore/</code>.</li>
+<li><code>pandoc</code> 3.1 o successivo per costruire gli EPUB, <code>python3</code> per gli script di controllo, <code>node</code> e Microsoft Edge solo per i fascicoli in PDF.</li>
 </ul>
+<p class="fonti">Sito del club: <a href="https://www.brainstormclub.it/">brainstormclub.it</a></p>
+</div></details>
+</section>
 
-<h2 id="registro"><span class="num">09</span>Il registro: una sola fonte di verità</h2>
+<!-- ============================================================ 3 -->
+<section id="parole">
+<h2><span class="n">03</span>Le parole che servono</h2>
+<p>Questo capitolo raccoglie le parole che tornano in tutto il manuale. Alcune vengono dal mondo del gioco di ruolo, altre da quello dell'informatica. Il glossario in fondo le riprende tutte in ordine alfabetico.</p>
 
-<p>Sei collane, sei cartelle, sei convenzioni di nomi — e il sito che le ribattezza tutte. Il
-volume che sul disco si chiama <code>5-teste</code> produce <code>le_cinque_teste.epub</code> e
-online diventa <code>le-cinque-teste</code>.</p>
+<h3>Dal mondo del gioco</h3>
+<dl class="parole">
+<dt>Campagna</dt>
+<dd>Una serie di sessioni di gioco di ruolo con gli stessi personaggi e la stessa storia, che può durare mesi o anni.</dd>
+<dt>Log</dt>
+<dd>Il resoconto scritto di una sessione. Nei nostri progetti ogni log è un file di testo, conservato in una cartella della campagna.</dd>
+<dt>Collana</dt>
+<dd>L'insieme dei libri nati da una campagna. Ogni collana ha un proprio narratore, un proprio tono e una propria confezione grafica. Il club ne ha sei.</dd>
+<dt>Racconto e volume</dt>
+<dd>Un racconto copre di solito una o due sessioni. Un volume è un libro che raccoglie uno o più racconti, con indice, introduzione e copertina.</dd>
+<dt>Canone</dt>
+<dd>Il documento che raccoglie i fatti stabiliti di una collana: chi è vivo, chi è morto, quali luoghi esistono, quali oggetti sono stati trovati. Serve a evitare che un libro contraddica quelli precedenti.</dd>
+<dt>Bibbia del racconto</dt>
+<dd>Un documento di lavoro preparato prima di scrivere ogni racconto. Contiene la voce narrante, la scaletta dei capitoli, i fatti da rispettare e le verifiche da fare a testo finito.</dd>
+</dl>
 
-<p>Questa conoscenza non va ripetuta in dieci comandi e dodici reference: va in
-<strong>un file di dati</strong>, <code>scripts/collane.json</code>, che gli script leggono e la
-prosa cita.</p>
+<h3>Dal mondo dell'informatica</h3>
+<dl class="parole">
+<dt>Intelligenza artificiale e modello linguistico</dt>
+<dd>Un modello linguistico è un programma addestrato su grandi quantità di testo, capace di leggere istruzioni e di produrre testo in risposta. In inglese si chiama <em>large language model</em>, abbreviato in LLM.</dd>
+<dt>Claude e Claude Code</dt>
+<dd>Claude è il modello linguistico sviluppato dall'azienda Anthropic. Claude Code è un'applicazione che permette a Claude di lavorare direttamente sui file di un computer: può leggerli, modificarli e lanciare programmi, sempre con il permesso di chi lo usa.</dd>
+<dt>File Markdown</dt>
+<dd>Un file di testo semplice in cui alcuni segni indicano la formattazione: un cancelletto all'inizio della riga indica un titolo, due asterischi intorno a una parola la rendono in grassetto. Tutti i nostri racconti e le istruzioni del plugin sono scritti in Markdown.</dd>
+<dt>EPUB</dt>
+<dd>Il formato standard dei libri elettronici. Un file EPUB si apre con qualunque e-reader o app di lettura e adatta il testo alle dimensioni dello schermo.</dd>
+<dt>FTP</dt>
+<dd>Un sistema per copiare file dal proprio computer al server che ospita un sito. Il sito del club si aggiorna così, a mano, da una persona del club.</dd>
+</dl>
+<p>Le parole più importanti per capire il plugin sono sei: prompt, skill, plugin, agente, comando e script. Hanno un capitolo tutto per loro, il prossimo.</p>
 
-<pre><code>"brancalonia": {
-  "progetto": "brancalonia",
-  "schema": "capitoli",
-  "slug_sito": "regno-di-taglia",
-  "alias": {
-    "5-teste": { "epub": "le_cinque_teste", "sito": "le-cinque-teste" },
-    …
-  }
-}</code></pre>
+<details class="tecnico"><summary>Dettagli tecnici <span class="t">· dove vivono questi oggetti su disco</span></summary><div class="md">
+<h4>La cartella di una collana</h4>
+<pre>apocalisse/
+├── CLAUDE.md          istruzioni di progetto (voce, tono, regole, stato)
+├── assets/
+│   ├── canone_serie.md            il canone
+│   ├── PROMPT_nuovi_racconti.md   brief di scrittura
+│   └── personaggi/                l'anagrafe (capitolo 9)
+├── log/               a-973.txt, a-974.txt, …
+├── racconti/          la_corona_di_spine.md + .bibbia.md
+├── volumi/&lt;vol&gt;/      meta.yaml · front.md · timeline.md · manifest.txt
+├── copertine/         &lt;vol&gt;.jpg + prompt-copertina-&lt;vol&gt;.md
+├── epub/              &lt;vol&gt;.epub (prodotto dal build)
+└── build_epub.sh</pre>
+<p>Un racconto vive una sola volta in <code>racconti/</code>. I volumi lo richiamano dal <code>manifest.txt</code>, una riga per racconto con il prefisso delle note.</p>
+<p class="fonti">Approfondimenti: <a href="https://code.claude.com/docs/en/overview">Claude Code, panoramica</a> · <a href="https://it.wikipedia.org/wiki/EPUB">EPUB su Wikipedia</a> · <a href="https://it.wikipedia.org/wiki/File_Transfer_Protocol">FTP su Wikipedia</a></p>
+</div></details>
+</section>
 
-<p>Un dato che vive in un posto solo si corregge in un posto solo. E quando il registro mente — lo
-farà, perché il progetto cambia — lo si scopre subito: lo script dice «da pubblicare sul sito» per
-un libro che online c'è già.</p>
+<!-- ============================================================ 4 -->
+<section id="differenze">
+<h2><span class="n">04</span>Prompt, skill, plugin, agente, comando, script</h2>
+<p>Queste sei parole indicano oggetti diversi, che lavorano insieme. Conviene conoscerle bene, perché chi vuole costruire uno strumento come il nostro deve decidere quale oggetto usare per ogni pezzo del lavoro.</p>
 
-<h2 id="anagrafe"><span class="num">10</span>L'anagrafe: un registro che cambia nel tempo</h2>
+<h3>Il prompt</h3>
+<p>Un prompt è il messaggio che una persona scrive a Claude. Può essere una domanda, una richiesta o un'istruzione: «leggi il log di ieri e dimmi chi è morto» è un prompt. Lo scrive chi usa lo strumento, ogni volta che ne ha bisogno, con le parole che preferisce.</p>
 
-<p>Il registro delle collane è fermo: percorsi, slug, alias. Ma una collana contiene anche dati che
-<strong>cambiano lungo la storia</strong>: un personaggio si prende una cicatrice nel quinto libro,
-muore nel settimo, e un prequel lo rimette in scena prima di tutto questo. Chi deve disegnarlo, o
-scriverlo di nuovo, ha bisogno di sapere com'era <em>in quel punto</em>.</p>
+<h3>Il comando</h3>
+<p>Un comando è un prompt scritto una volta sola, con cura, e salvato con un nome breve. Si richiama digitando una barra seguita dal nome, per esempio <code>/brainstormclub:dnd-jr</code>. Quando lo si lancia, Claude riceve tutte le istruzioni che contiene, comprese quelle che una persona dimenticherebbe di scrivere a mano. Abbiamo un comando per ogni collana, così ogni campagna parte sempre con le sue regole.</p>
 
-<p>Per questo il comando <code>/brainstormclub:personaggi</code> tiene un'<strong>anagrafe</strong>: una scheda
-per personaggio nella collana (<code>assets/personaggi/</code>), con l'aspetto canonico — ogni tratto
-con la sua fonte <code>file:riga</code> — e una tabella d'evoluzione, una riga per racconto,
-nell'ordine della storia e non in quello di pubblicazione.</p>
+<h3>La skill</h3>
+<p>Una skill è un manuale di metodo che Claude consulta quando il lavoro lo richiede. Contiene istruzioni su come si svolge un certo tipo di lavoro, ed eventualmente documenti di approfondimento da leggere solo quando servono. Claude conosce sempre il titolo e la descrizione di ogni skill installata, e apre il manuale completo quando la richiesta riguarda quell'argomento. La nostra skill si chiama <code>collane-brainstorm</code> e spiega come si passa da un log a un libro.</p>
+
+<h3>L'agente</h3>
+<p>Un agente è un collaboratore con un solo compito. Tecnicamente è un'altra sessione di Claude, avviata dalla sessione principale, con istruzioni proprie e con permessi limitati. I nostri agenti, per esempio, possono leggere i file ma non modificarli. Un agente lavora per conto suo e alla fine consegna un referto, cioè un resoconto scritto di quello che ha trovato. La conversazione principale riceve soltanto il referto e resta così più leggera e ordinata.</p>
+
+<h3>Lo script</h3>
+<p>Uno script è un piccolo programma tradizionale, scritto in un linguaggio di programmazione. Si comporta sempre allo stesso modo: con gli stessi file in ingresso dà sempre lo stesso risultato. Non interpreta e non inventa niente. Lo usiamo per i controlli che si possono misurare, come la presenza della firma, le dimensioni della copertina o le note a piè di pagina senza testo.</p>
+
+<h3>Il plugin</h3>
+<p>Il plugin è la scatola che contiene tutto il resto: i comandi, la skill, gli agenti e gli script. Si installa con un'unica operazione, si aggiorna come un pacchetto solo e si può condividere con altri. Il nostro plugin si chiama <code>brainstormclub</code>.</p>
 
 <figure>
-<svg viewBox="0 0 860 300" role="img" aria-label="Linea del tempo di un personaggio: apparizioni, cambio d'aspetto, ritratto valido, ritratto scaduto, morte e apparizione sospetta">
-  <text class="et" x="20" y="24" style="fill:var(--rosso)">ordine della storia (non di pubblicazione)</text>
-  <path class="linea" d="M40 110 H820"/>
-  <path class="linea" d="M812 104 l10 6 -10 6" fill="var(--bordo)"/>
-  <!-- racconti -->
-  <circle cx="80" cy="110" r="9" class="box"/><text class="et" x="58" y="140">prequel</text>
-  <circle cx="220" cy="110" r="9" class="box"/><text class="et" x="200" y="140">libro 1</text>
-  <circle cx="360" cy="110" r="9" class="box-r"/><text class="et" x="340" y="140">libro 2</text>
-  <circle cx="500" cy="110" r="9" class="box"/><text class="et" x="480" y="140">libro 3</text>
-  <circle cx="640" cy="110" r="9" class="box-r"/><text class="et" x="620" y="140">libro 4</text>
-  <circle cx="780" cy="110" r="9" class="box" stroke-dasharray="3 3"/><text class="et" x="760" y="140">libro 5</text>
-  <!-- annotazioni sopra -->
-  <text class="et" x="306" y="64">la cicatrice:</text>
-  <text class="et" x="306" y="80">l'aspetto cambia</text>
-  <path class="linea-r" d="M360 86 V100"/>
-  <text class="et" x="604" y="64" style="fill:var(--rosso)">† morto_in</text>
-  <path class="linea-r" d="M640 70 V100"/>
-  <text class="et" x="724" y="64" style="fill:var(--rosso)">ricompare?</text>
-  <text class="et" x="724" y="80">ricordo o errore</text>
-  <path class="linea-r" d="M780 86 V100" stroke-dasharray="3 3"/>
-  <!-- ritratto -->
-  <rect class="box" x="40" y="176" width="340" height="46" rx="8"/>
-  <text class="tit" x="56" y="198">ritratto valido a: libro 1</text>
-  <text class="et" x="56" y="214">senza cicatrice: giusto fino al libro 1</text>
-  <rect class="box-r" x="400" y="176" width="420" height="46" rx="8"/>
-  <text class="tit" x="416" y="198" style="fill:var(--rosso)">scaduto dal libro 2</text>
-  <text class="et" x="416" y="214">personaggi.py prompt lo dice prima di generare</text>
-  <!-- stile -->
-  <rect class="box" x="40" y="240" width="780" height="44" rx="8" stroke-dasharray="6 5"/>
-  <text class="et" x="56" y="260">ritratto = _stile.md della collana (contenitore comune, come le copertine)</text>
-  <text class="et" x="56" y="276">         + {SOGGETTO} della scheda (solo tratti con la fonte)</text>
+<svg class="sk" viewBox="0 0 760 390" role="img" aria-labelledby="sk1t sk1d">
+  <title id="sk1t">Come si collegano prompt, comandi, skill, agenti e script</title>
+  <desc id="sk1d">Una persona scrive un prompt oppure lancia un comando. Claude riceve la richiesta, consulta la skill, affida compiti agli agenti e lancia gli script. Comandi, skill, agenti e script stanno tutti dentro la scatola del plugin.</desc>
+  <defs><marker id="fr1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="punta"/></marker></defs>
+  <rect class="mano" x="16" y="160" width="128" height="74" rx="10"/>
+  <text class="tb" x="80" y="192" text-anchor="middle">Tu</text>
+  <text class="tm" x="80" y="214" text-anchor="middle">scrivi un prompt</text>
+  <path class="linea" d="M144 197 H206" marker-end="url(#fr1)"/>
+  <rect class="scatola" x="210" y="150" width="140" height="94" rx="10"/>
+  <text class="tb" x="280" y="186" text-anchor="middle">Claude</text>
+  <text class="tm" x="280" y="207" text-anchor="middle">legge, ragiona,</text>
+  <text class="tm" x="280" y="223" text-anchor="middle">sceglie i passi</text>
+  <rect class="scatola2" x="400" y="14" width="344" height="362" rx="14"/>
+  <text class="tm" x="420" y="38">la scatola del plugin «brainstormclub»</text>
+  <rect class="scatola" x="420" y="52" width="304" height="66" rx="8"/>
+  <text class="tb" x="436" y="78">Comandi</text>
+  <text class="tm" x="436" y="100">prompt già scritti, con un nome breve</text>
+  <rect class="scatola" x="420" y="130" width="304" height="66" rx="8"/>
+  <text class="tb" x="436" y="156">Skill</text>
+  <text class="tm" x="436" y="178">il manuale di metodo da consultare</text>
+  <rect class="scatola" x="420" y="208" width="304" height="66" rx="8"/>
+  <text class="tb" x="436" y="234">Agenti</text>
+  <text class="tm" x="436" y="256">collaboratori con un compito solo</text>
+  <rect class="scatola" x="420" y="286" width="304" height="66" rx="8"/>
+  <text class="tb" x="436" y="312">Script</text>
+  <text class="tm" x="436" y="334">programmi che misurano, sempre uguali</text>
+  <path class="tenue" d="M80 160 C80 90 300 85 416 85" marker-end="url(#fr1)"/>
+  <text class="tm" x="170" y="70">oppure lanci un comando</text>
+  <path class="linea" d="M350 185 L416 163" marker-end="url(#fr1)"/>
+  <path class="linea" d="M350 205 L416 241" marker-end="url(#fr1)"/>
+  <path class="linea" d="M340 244 L416 319" marker-end="url(#fr1)"/>
+  <text class="tm" x="394" y="156" text-anchor="end">consulta</text>
+  <text class="tm" x="356" y="244">affida</text>
+  <text class="tm" x="330" y="300">lancia</text>
 </svg>
-<figcaption>Quello che lo script vede su una linea del tempo: dove il nome compare, quando l'aspetto
-cambia, quando il ritratto scade, e chi ricompare dopo la morte.</figcaption>
+<figcaption>Il bordo rosso indica la persona. Tutto quello che sta nella scatola grigia arriva con il plugin.</figcaption>
 </figure>
 
-<p>Tre lezioni che valgono oltre questo caso:</p>
+<h3>Un confronto con il tavolo da gioco</h3>
+<div class="tab-scorri"><table class="bsc-table">
+<thead><tr><th>oggetto</th><th>somiglia a</th><th>chi lo scrive</th><th>un esempio nostro</th></tr></thead>
+<tbody>
+<tr><td>prompt</td><td>quello che un giocatore dice al master</td><td>chi lo usa, ogni volta</td><td>«il ritratto di Darko mi sembra vecchio, controllalo»</td></tr>
+<tr><td>comando</td><td>una scheda di riferimento rapido, già compilata</td><td>chi costruisce il plugin</td><td><code>/brainstormclub:heroes copertina</code></td></tr>
+<tr><td>skill</td><td>il manuale delle regole, aperto quando serve</td><td>chi costruisce il plugin</td><td><code>collane-brainstorm</code></td></tr>
+<tr><td>agente</td><td>un aiuto-master a cui si affida una sola mansione</td><td>chi costruisce il plugin</td><td>il Redattore, che controlla la coerenza</td></tr>
+<tr><td>script</td><td>il metro per misurare il movimento delle miniature</td><td>chi costruisce il plugin</td><td>il controllo della firma prima del libro</td></tr>
+<tr><td>plugin</td><td>la scatola del gioco, con dentro tutto</td><td>chi costruisce il plugin</td><td><code>brainstormclub</code></td></tr>
+</tbody></table></div>
+
+<h3>Come si sceglie l'oggetto giusto</h3>
+<p>Nel nostro progetto abbiamo seguito alcune abitudini. Le istruzioni che servono sempre per una certa collana stanno in un comando, così nessuno deve ricordarle. Il metodo comune a tutte le collane sta nella skill, scritto una volta sola. I lavori di lettura lunghi, come rileggere un racconto intero per cercare incoerenze, vanno agli agenti, perché producono un referto breve al posto di un fiume di testo. I controlli che hanno una risposta certa, come «la firma c'è o manca», vanno agli script, perché un programma tradizionale li fa in modo affidabile e ripetibile, mentre un modello linguistico potrebbe distrarsi.</p>
+
+<details class="tecnico"><summary>Dettagli tecnici <span class="t">· formato di ogni oggetto, con esempi reali</span></summary><div class="md">
+<h4>Comando · <code>commands/&lt;nome&gt;.md</code></h4>
+<p>Un file Markdown con un'intestazione YAML. <code>$ARGUMENTS</code> viene sostituito con il testo scritto dopo il comando.</p>
+<pre>---
+description: Il ciclo di Korvaal — Rogue Trader (Warhammer 40.000). Pipeline della collana…
+argument-hint: "[log|racconto|revisione|personaggi|copertina|epub|sito|stato|fascicolo] [volume]"
+---
+# Il ciclo di Korvaal
+Cartella: `roguetrader/ciclo-korvaal/` …
+**Richiesta:** $ARGUMENTS</pre>
+<h4>Skill · <code>skills/collane-brainstorm/SKILL.md</code></h4>
+<p>Il campo <code>description</code> è sempre visibile a Claude e decide quando la skill viene aperta. Il corpo si carica solo quando serve. I file in <code>references/</code> si leggono solo quando la fase lo richiede (una reference per fase: <code>fase-log.md</code>, <code>fase-racconto.md</code>, <code>fase-copertina.md</code>, <code>fase-epub.md</code>, <code>fase-sito.md</code>…).</p>
+<pre>---
+name: collane-brainstorm
+description: Pipeline delle collane narrative del Brainstorm Club — dai log di gioco
+  al racconto, ai tre revisori, al prompt di copertina, all'EPUB… Trigger: leggere
+  un log, proporre un racconto, prompt copertina, build EPUB, …
+---</pre>
+<h4>Agente · <code>agents/&lt;nome&gt;.md</code></h4>
+<p>Il campo <code>tools</code> limita i permessi: i nostri cinque agenti hanno solo strumenti di lettura.</p>
+<pre>---
+name: redattore
+description: Prima delle tre passate di revisione… Non corregge la lingua
+  e non giudica lo stile.
+tools: Read, Grep, Glob
+model: inherit
+---
+Sei il Redattore di una collana narrativa… Non riscrivi il testo. Leggi e referti.</pre>
+<h4>Script · <code>scripts/*.py</code></h4>
+<p>I comandi e la skill li richiamano con un percorso relativo al plugin, risolto da Claude Code al momento dell'uso:</p>
+<pre>python3 "${CLAUDE_PLUGIN_ROOT}/scripts/controlla_volume.py" apocalisse ronan-di-kimmeria</pre>
+<h4>Plugin · <code>.claude-plugin/plugin.json</code> e <code>marketplace.json</code></h4>
+<p>Il manifest dichiara il pacchetto. Il marketplace è il catalogo da cui Claude Code lo installa (capitolo 13).</p>
+<p class="fonti">Documentazione ufficiale: <a href="https://code.claude.com/docs/en/slash-commands">comandi</a> · <a href="https://code.claude.com/docs/en/skills">skill</a> · <a href="https://code.claude.com/docs/en/sub-agents">agenti (subagent)</a> · <a href="https://code.claude.com/docs/en/plugins">plugin</a> · articolo di Anthropic sulle <a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Agent Skills</a></p>
+</div></details>
+</section>
+
+<!-- ============================================================ 5 -->
+<section id="collane">
+<h2><span class="n">05</span>Le sei collane</h2>
+<p>Ogni collana nasce da una campagna diversa e ha una propria personalità. Cambia il gioco, cambia chi racconta, e cambia la confezione, cioè l'aspetto con cui il libro si presenta: alcune collane imitano un tascabile d'epoca, altre una fanzine degli anni Novanta, altre ancora un fascicolo di polizia o un manoscritto ritrovato.</p>
+<div class="tab-scorri"><table class="bsc-table">
+<thead><tr><th>collana</th><th>gioco</th><th>chi racconta</th></tr></thead>
+<tbody>
+<tr><td>Regno di Taglia</td><td>Brancalonia</td><td>un narratore unico, Nanoc Orabrabli</td></tr>
+<tr><td>Il ciclo di Korvaal</td><td>Rogue Trader (Warhammer 40.000)</td><td>una voce diversa per ogni racconto</td></tr>
+<tr><td>ACTA HERETICA</td><td>Dark Heresy</td><td>il verbale di un inquisitore e le deposizioni dei testimoni</td></tr>
+<tr><td>Tiro Salvezza</td><td>D&amp;D 5ª edizione nel Vecchio Mondo di Warhammer</td><td>il master, «Ozymandias il Grande»</td></tr>
+<tr><td>Terre Desolate</td><td>Apocalisse</td><td>più voci, raccolte da un archivista</td></tr>
+<tr><td>Dossier Scavengers</td><td>Heroes Unlimited</td><td>il referto di un analista e le deposizioni</td></tr>
+</tbody></table></div>
+<p>Ogni collana ha il proprio comando, che porta con sé le regole di quella campagna. Chi lavora a Tiro Salvezza, per esempio, scrive <code>/brainstormclub:dnd-jr</code> e Claude sa già che il narratore è il master, che il tono è comico con un retrogusto amaro e che ogni volume è firmato da Ozymandias il Grande.</p>
+<p>Le regole di dettaglio di ogni collana stanno in un file di istruzioni dentro la sua cartella. Il plugin descrive il metodo comune a tutte. Quando i due testi dicono cose diverse, vale quello della collana.</p>
+
+<details class="tecnico"><summary>Dettagli tecnici <span class="t">· registro delle collane e comandi</span></summary><div class="md">
+<h4>I comandi</h4>
+<div class="tab-scorri"><table class="bsc-table">
+<thead><tr><th>comando</th><th>cartella</th><th>schema</th></tr></thead>
+<tbody>
+<tr><td><code>/brainstormclub:brancalonia</code></td><td><code>brancalonia/</code></td><td>capitoli</td></tr>
+<tr><td><code>/brainstormclub:korvaal</code></td><td><code>roguetrader/ciclo-korvaal/</code></td><td>volumi</td></tr>
+<tr><td><code>/brainstormclub:dark-heresy</code></td><td><code>roguetrader/dark-heresy/</code></td><td>volumi</td></tr>
+<tr><td><code>/brainstormclub:dnd-jr</code></td><td><code>dnd-jr/</code></td><td>volumi</td></tr>
+<tr><td><code>/brainstormclub:apocalisse</code></td><td><code>apocalisse/</code></td><td>volumi</td></tr>
+<tr><td><code>/brainstormclub:heroes</code></td><td><code>heroes/</code></td><td>volumi</td></tr>
+<tr><td><code>/brainstormclub:collane</code></td><td>tutte</td><td>panoramica e prossima mossa</td></tr>
+<tr><td><code>/brainstormclub:collana &lt;chiave&gt; &lt;fase&gt;</code></td><td>qualunque</td><td>anche le collane create in locale</td></tr>
+</tbody></table></div>
+<h4>Dove stanno le informazioni</h4>
 <ul>
-  <li><strong>Lo stato si misura sui testi, non si dichiara.</strong> La scheda dice in quali
-  racconti compare un personaggio; lo script lo <em>conta</em> nei testi e segnala la differenza.
-  Un registro che nessuno confronta con la realtà invecchia in silenzio.</li>
-  <li><strong>Il tempo del dato non è quello del file.</strong> «Scaduto» non vuol dire «modificato
-  da molto»: vuol dire che nella <em>storia</em> l'aspetto è cambiato dopo il punto per cui il
-  prompt era stato scritto. Per capirlo lo script ha bisogno dell'ordine cronologico, che sta nel
-  registro (<code>ordine_volumi</code>).</li>
-  <li><strong>Lo script scrive solo dove non può fare danni.</strong> <code>nuovo</code> crea uno
-  scheletro con le righe già al loro posto e i <code>?</code> da riempire leggendo — e non
-  sovrascrive mai; <code>indice</code> rigenera un file dichiarato generato. Le schede vere le
-  propone l'agente <code>anagrafe</code> e le approva l'autore: è canone di dettaglio, e il
-  baricentro del patto sta sull'Editore.</li>
+<li><code>scripts/collane.json</code>: il registro leggibile dai programmi (percorsi, slug del sito, alias dei nomi file delle copertine).</li>
+<li><code>skills/collane-brainstorm/references/giochi.md</code>: confezione, trappole già incontrate e stato di ogni collana.</li>
+<li><code>&lt;collana&gt;/CLAUDE.md</code>: l'autorità su voce, tono, confezione e firma. Claude Code lo carica da solo quando si lavora in quella cartella.</li>
 </ul>
+<p>Schema «capitoli»: un libro per cartella, capitoli numerati. Schema «volumi»: i racconti vivono in <code>racconti/</code> e ogni volume li compone da <code>manifest.txt</code>, così lo stesso racconto entra in più volumi senza essere copiato.</p>
+<p class="fonti">Sul file CLAUDE.md: <a href="https://code.claude.com/docs/en/memory">Claude Code, memoria di progetto</a></p>
+</div></details>
+</section>
 
-<h2 id="nuova"><span class="num">11</span>Creare una collana nuova</h2>
-
-<p>Una collana non è una cartella: è <strong>una voce, una confezione e un tono</strong> applicati
-a una campagna. Lo scheletro lo crea uno script in un secondo; il lavoro vero è deciderle prima.
-<code>/brainstormclub:nuova-collana</code> lo fa con dieci domande, una per volta, usando le sei
-collane del club come modelli da cui partire <em>e da cui distinguersi</em>.</p>
+<!-- ============================================================ 6 -->
+<section id="percorso">
+<h2><span class="n">06</span>Il percorso di un libro</h2>
+<p>Un libro attraversa sempre le stesse tappe. Il plugin le chiama <strong>fasi</strong> e ogni comando ne accetta una: chi scrive <code>/brainstormclub:apocalisse log</code> chiede la fase di lettura dei log della collana Terre Desolate.</p>
 
 <figure>
-<svg viewBox="0 0 860 250" role="img" aria-label="Dalla domanda alla collana: co-design, scheda approvata, scheletro, registro locale, lavoro con il comando generico">
-  <rect class="box" x="20" y="30" width="180" height="84" rx="8"/>
-  <text class="tit" x="36" y="56">co-design</text><text class="et" x="36" y="76">gioco · voce · note</text><text class="et" x="36" y="92">confezione · tono · tesi</text><text class="et" x="36" y="108">copertine · nomi</text>
-  <rect class="box-r" x="230" y="30" width="180" height="84" rx="8"/>
-  <text class="tit" x="246" y="56" style="fill:var(--rosso)">⟂ scheda</text><text class="et" x="246" y="76">JSON mostrato</text><text class="et" x="246" y="92">all'autore, che</text><text class="et" x="246" y="108">la approva</text>
-  <rect class="box" x="440" y="30" width="180" height="84" rx="8"/>
-  <text class="tit" x="456" y="56">nuova_collana.py</text><text class="et" x="456" y="76">in prova, poi crea</text><text class="et" x="456" y="92">dai modelli; non</text><text class="et" x="456" y="108">sovrascrive mai</text>
-  <rect class="box" x="650" y="30" width="190" height="84" rx="8"/>
-  <text class="tit" x="666" y="56">la collana</text><text class="et" x="666" y="76">CLAUDE.md · brief</text><text class="et" x="666" y="92">canone · stile ritratti</text><text class="et" x="666" y="108">build con copertina</text>
-  <path class="linea" d="M200 72 H222"/><path class="linea" d="M216 66 l10 6 -10 6" fill="var(--bordo)"/>
-  <path class="linea-r" d="M410 72 H432"/><path class="linea-r" d="M426 66 l10 6 -10 6" fill="var(--rosso)"/>
-  <path class="linea" d="M620 72 H642"/><path class="linea" d="M636 66 l10 6 -10 6" fill="var(--bordo)"/>
-  <rect class="box" x="440" y="160" width="400" height="70" rx="8" stroke-dasharray="6 5"/>
-  <text class="tit" x="456" y="186">collane.local.json, nella radice</text>
-  <text class="et" x="456" y="206">si somma al registro del plugin, che resta generico:</text>
-  <text class="et" x="456" y="222">aggiornare il plugin non cancella le collane dell'utente</text>
-  <path class="linea" d="M530 114 V152"/><path class="linea" d="M524 144 l6 10 6 -10" fill="var(--bordo)"/>
-  <text class="et" x="20" y="186">poi si lavora come con le altre:</text>
-  <text class="tit" x="20" y="208">/brainstormclub:collana &lt;chiave&gt; &lt;fase&gt;</text>
+<svg class="sk" viewBox="0 0 760 300" role="img" aria-labelledby="sk2t sk2d">
+  <title id="sk2t">Le tappe dal log al sito</title>
+  <desc id="sk2d">Prima riga: log, lettura, racconto, tre revisioni, firma dell'autore. Seconda riga: prompt di copertina, immagine creata dall'autore, libro EPUB, pagina del sito, caricamento FTP fatto a mano. Firma, immagine e caricamento sono compiti di una persona.</desc>
+  <defs><marker id="fr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="punta"/></marker></defs>
+  <g>
+    <rect class="scatola2" x="10" y="30" width="118" height="70" rx="8"/><text class="tb" x="69" y="62" text-anchor="middle">Log</text><text class="tm" x="69" y="82" text-anchor="middle">la sessione</text>
+    <rect class="scatola" x="160" y="30" width="118" height="70" rx="8"/><text class="tb" x="219" y="62" text-anchor="middle">Lettura</text><text class="tm" x="219" y="82" text-anchor="middle">fatti e morti</text>
+    <rect class="scatola" x="310" y="30" width="118" height="70" rx="8"/><text class="tb" x="369" y="62" text-anchor="middle">Racconto</text><text class="tm" x="369" y="82" text-anchor="middle">domande, bozza</text>
+    <rect class="scatola" x="460" y="30" width="118" height="70" rx="8"/><text class="tb" x="519" y="62" text-anchor="middle">Revisioni</text><text class="tm" x="519" y="82" text-anchor="middle">tre letture</text>
+    <rect class="mano" x="610" y="30" width="140" height="70" rx="8"/><text class="tb" x="680" y="62" text-anchor="middle">Firma</text><text class="tm" x="680" y="82" text-anchor="middle">l'autore rilegge</text>
+    <path class="linea" d="M128 65 H156" marker-end="url(#fr2)"/><path class="linea" d="M278 65 H306" marker-end="url(#fr2)"/><path class="linea" d="M428 65 H456" marker-end="url(#fr2)"/><path class="linea" d="M578 65 H606" marker-end="url(#fr2)"/>
+    <path class="linea" d="M680 100 V130 H69 V176" marker-end="url(#fr2)"/>
+    <rect class="scatola" x="10" y="180" width="118" height="70" rx="8"/><text class="tb" x="69" y="212" text-anchor="middle">Prompt</text><text class="tm" x="69" y="232" text-anchor="middle">di copertina</text>
+    <rect class="mano" x="160" y="180" width="118" height="70" rx="8"/><text class="tb" x="219" y="212" text-anchor="middle">Immagine</text><text class="tm" x="219" y="232" text-anchor="middle">la crea l'autore</text>
+    <rect class="scatola" x="310" y="180" width="118" height="70" rx="8"/><text class="tb" x="369" y="212" text-anchor="middle">EPUB</text><text class="tm" x="369" y="232" text-anchor="middle">il libro</text>
+    <rect class="scatola" x="460" y="180" width="118" height="70" rx="8"/><text class="tb" x="519" y="212" text-anchor="middle">Sito</text><text class="tm" x="519" y="232" text-anchor="middle">pagina pronta</text>
+    <rect class="mano" x="610" y="180" width="140" height="70" rx="8"/><text class="tb" x="680" y="212" text-anchor="middle">FTP</text><text class="tm" x="680" y="232" text-anchor="middle">caricato a mano</text>
+    <path class="linea" d="M128 215 H156" marker-end="url(#fr2)"/><path class="linea" d="M278 215 H306" marker-end="url(#fr2)"/><path class="linea" d="M428 215 H456" marker-end="url(#fr2)"/><path class="linea" d="M578 215 H606" marker-end="url(#fr2)"/>
+    <text class="tr" x="10" y="285">bordo rosso: lo fa una persona del club, e Claude aspetta</text>
+  </g>
 </svg>
-<figcaption>Il cancello sta nel mezzo: niente scheletro finché l'autore non ha approvato la scheda.</figcaption>
+<figcaption>Le tappe dal log al sito. Nei tre riquadri rossi il lavoro passa a una persona.</figcaption>
 </figure>
 
-<table>
-  <tr><th>modello di voce</th><th>collane</th><th>quando</th></tr>
-  <tr><td>narratore unico</td><td>Brancalonia, Tiro Salvezza</td><td>il tavolo ha un narratore naturale; comico o picaresco; note come rubrica</td></tr>
-  <tr><td>polifonia</td><td>Korvaal, Terre Desolate</td><td>personaggi con un mondo interiore; ogni racconto cambia testimone</td></tr>
-  <tr><td>cornice + deposizioni</td><td>ACTA HERETICA, Dossier Scavengers</td><td>gruppo corale e un'istituzione che archivia; il tono nasce dallo scarto</td></tr>
-</table>
-
-<p>La lezione per chi costruisce skill: <strong>la parte generica e la parte dell'utente vanno in
-due posti diversi</strong>. I modelli stanno nel plugin e si aggiornano con lui; le collane create
-stanno nel registro locale e nelle cartelle dell'utente. Se fossero nello stesso file, ogni
-aggiornamento cancellerebbe il lavoro di qualcuno.</p>
-
-<h2 id="pianificate"><span class="num">12</span>Le attività pianificate</h2>
-
-<p>Alcuni controlli si fanno meglio senza chiederli: tre attività locali dell'app desktop, nella
-sezione <em>Scheduled</em>, che si lanciano a mano (la cadenza, se serve, si fissa dall'app).</p>
-
-<table>
-  <tr><th>attività</th><th>che cosa fa</th><th>dove scrive</th></tr>
-  <tr><td><strong>Bollettino delle collane</strong></td><td><code>stato.py</code> e <code>log_nuovi.py</code> su tutte le collane; le tre cose da fare per prime</td><td><code>bollettini/AAAA-MM-GG-collane.md</code></td></tr>
-  <tr><td><strong>Sentinella del sito</strong></td><td>EPUB del sito contro quelli costruiti, URL della sitemap sul dominio, pagine interne che devono dare 404; la lista per l'FTP</td><td><code>bollettini/AAAA-MM-GG-sito.md</code></td></tr>
-  <tr><td><strong>Lettore dei log nuovi</strong></td><td>per ogni log nuovo o cambiato senza referto, una bozza di referto di lettura</td><td><code>&lt;collana&gt;/assets/referti/…-bozza.md</code></td></tr>
-</table>
-
-<div class="scheda">
-  <span class="et">Che cosa non fanno, mai</span>
-  <p>Non toccano libri, canone o schede, non scrivono <code>firmato:</code>, non generano copertine,
-  non caricano via FTP, non fanno commit. <strong>Preparano il tavolo; decide l'autore.</strong> I
-  bollettini sono privati: la cartella è esclusa da git. Un'attività senza nessuno davanti è proprio
-  il caso in cui i cancelli del patto devono reggere da soli.</p>
-</div>
-
-<p>Due dettagli che valgono per qualunque automazione del genere: la misura va a uno script
-(<code>log_nuovi.py</code>, <code>sentinella_sito.py</code>), il giudizio all'agente — e
-l'automazione deve sapere quando <strong>tacere</strong>: il lettore dei log, se non c'è niente di
-nuovo, non scrive niente.</p>
-
-<h2 id="costruire"><span class="num">13</span>Costruirne una: otto passi</h2>
-
+<p>Ecco le tappe, una per una.</p>
 <ol>
-  <li><strong>Censire il lavoro vero, non immaginarlo.</strong> Qui: sei <code>CLAUDE.md</code>, le
-  istruzioni del sito, il README dell'impaginatore, le note di memoria sui feedback già dati. Se non
-  esiste materiale del genere, la skill è prematura: fai il lavoro una volta e annota.</li>
-  <li><strong>Estrarre gli invarianti.</strong> Che cosa è uguale in tutti i casi (la pipeline), che
-  cosa cambia (voce, confezione, schema). L'uguale diventa la skill, il diverso diventa il registro
-  e i comandi.</li>
-  <li><strong>Separare le regole dai dati.</strong> Le regole con il <em>perché</em> in una
-  reference; i percorsi, gli slug e gli alias in un JSON.</li>
-  <li><strong>Scrivere gli script per le crepe note.</strong> Una crepa = un controllo. Exit code
-  parlante, nessuna dipendenza, rimedio nel messaggio.</li>
-  <li><strong>Provarli sui dati veri prima di scrivere la prosa.</strong> Quel che trovano cambia
-  quello che la reference deve dire — e scopre i falsi positivi (qui: il Master che parla
-  legittimamente del suo tavolo).</li>
-  <li><strong>Scrivere i comandi per ultimi.</strong> Sono la superficie: si scrivono bene solo
-  quando sotto c'è qualcosa. Generarli da un template con i dati per caso evita sei divergenze.</li>
-  <li><strong>Scrivere il patto.</strong> Che cosa si delega al modello e che cosa no, come si
-  verifica, chi firma, con quale soglia ci si ferma — e il cancello che lo fa rispettare. Va scritto
-  prima di usare la skill sul serio: la firma costruita dopo è razionalizzazione.</li>
-  <li><strong>Dichiarare che cosa resta fuori.</strong> La skill non possiede la verità del
-  progetto: la indica. È la differenza fra uno strumento che invecchia e uno che accompagna.</li>
+<li><strong>Lettura del log.</strong> Claude legge i log nuovi e prepara un referto: gli eventi principali, chi muore, il materiale che nessun racconto ha ancora usato e le contraddizioni con il canone.</li>
+<li><strong>Racconto.</strong> Claude non presenta subito una storia già fatta. Prima fa domande all'autore: quale parte della sessione raccontare, con quale voce, con quale tono, che cosa deve provare chi legge. Poi propone una scaletta dei capitoli, prepara la bibbia del racconto e scrive il testo a blocchi, uno alla volta, aspettando l'approvazione dell'autore dopo ciascuno.</li>
+<li><strong>Revisioni.</strong> Tre letture successive, affidate a tre agenti con compiti diversi. Il capitolo 8 le descrive.</li>
+<li><strong>Firma.</strong> L'autore legge il testo per intero. Se lo approva, scrive il proprio nome e la data in un campo apposito del volume. Claude non scrive mai quel campo da solo.</li>
+<li><strong>Prompt di copertina.</strong> Claude scrive la descrizione dell'immagine da generare, nello stile grafico della collana.</li>
+<li><strong>Immagine.</strong> L'autore genera l'immagine con lo strumento che preferisce e la salva nella cartella della collana. Claude la controlla: proporzioni, risoluzione, peso del file.</li>
+<li><strong>EPUB.</strong> Un programma compone il libro elettronico con introduzione, indice, linea temporale, racconti e colophon.</li>
+<li><strong>Sito.</strong> Claude prepara la pagina di lettura sul sito del club, sulla copia locale.</li>
+<li><strong>Caricamento.</strong> Una persona del club copia i file sul server con l'FTP. Fino a quel momento il libro non è pubblicato.</li>
 </ol>
+<p>Ci sono anche due fasi di servizio. La fase «stato» mostra a che punto è ogni volume. La fase «fascicolo» serve per un altro tipo di prodotto: avventure, bestiari e manuali da usare al tavolo, impaginati in PDF.</p>
 
-<h2 id="trappole"><span class="num">14</span>Trappole</h2>
+<details class="tecnico"><summary>Dettagli tecnici <span class="t">· le fasi e la loro reference</span></summary><div class="md">
+<h4>Sintassi</h4>
+<pre>/brainstormclub:korvaal stato
+/brainstormclub:heroes log
+/brainstormclub:apocalisse racconto
+/brainstormclub:dnd-jr revisione
+/brainstormclub:brancalonia copertina
+/brainstormclub:dark-heresy epub miniera
+/brainstormclub:korvaal sito origini
+/brainstormclub:brancalonia fascicolo</pre>
+<h4>Fasi</h4>
+<div class="tab-scorri"><table class="bsc-table">
+<thead><tr><th>fase</th><th>che cosa fa</th><th>reference</th></tr></thead>
+<tbody>
+<tr><td><code>stato</code></td><td>dove si è fermato ogni volume (<code>stato.py</code>)</td><td>—</td></tr>
+<tr><td><code>log</code></td><td>eventi cardine, registro morti, materiale non usato, discrepanze</td><td><code>fase-log.md</code></td></tr>
+<tr><td><code>racconto</code></td><td>co-design socratico → outline → bibbia → stesura a blocchi</td><td><code>fase-racconto.md</code></td></tr>
+<tr><td><code>revisione</code></td><td>Redattore → Correttore di bozze → Revisore di stile</td><td><code>fase-revisione.md</code></td></tr>
+<tr><td><code>personaggi</code></td><td>anagrafe della collana</td><td><code>fase-personaggi.md</code></td></tr>
+<tr><td><code>copertina</code></td><td>scrive il prompt, si ferma, poi controlla l'immagine</td><td><code>fase-copertina.md</code></td></tr>
+<tr><td><code>epub</code></td><td>pre-build (firma compresa), build, verifica</td><td><code>fase-epub.md</code></td></tr>
+<tr><td><code>sito</code></td><td>pagine di lettura locali; l'FTP resta a mano</td><td><code>fase-sito.md</code></td></tr>
+<tr><td><code>fascicolo</code></td><td>PDF da tavolo con <code>impaginatore/</code></td><td><code>fase-fascicolo.md</code></td></tr>
+</tbody></table></div>
+<h4>Il build</h4>
+<p>Ogni collana ha il suo <code>build_epub.sh</code>, che legge <code>volumi/&lt;vol&gt;/meta.yaml</code>, <code>front.md</code>, <code>timeline.md</code> e <code>manifest.txt</code>, aggiunge il colophon e chiama pandoc. Il build rifiuta di partire senza copertina.</p>
+<pre>bash build_epub.sh ronan-di-kimmeria
+bash build_epub.sh --all     # salta le cartelle volumi/_*</pre>
+<p class="fonti"><a href="https://pandoc.org/MANUAL.html">Manuale di pandoc</a> · <a href="https://www.w3.org/TR/epub-33/">Specifica EPUB 3.3 (W3C)</a></p>
+</div></details>
+</section>
 
-<table>
-  <tr><th>trappola</th><th>sintomo</th><th>rimedio</th></tr>
-  <tr><td>La skill-monolite</td><td>un SKILL.md di 400 righe che si carica sempre intero</td><td>tre livelli: comando → skill → una reference</td></tr>
-  <tr><td>Regole senza perché</td><td>vengono aggirate alla prima eccezione</td><td>ogni regola porta l'errore che l'ha generata</td></tr>
-  <tr><td>Script che giudicano</td><td>falsi positivi presi per verità</td><td>misurare; il giudizio resta al modello, e lo script lo dice</td></tr>
-  <tr><td>Dati duplicati nella prosa</td><td>un percorso corretto in tre file su cinque</td><td>un registro, citato</td></tr>
-  <tr><td>Agenti-ruolo</td><td>referti generici, complimenti</td><td>mandato, formato d'uscita, strumenti minimi</td></tr>
-  <tr><td>Avversario delegato a sé stesso</td><td>tre revisioni pulite prese per «testo buono»</td><td>referti come materiale per l'autore; il contrario; nessun bloccante = anomalia</td></tr>
-  <tr><td>Firma implicita</td><td>il testo va in build perché nessuno l'ha fermato</td><td>un campo di firma che il modello non scrive, e uno script che blocca senza</td></tr>
-  <tr><td>Registro che non si confronta coi dati</td><td>schede ordinate e sbagliate: il personaggio è cambiato e nessuno l'ha visto</td><td>uno script che conta sui testi e segnala la differenza</td></tr>
-  <tr><td>Rigore uguale per tutto</td><td>stanchezza e abbandono del metodo, o firme per stanchezza</td><td>baricentro dichiarato per classe di output</td></tr>
-  <tr><td>Nessun cancello umano</td><td>il lavoro procede oltre il punto in cui serviva una persona</td><td>scriverlo, ripeterlo, farlo fallire</td></tr>
-</table>
+<!-- ============================================================ 7 -->
+<section id="decide">
+<h2><span class="n">07</span>Chi decide che cosa</h2>
+<p>Un modello linguistico scrive in fretta e spesso scrive bene. Proprio per questo c'è un rischio concreto: un testo scorrevole può essere approvato senza che nessuno lo abbia davvero pensato e riletto. Nel nostro caso il risultato sarebbe un libro con errori sulla campagna, letto proprio dalle persone che quella campagna l'hanno giocata.</p>
+<p>Per ridurre questo rischio il plugin segue un'idea presa dal libro <a href="https://leanpub.com/pensare-con-gli-llm"><em>Pensare con gli LLM</em></a>, che la chiama <strong>Triangolo del Pensare-Con</strong>. Il triangolo descrive tre ruoli che una persona tiene quando lavora insieme a un'intelligenza artificiale.</p>
 
-<h2 id="installare"><span class="num">15</span>Installare e distribuire</h2>
+<figure>
+<svg class="sk" viewBox="0 0 760 360" role="img" aria-labelledby="sk3t sk3d">
+  <title id="sk3t">Il Triangolo del Pensare-Con</title>
+  <desc id="sk3d">Tre vertici: Intento, sapere che cosa si cerca prima di chiedere; Avversario, preparare i controlli prima di leggere; Editore, la firma resta a una persona. Al centro, il testo prodotto insieme.</desc>
+  <path class="linea" d="M380 60 L150 300 L610 300 Z"/>
+  <circle class="mano" cx="380" cy="60" r="12"/><circle class="mano" cx="150" cy="300" r="12"/><circle class="mano" cx="610" cy="300" r="12"/>
+  <text class="tb" x="380" y="26" text-anchor="middle">Intento</text>
+  <text class="tm" x="410" y="62">sapere che cosa si cerca</text>
+  <text class="tm" x="410" y="78">prima di chiedere</text>
+  <text class="tb" x="150" y="336" text-anchor="middle">Avversario</text>
+  <text class="tm" x="20" y="268">preparare i controlli</text>
+  <text class="tm" x="20" y="284">prima di leggere</text>
+  <text class="tb" x="610" y="336" text-anchor="middle">Editore</text>
+  <text class="tm" x="590" y="258">la firma resta</text>
+  <text class="tm" x="590" y="274">a una persona</text>
+  <text class="t" x="380" y="215" text-anchor="middle">il testo</text>
+  <text class="t" x="380" y="235" text-anchor="middle">scritto insieme</text>
+</svg>
+<figcaption>I tre ruoli della persona che lavora con il modello. Nel plugin ognuno ha un punto preciso del percorso in cui viene richiesto.</figcaption>
+</figure>
 
-<p>La struttura minima perché una cartella sia un plugin installabile:</p>
+<h3>Intento: sapere che cosa si cerca</h3>
+<p>Ogni comando comincia riformulando la richiesta in una sola riga, che l'autore conferma o corregge. La riga dice se si vuole esplorare un'idea o chiudere un lavoro, se il risultato sarà una bozza o un testo definitivo, e da che cosa si capirà che il lavoro è riuscito. Serve a evitare di chiedere qualcosa in modo vago e di accettare quello che arriva.</p>
 
-<pre><code>plugin-collane/
+<h3>Avversario: preparare i controlli prima di leggere</h3>
+<p>Prima di scrivere un racconto, nella bibbia si annotano le verifiche da fare a testo finito: i fatti del log che devono esserci, quello che il narratore può sapere e quello che non può sapere, i casi in cui un capitolo va tagliato. Le verifiche si scrivono prima perché un testo ben scritto tende a convincere chi lo legge. Dopo averlo letto è più difficile accorgersi di quello che manca.</p>
+
+<h3>Editore: la firma resta a una persona</h3>
+<p>Prima della copertina l'autore legge il racconto per intero e lo firma, scrivendo nome e data in un campo del volume. Un programma di controllo verifica che la firma ci sia, e senza firma il libro non si costruisce. Claude non scrive mai la firma da solo. Alcune collane hanno un firmatario fisso, scelto dall'autore: i volumi di Tiro Salvezza portano la firma di Ozymandias il Grande e quelli di Terre Desolate la firma dell'Archivista.</p>
+
+<p>L'attenzione richiesta non è la stessa per ogni lavoro. Il prompt di una copertina si può affidare a Claude quasi per intero. Un racconto definitivo si pensa insieme, domanda dopo domanda. Il canone della collana e la pubblicazione sul sito restano decisioni dell'autore.</p>
+
+<details class="tecnico"><summary>Dettagli tecnici <span class="t">· il patto nei file</span></summary><div class="md">
+<h4>Riga d'intento (in ogni comando)</h4>
+<pre>voglio [esplorare · chiudere · verificare · correggere] [oggetto] per [volume];
+l'output sarà [bozza · definitivo · referto]; riuscito se [criterio osservabile].</pre>
+<h4>Verifiche nella bibbia</h4>
+<p>Sezione <code>## Verifiche (scritte prima della stesura)</code> di ogni <code>racconti/&lt;nome&gt;.bibbia.md</code>: ancore di fatto con riga del log (<code>:83-85</code>), orizzonte di conoscenza, soglie di rinuncia.</p>
+<h4>Firma</h4>
+<pre># volumi/&lt;vol&gt;/meta.yaml
+firmato: "L'Archivista, 2026-11-17"</pre>
+<p><code>scripts/controlla_volume.py</code> esce con codice 1 se il campo manca o è vuoto, e <code>build_epub.sh</code> non parte. <code>stato.py</code> segnala i volumi «non firmato».</p>
+<h4>File di riferimento</h4>
+<ul>
+<li><code>skills/collane-brainstorm/references/patto.md</code>: i tre vertici, la pressione per classe di output, le soglie di rinuncia.</li>
+<li><code>skills/collane-brainstorm/references/regole-ferme.md</code>: le sette regole con la loro motivazione.</li>
+</ul>
+<p class="fonti">Il libro: <a href="https://leanpub.com/pensare-con-gli-llm">Pensare con gli LLM, su Leanpub</a></p>
+</div></details>
+</section>
+
+<!-- ============================================================ 8 -->
+<section id="controlli">
+<h2><span class="n">08</span>Come si controlla il lavoro</h2>
+<p>Nel progetto lavorano tre tipi di soggetti, e ognuno controlla cose diverse. L'autore giudica il senso e la qualità. Claude, attraverso gli agenti, legge e segnala. I programmi di controllo misurano quello che si può misurare.</p>
+
+<div class="tre" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:var(--bsc-space-4);margin:var(--bsc-space-5) 0">
+  <div class="bsc-card bsc-card--sketch" style="border-color:var(--bsc-rosso)">
+    <p class="occhiello">L'autore</p>
+    <p>Sceglie che cosa raccontare e con quale voce. Approva la scaletta e ogni blocco di testo. Decide quali segnalazioni accogliere. Firma il volume, crea l'immagine di copertina, aggiorna il canone e carica il sito.</p>
+  </div>
+  <div class="bsc-card bsc-card--sketch">
+    <p class="occhiello">Claude e gli agenti</p>
+    <p>Leggono i log, fanno domande, scrivono le bozze. Rileggono i racconti e consegnano referti con le cose da sistemare. Non correggono da soli i testi già approvati.</p>
+  </div>
+  <div class="bsc-card bsc-card--sketch">
+    <p class="occhiello">I programmi di controllo</p>
+    <p>Verificano la firma, le note, le copertine e i file del sito. Danno sempre la stessa risposta agli stessi file, e non modificano niente.</p>
+  </div>
+</div>
+
+<h3>Le tre letture</h3>
+<p>Ogni racconto, dopo ogni modifica, passa da tre agenti in un ordine fisso. Il primo è il <strong>Redattore</strong>, che controlla la coerenza della storia: i fatti del log, i personaggi morti, quello che il narratore può sapere, la geografia, il canone. Il secondo è il <strong>Correttore di bozze</strong>, che controlla la lingua: refusi, tempi verbali, parole tradotte male dall'inglese, nomi scritti in modo diverso da un libro all'altro. Il terzo è il <strong>Revisore di stile</strong>, che controlla la voce e il tono, e propone tagli.</p>
+<p>I tre agenti sono anch'essi istanze di Claude, lo stesso tipo di modello che ha scritto il testo. Per questo i loro referti sono materiale di lavoro per l'autore, e non valgono come approvazione.</p>
+
+<h3>Due agenti per i lavori lunghi</h3>
+<p>Il <strong>Lettore dei log</strong> legge log lunghi e restituisce solo i fatti utili, così la conversazione principale non si riempie di testo. L'<strong>Anagrafe</strong> prepara e verifica le schede dei personaggi, descritte nel prossimo capitolo.</p>
+
+<details class="tecnico"><summary>Dettagli tecnici <span class="t">· agenti e script</span></summary><div class="md">
+<h4>Agenti · <code>agents/</code></h4>
+<div class="tab-scorri"><table class="bsc-table">
+<thead><tr><th>file</th><th>compito</th></tr></thead>
+<tbody>
+<tr><td><code>redattore.md</code></td><td>coerenza, semine e riscossioni, orizzonte di conoscenza, canone, morti onorate</td></tr>
+<tr><td><code>correttore-bozze.md</code></td><td>lingua, false friend, grafie canoniche, note orfane (lancia lo script)</td></tr>
+<tr><td><code>revisore-stile.md</code></td><td>tenuta della voce, tono, note, tagli; argomenta anche il contrario</td></tr>
+<tr><td><code>lettore-log.md</code></td><td>eventi cardine, registro morti, materiale mai usato, discrepanze</td></tr>
+<tr><td><code>anagrafe.md</code></td><td>schede personaggio con fonti <code>file:riga</code>, evoluzione, soggetto del ritratto</td></tr>
+</tbody></table></div>
+<p>Tutti con <code>tools: Read, Grep, Glob</code>. Sullo stesso racconto vanno in sequenza; su racconti diversi possono girare in parallelo.</p>
+<h4>Script · <code>scripts/</code></h4>
+<p>Si lanciano dalla radice <code>brainstorm/</code>. Sono tutti in sola lettura, con due eccezioni dichiarate: <code>personaggi.py nuovo</code> crea uno scheletro di scheda e <code>personaggi.py indice</code> rigenera l'indice.</p>
+<pre>python3 scripts/stato.py .                       # panoramica di tutte le collane
+python3 scripts/stato.py . korvaal
+python3 scripts/controlla_volume.py heroes taglie-di-londra
+python3 scripts/controlla_volume.py brancalonia 5-teste --capitoli
+python3 scripts/controlla_copertina.py apocalisse appestato
+python3 scripts/log_nuovi.py .                   # log senza racconto
+python3 scripts/sentinella_sito.py .             # sito locale contro dominio</pre>
+<p><code>controlla_volume.py</code> verifica firma, note orfane, manifest, prefissi delle note, meta e spie di bozza in <code>front.md</code> e <code>timeline.md</code>; esce con 0 (pronto), 1 (errori bloccanti) o 2 (avvisi). <code>controlla_copertina.py</code> verifica formato, proporzione 2:3, risoluzione, peso e il tetto di 3 MB dell'EPUB.</p>
+<p class="fonti"><a href="https://code.claude.com/docs/en/sub-agents">Documentazione sui subagent</a></p>
+</div></details>
+</section>
+
+<!-- ============================================================ 9 -->
+<section id="personaggi">
+<h2><span class="n">09</span>I personaggi nel tempo</h2>
+<p>In una collana lunga i personaggi cambiano. Uno perde un occhio nel terzo libro, un altro cambia nome, un terzo muore e non deve ricomparire. Quando i libri sono molti diventa difficile ricordare come era fatto un personaggio in un certo momento della storia.</p>
+<p>Per questo il plugin tiene un'<strong>anagrafe</strong>: una scheda per ogni personaggio, con la descrizione dell'aspetto e una tabella che segue il personaggio racconto per racconto. Ogni dettaglio dell'aspetto riporta il punto del testo da cui viene, così chiunque può verificarlo. La tabella segue l'ordine della storia, che può essere diverso dall'ordine di uscita dei libri: un prequel uscito dopo viene messo prima.</p>
+
+<figure>
+<svg class="sk" viewBox="0 0 760 230" role="img" aria-labelledby="sk4t sk4d">
+  <title id="sk4t">Un personaggio attraverso i racconti</title>
+  <desc id="sk4d">Una linea del tempo con quattro racconti in ordine di storia. Nel primo si scrive il ritratto. Nel secondo il personaggio perde un occhio, e il ritratto diventa vecchio. Nel quarto il personaggio muore. Dopo la morte la linea è tratteggiata: se ricompare, il programma lo segnala.</desc>
+  <path class="linea" d="M40 110 H560"/>
+  <path class="tenue" d="M560 110 H730"/>
+  <circle class="scatola" cx="80" cy="110" r="10"/><circle class="scatola" cx="240" cy="110" r="10"/><circle class="scatola" cx="400" cy="110" r="10"/><circle class="mano" cx="560" cy="110" r="10"/>
+  <text class="tb" x="80" y="150" text-anchor="middle">racconto 1</text>
+  <text class="tb" x="240" y="150" text-anchor="middle">racconto 2</text>
+  <text class="tb" x="400" y="150" text-anchor="middle">racconto 3</text>
+  <text class="tb" x="560" y="150" text-anchor="middle">racconto 4</text>
+  <text class="tm" x="80" y="80" text-anchor="middle">si scrive il ritratto</text>
+  <text class="tm" x="240" y="80" text-anchor="middle">perde un occhio</text>
+  <text class="tr" x="240" y="185" text-anchor="middle">il ritratto è da rifare</text>
+  <text class="tm" x="400" y="80" text-anchor="middle">cambia mantello</text>
+  <text class="tm" x="560" y="80" text-anchor="middle">muore</text>
+  <text class="tm" x="645" y="80" text-anchor="middle">se ricompare,</text>
+  <text class="tm" x="645" y="96" text-anchor="middle">viene segnalato</text>
+  <text class="tm" x="40" y="215">ordine della storia, che può essere diverso dall'ordine di uscita dei libri</text>
+</svg>
+<figcaption>La scheda segue il personaggio nell'ordine della storia e avvisa quando qualcosa non torna.</figcaption>
+</figure>
+
+<p>Dalla scheda si ricava anche il prompt per generare un ritratto del personaggio. Il prompt unisce lo stile grafico della collana alla descrizione del personaggio in quel punto della storia. Quando l'aspetto cambia dopo il racconto per cui il ritratto era stato scritto, il programma di controllo lo segnala come scaduto. L'immagine, come per le copertine, la genera l'autore.</p>
+
+<details class="tecnico"><summary>Dettagli tecnici <span class="t">· anagrafe</span></summary><div class="md">
+<h4>File</h4>
+<ul>
+<li><code>&lt;collana&gt;/assets/personaggi/&lt;slug&gt;.md</code>: una scheda per personaggio (chi è, aspetto con fonti <code>file:riga</code>, tabella d'evoluzione, <code>morto_in</code>, soggetto del ritratto).</li>
+<li><code>&lt;collana&gt;/assets/personaggi/_stile.md</code>: il contenitore comune dei ritratti (stile, luce, sezione <em>Avoid</em>) con il segnaposto <code>{SOGGETTO}</code>.</li>
+<li><code>INDICE.md</code>: rigenerato dallo script.</li>
+</ul>
+<h4>Comandi</h4>
+<pre>/brainstormclub:personaggi heroes censisci
+python3 scripts/personaggi.py . heroes stato
+python3 scripts/personaggi.py . heroes nuovo "Darko"
+python3 scripts/personaggi.py . heroes prompt darko
+python3 scripts/personaggi.py . heroes indice</pre>
+<p><code>stato</code> trova i racconti in cui un personaggio compare senza che la scheda ne parli, i morti che ricompaiono dopo <code>morto_in</code>, i personaggi assenti dal canone e i ritratti scaduti.</p>
+<p>Reference: <code>references/fase-personaggi.md</code>; agente: <code>agents/anagrafe.md</code>.</p>
+</div></details>
+</section>
+
+<!-- ============================================================ 10 -->
+<section id="sito">
+<h2><span class="n">10</span>Il sito</h2>
+<p>I libri finiti si leggono e si scaricano dal sito del club, nella sezione dedicata alle collane. Claude prepara le pagine sulla copia del sito che sta sul computer: la scheda del volume, la pagina di lettura, la mappa del sito per i motori di ricerca.</p>
+<p>La pubblicazione vera e propria la fa una persona, copiando i file sul server con l'FTP. Abbiamo scelto di tenere questo passaggio manuale. In questo modo un libro preparato ma non ancora riletto non può finire online per errore, e chi pubblica vede sempre l'elenco esatto dei file che sta caricando.</p>
+
+<details class="tecnico"><summary>Dettagli tecnici <span class="t">· pagine e sentinella</span></summary><div class="md">
+<ul>
+<li><code>sito/build_leggi.py</code> genera le pagine di lettura per i volumi registrati (richiede Python con Pillow).</li>
+<li><code>sito/libri/</code> ospita EPUB e copertine; <code>sito/index.html</code> le schede e i dati strutturati JSON-LD; <code>sito/sitemap.xml</code> la mappa.</li>
+<li><code>scripts/sentinella_sito.py</code> confronta gli EPUB del sito con quelli costruiti, interroga gli URL della sitemap sul dominio e controlla che le pagine interne diano 404. Alla fine stampa la lista dei file da caricare.</li>
+<li>Reference: <code>references/fase-sito.md</code>.</li>
+</ul>
+<p class="fonti"><a href="https://schema.org/Book">schema.org/Book</a> per i dati strutturati dei volumi</p>
+</div></details>
+</section>
+
+<!-- ============================================================ 11 -->
+<section id="nuove">
+<h2><span class="n">11</span>Nuove collane e lavori pianificati</h2>
+<h3>Aprire una collana nuova</h3>
+<p>Il comando <code>/brainstormclub:nuova-collana</code> accompagna l'autore nella progettazione di una collana nuova con dieci domande, una alla volta: il gioco e i log disponibili, chi racconta, come sono fatte le note, la confezione, il tono, l'apertura dei volumi, lo stile delle copertine e dei ritratti, i nomi, la lunghezza dei racconti. Le sei collane del club servono da esempi da cui partire o da cui distinguersi.</p>
+<p>Alla fine le risposte diventano una scheda riassuntiva. Quando l'autore la approva, un programma crea la cartella della collana con tutti i file di partenza. Da quel momento la collana si lavora con <code>/brainstormclub:collana</code> seguito dal suo nome.</p>
+
+<h3>Lavori pianificati</h3>
+<p>L'app di Claude per computer permette di salvare dei lavori ricorrenti, da lanciare con un clic. Ne abbiamo preparati tre. Il <strong>bollettino delle collane</strong> riassume lo stato di tutte le collane e indica le tre cose da fare per prime. La <strong>sentinella del sito</strong> confronta il sito locale con quello online e prepara l'elenco dei file da caricare. Il <strong>lettore dei log nuovi</strong> prepara una bozza di referto per ogni log che nessuno ha ancora letto.</p>
+<p>Nessuno di questi lavori tocca i libri, il canone, le firme, le copertine o il server. Preparano il materiale, e le decisioni restano all'autore. I bollettini restano privati sul computer di chi li lancia.</p>
+
+<details class="tecnico"><summary>Dettagli tecnici <span class="t">· scheda, registro locale, attività</span></summary><div class="md">
+<h4>Creare la collana</h4>
+<pre>python3 scripts/nuova_collana.py . scheda.json --prova   # mostra che cosa farebbe
+python3 scripts/nuova_collana.py . scheda.json</pre>
+<p>Crea <code>CLAUDE.md</code>, brief, canone vuoto, colophon, CSS, <code>_stile.md</code> dei ritratti, modello di volume e <code>build_epub.sh</code> (che non costruisce senza copertina), partendo da <code>templates/collana/</code>. Registra la collana in <code>collane.local.json</code> nella radice: il registro del plugin resta generico e chi aggiorna il plugin non perde le proprie collane.</p>
+<h4>Attività pianificate (sezione Scheduled dell'app desktop, lancio manuale)</h4>
+<div class="tab-scorri"><table class="bsc-table">
+<thead><tr><th>attività</th><th>che cosa usa</th><th>dove scrive</th></tr></thead>
+<tbody>
+<tr><td>Bollettino delle collane</td><td><code>stato.py</code> + <code>log_nuovi.py</code></td><td><code>bollettini/AAAA-MM-GG-collane.md</code></td></tr>
+<tr><td>Sentinella del sito</td><td><code>sentinella_sito.py</code></td><td><code>bollettini/AAAA-MM-GG-sito.md</code></td></tr>
+<tr><td>Lettore dei log nuovi</td><td>agente <code>lettore-log</code></td><td><code>&lt;collana&gt;/assets/referti/referto-log-&lt;n&gt;-bozza.md</code></td></tr>
+</tbody></table></div>
+<p>La cartella <code>bollettini/</code> è esclusa da git. <code>log_nuovi.py</code> considera coperto un log citato per nome nelle bibbie, nel canone o nel <code>CLAUDE.md</code>; le collane che non citano i log per nome li dichiarano in <code>log/COPERTURA.txt</code> (<code>&lt;file&gt;  &lt;racconto|escluso&gt;  [nota]</code>).</p>
+<p>Limite noto: un log allungato dopo essere stato coperto non viene rilevato, e basta una citazione in una bibbia per considerarlo coperto. Conviene confrontare le righe del log con quelle indicate nella bibbia.</p>
+</div></details>
+</section>
+
+<!-- ============================================================ 12 -->
+<section id="insegna">
+<h2><span class="n">12</span>Che cosa abbiamo imparato</h2>
+<p>Questo capitolo è pensato per i master che vogliono costruire uno strumento simile per il proprio tavolo. Raccoglie le scelte che, a posteriori, ci sono sembrate più utili.</p>
+<h3>Scrivere il metodo prima degli strumenti</h3>
+<p>Il plugin è nato dopo mesi di lavoro fatto a mano. Le regole che contiene sono quelle che avevamo già imparato sbagliando: un personaggio morto che ricompariva, un libro costruito con la copertina sbagliata, una nota a piè di pagina senza testo. Ogni regola del plugin corrisponde a un errore che abbiamo davvero fatto almeno una volta.</p>
+<h3>Dare a ogni controllo lo strumento adatto</h3>
+<p>Le domande con una risposta certa sono affidate a un programma tradizionale. Le domande che richiedono giudizio sono affidate a Claude, che però consegna un referto e lascia la decisione all'autore. Questa divisione rende il lavoro più affidabile, perché i controlli misurabili non dipendono dall'attenzione di nessuno.</p>
+<h3>Caricare solo quello che serve</h3>
+<p>Claude ha una memoria di lavoro limitata, e le istruzioni troppo lunghe si diluiscono. Per questo le istruzioni sono divise in tre livelli. Una descrizione brevissima è sempre presente. Il manuale di metodo si apre quando il lavoro riguarda le collane. I documenti di dettaglio, uno per fase, si leggono solo quando quella fase comincia.</p>
+<h3>Lasciare alle persone i passaggi che contano</h3>
+<p>La firma, l'immagine di copertina e la pubblicazione sono state lasciate a una persona di proposito. Sono i momenti in cui il libro esce dal lavoro di bottega e diventa qualcosa che il club presenta come proprio.</p>
+<h3>Tenere separato quello che è vero in ogni campagna</h3>
+<p>Il plugin descrive il metodo. I fatti di ogni campagna, come i nomi, i morti e il tono, stanno nei file della campagna stessa. Così lo stesso plugin serve sei collane molto diverse, e un altro club può usarlo cambiando solo il registro e i comandi.</p>
+
+<details class="tecnico"><summary>Dettagli tecnici <span class="t">· struttura del plugin e livelli di contesto</span></summary><div class="md">
+<h4>Albero</h4>
+<pre>plugin-collane/
 ├── .claude-plugin/
-│   ├── plugin.json        nome, descrizione, versione
-│   └── marketplace.json   perché la cartella sia anche un marketplace locale
-├── commands/*.md          frontmatter: description, argument-hint
-├── skills/&lt;nome&gt;/SKILL.md frontmatter: name, description (è ciò che fa scattare la skill)
-├── agents/*.md            frontmatter: name, description, tools, model
-└── scripts/               raggiungibili come ${CLAUDE_PLUGIN_ROOT}/scripts/…</code></pre>
+│   ├── plugin.json         manifest
+│   └── marketplace.json    catalogo per l'installazione
+├── commands/               un .md per collana + collane, collana, personaggi, nuova-collana
+├── skills/collane-brainstorm/
+│   ├── SKILL.md            registro delle collane, fasi, patto, regole
+│   └── references/         fase-*.md · patto.md · giochi.md · regole-ferme.md
+├── agents/                 lettore-log · redattore · correttore-bozze · revisore-stile · anagrafe
+├── templates/collana/      modello di una collana nuova
+├── scripts/                collane.json + 7 script Python
+└── docs/index.html         questo manuale</pre>
+<h4>Tre livelli di contesto</h4>
+<ol>
+<li><strong>Sempre caricato</strong>: il campo <code>description</code> della skill e dei comandi (poche righe).</li>
+<li><strong>Caricato al bisogno</strong>: il corpo di <code>SKILL.md</code> quando la richiesta riguarda le collane; il <code>CLAUDE.md</code> della collana quando si lavora nella sua cartella.</li>
+<li><strong>Letto su richiesta</strong>: <code>references/fase-*.md</code> all'inizio della fase, e gli agenti per le letture lunghe.</li>
+</ol>
+<h4>Le sette regole ferme</h4>
+<ol>
+<li>Niente copertina senza la firma dell'autore, niente EPUB senza copertina.</li>
+<li>Un personaggio che muore nel log muore anche nel racconto.</li>
+<li>Il racconto è fonte unica: i volumi lo compongono senza copiarlo.</li>
+<li>Nessuna nota orfana.</li>
+<li><code>front.md</code> e <code>timeline.md</code> entrano nell'EPUB e devono essere prosa finita.</li>
+<li>Il sito si carica via FTP a mano: costruire un file non equivale a pubblicarlo.</li>
+<li>Il lavoro lasciato fuori diventa una issue su GitHub.</li>
+</ol>
+<p class="fonti"><a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Anthropic: Equipping agents for the real world with Agent Skills</a> (sul caricamento progressivo delle skill)</p>
+</div></details>
+</section>
 
-<pre><code>claude plugin marketplace add /percorso/plugin-collane
-claude plugin install brainstormclub@brainstorm-club</code></pre>
+<!-- ============================================================ 13 -->
+<section id="installare">
+<h2><span class="n">13</span>Installarlo e adattarlo</h2>
+<p>Per usare il plugin serve Claude Code installato sul proprio computer, con un account Anthropic. Il plugin si installa da GitHub con due comandi, riportati nel riquadro tecnico.</p>
+<p>Il plugin è scritto per le sei collane del Brainstorm Club, ma la sua struttura si può riusare. Un altro tavolo può tenere gli script, le fasi e gli agenti, e riscrivere tre cose: il registro delle collane, il documento che descrive i giochi e i comandi. Per una sola collana nuova basta il comando <code>/brainstormclub:nuova-collana</code>, che non richiede di modificare il plugin.</p>
+<p>Se costruite qualcosa di simile per il vostro gruppo ci farebbe piacere saperlo. Il codice è pubblico con licenza MIT, quindi potete copiarlo e modificarlo liberamente.</p>
 
-<p>Il <code>description</code> della skill è la cosa più importante del file: è il testo su cui si
-decide se caricarla. Deve nominare i trigger reali — qui i nomi delle sei campagne e i verbi del
-lavoro (leggere un log, revisionare, costruire l'EPUB, pubblicare) — non descrivere l'eleganza
-dell'architettura.</p>
+<details class="tecnico"><summary>Dettagli tecnici <span class="t">· installazione</span></summary><div class="md">
+<h4>Da GitHub</h4>
+<pre>claude plugin marketplace add Brainstorm-Club/collane-brainstorm
+claude plugin install brainstormclub@brainstorm-club</pre>
+<h4>Da una copia locale (si aggiorna quando modificate i file)</h4>
+<pre>claude plugin marketplace add ./collane-brainstorm</pre>
+<h4>Senza plugin</h4>
+<p>Copiare <code>skills/collane-brainstorm/</code> in <code>~/.claude/skills/</code>, <code>agents/*.md</code> in <code>~/.claude/agents/</code> e <code>commands/*.md</code> in <code>~/.claude/commands/</code>. In questo caso <code>${CLAUDE_PLUGIN_ROOT}</code> non è definito e i percorsi degli script vanno scritti per esteso.</p>
+<h4>Adattarlo a un altro tavolo</h4>
+<ul>
+<li><code>scripts/collane.json</code> e la tabella in <code>SKILL.md</code>: le vostre collane.</li>
+<li><code>references/giochi.md</code>: confezione e trappole di ogni collana.</li>
+<li><code>commands/</code>: un comando per collana, partendo da uno esistente.</li>
+</ul>
+<p class="fonti"><a href="https://code.claude.com/docs/en/plugins">Documentazione sui plugin di Claude Code</a> · <a href="https://github.com/Brainstorm-Club/collane-brainstorm">Repository</a></p>
+</div></details>
+</section>
 
-<div class="scheda">
-  <span class="et">La prova del nove</span>
-  <p>Una skill complessa è fatta bene quando <strong>un estraneo competente, letta la sola
-  <code>SKILL.md</code>, sa dove andare a cercare il resto</strong> — e quando chi la usa tutti i
-  giorni non ha più bisogno di ricordarsi le cose che adesso sono scritte.</p>
+<!-- ============================================================ glossario -->
+<section id="glossario">
+<h2><span class="n">—</span>Glossario</h2>
+<dl class="parole">
+<dt>Agente</dt><dd>Un'altra sessione di Claude con un compito solo, istruzioni proprie e permessi limitati. Consegna un referto. <a href="#differenze">Capitolo 4</a>.</dd>
+<dt>Anagrafe</dt><dd>L'insieme delle schede dei personaggi di una collana. <a href="#personaggi">Capitolo 9</a>.</dd>
+<dt>Bibbia del racconto</dt><dd>Il documento di lavoro preparato prima di scrivere un racconto: voce, scaletta, fatti, verifiche.</dd>
+<dt>Build</dt><dd>L'operazione con cui un programma compone i file sorgente in un prodotto finito, nel nostro caso un EPUB.</dd>
+<dt>Campagna</dt><dd>Una serie di sessioni di gioco di ruolo con gli stessi personaggi.</dd>
+<dt>Canone</dt><dd>Il documento con i fatti stabiliti di una collana.</dd>
+<dt>Claude, Claude Code</dt><dd>Il modello linguistico di Anthropic, e l'applicazione che gli permette di lavorare sui file del computer.</dd>
+<dt>CLAUDE.md</dt><dd>Un file di istruzioni che Claude Code legge da solo quando lavora in una cartella. Ogni collana ha il suo.</dd>
+<dt>Collana</dt><dd>L'insieme dei libri nati da una campagna.</dd>
+<dt>Comando</dt><dd>Un prompt salvato con un nome breve, richiamato con la barra. <a href="#differenze">Capitolo 4</a>.</dd>
+<dt>Confezione</dt><dd>L'aspetto con cui un libro si presenta: impaginazione, apertura, colophon, stile della copertina.</dd>
+<dt>EPUB</dt><dd>Il formato standard dei libri elettronici.</dd>
+<dt>Fase</dt><dd>Una tappa del percorso di un libro (log, racconto, revisione, copertina, epub, sito…).</dd>
+<dt>FTP</dt><dd>Il sistema con cui si copiano i file sul server del sito.</dd>
+<dt>Log</dt><dd>Il resoconto scritto di una sessione di gioco.</dd>
+<dt>Markdown</dt><dd>Un formato di testo semplice in cui alcuni segni indicano titoli, grassetti ed elenchi.</dd>
+<dt>Modello linguistico (LLM)</dt><dd>Un programma addestrato su grandi quantità di testo, capace di seguire istruzioni scritte e di produrre testo.</dd>
+<dt>Plugin</dt><dd>Il pacchetto che contiene comandi, skill, agenti e script, e si installa in un'unica operazione.</dd>
+<dt>Prompt</dt><dd>Il messaggio che una persona scrive a Claude.</dd>
+<dt>Prompt di copertina</dt><dd>La descrizione testuale da cui un generatore di immagini produce la copertina.</dd>
+<dt>Referto</dt><dd>Il resoconto scritto con cui un agente consegna quello che ha trovato.</dd>
+<dt>Script</dt><dd>Un piccolo programma tradizionale che dà sempre lo stesso risultato con gli stessi file.</dd>
+<dt>Skill</dt><dd>Un manuale di metodo che Claude apre quando il lavoro riguarda il suo argomento.</dd>
+<dt>Triangolo del Pensare-Con</dt><dd>I tre ruoli della persona che lavora con un modello: intento, avversario, editore. <a href="#decide">Capitolo 7</a>.</dd>
+<dt>Volume</dt><dd>Un libro che raccoglie uno o più racconti.</dd>
+</dl>
+</section>
+
+<!-- ============================================================ riferimenti -->
+<section id="riferimenti">
+<h2><span class="n">—</span>Riferimenti</h2>
+<h3>Il club e il progetto</h3>
+<ul>
+<li><a href="https://www.brainstormclub.it/">Brainstorm Club</a>, il sito dell'associazione, con le collane da leggere.</li>
+<li><a href="https://github.com/Brainstorm-Club/collane-brainstorm">collane-brainstorm</a>, il codice del plugin.</li>
+<li><a href="https://brainstorm-club.github.io/design-system/">Design system del Brainstorm Club</a>, colori e caratteri di questa pagina.</li>
+</ul>
+<h3>Metodo</h3>
+<ul>
+<li><a href="https://leanpub.com/pensare-con-gli-llm"><em>Pensare con gli LLM</em></a>, il libro da cui viene il Triangolo del Pensare-Con.</li>
+<li>Anthropic, <a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Equipping agents for the real world with Agent Skills</a>.</li>
+</ul>
+<h3>Documentazione tecnica</h3>
+<ul>
+<li>Claude Code: <a href="https://code.claude.com/docs/en/overview">panoramica</a>, <a href="https://code.claude.com/docs/en/plugins">plugin</a>, <a href="https://code.claude.com/docs/en/skills">skill</a>, <a href="https://code.claude.com/docs/en/sub-agents">subagent</a>, <a href="https://code.claude.com/docs/en/slash-commands">comandi</a>, <a href="https://code.claude.com/docs/en/memory">CLAUDE.md</a>.</li>
+<li><a href="https://pandoc.org/MANUAL.html">pandoc</a>, il programma che costruisce gli EPUB.</li>
+<li><a href="https://www.w3.org/TR/epub-33/">EPUB 3.3</a>, la specifica del W3C.</li>
+</ul>
+</section>
+
+<footer class="piede">
+  <p><span class="bsc-wordmark"><span class="bsc-brandmark" aria-hidden="true"></span><span class="bsc-r">brainstorm</span>club</span> · associazione ludica faentina dal 1989 · Palazzo Laderchi, Faenza</p>
+  <p>Plugin <code>brainstormclub</code> 1.4 · licenza MIT · manuale aggiornato il 17 novembre 2026</p>
+</footer>
+
 </div>
-
-<p class="firma">Brainstorm Club · plugin <code>brainstormclub</code> · documento interno di
-bottega. Il caso di studio è il plugin che contiene questa pagina: <code>docs/index.html</code>.</p>
-
-</div>
-<script>
-  (function(){
-    var b=document.getElementById('tema');
-    function corrente(){
-      var t=document.documentElement.getAttribute('data-theme');
-      if(t) return t;
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark':'light';
-    }
-    try{ var salvato=localStorage.getItem('manuale-tema'); if(salvato) document.documentElement.setAttribute('data-theme',salvato); }catch(e){}
-    b.addEventListener('click',function(){
-      var nuovo = corrente()==='dark' ? 'light':'dark';
-      document.documentElement.setAttribute('data-theme',nuovo);
-      try{ localStorage.setItem('manuale-tema',nuovo); }catch(e){}
-    });
-  })();
+<script type="module">
+  import { initTheme } from 'https://brainstorm-club.github.io/design-system/theme.js';
+  initTheme();
 </script>
 </body>
 </html>

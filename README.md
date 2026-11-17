@@ -174,11 +174,11 @@ della collana; chi non cita i log per nome li dichiara in `log/COPERTURA.txt`
 
 ## Il manuale
 
-[`docs/index.html`](docs/index.html) — come è fatto questo plugin e che cosa se ne impara per
-costruirne uno: i cinque pezzi, i tre livelli di contesto, i cancelli del flusso, il Triangolo del
-Pensare-Con dentro la pipeline, la divisione fra
-quel che misura uno script e quel che giudica il modello, gli agenti come mandati. Con i diagrammi.
-Si apre in un browser, non serve altro.
+[`docs/index.html`](docs/index.html) — «Dal tavolo al libro», scritto per i master che vorrebbero
+fare qualcosa di simile. Ogni capitolo ha una parte descrittiva per chi non è del mestiere (che cosa
+sono prompt, skill, plugin, agenti, comandi e script; il percorso di un libro; chi decide che cosa) e
+un riquadro tecnico comprimibile con file, comandi ed esempi. Usa il design system del club e si apre
+in un browser.
 
 ## Installare
 
