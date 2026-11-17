@@ -1,0 +1,10 @@
+---
+title: "TITOLO DEL VOLUME"
+subtitle: "Sottotitolo — {{COLLANA}}"
+author: "{{FIRMA_NARRATIVA}}"
+lang: it-IT
+date: "AAAA"
+rights: "Fan-fiction amatoriale. Uso personale. {{GIOCO}}{{EDITORE_FRASE}}."
+description: "Una o due frasi di sinossi, nella voce della collana, senza spoiler."
+# firmato: lo scrive SOLO l'autore, dopo aver letto il volume per intero: "Nome Cognome, AAAA-MM-GG"
+...

@@ -41,6 +41,9 @@ FINE = r"(?![\wÀ-ÿ])"
 
 def carica_collana(radice, chiave):
     reg = json.load(open(os.path.join(QUI, "collane.json"), encoding="utf-8"))["collane"]
+    locale = os.path.join(radice, "collane.local.json")   # collane create in locale
+    if os.path.isfile(locale):
+        reg.update(json.load(open(locale, encoding="utf-8")).get("collane", {}))
     if chiave not in reg:
         sys.exit(f"collana sconosciuta: {chiave} (ho {', '.join(reg)})")
     c = reg[chiave]

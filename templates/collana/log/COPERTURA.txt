@@ -1,0 +1,5 @@
+# Una riga per log, se i racconti non lo citano per nome:
+#   <file-log>   <racconto | escluso>   [nota]
+# Esempio:
+#   a-001.txt    il_primo_racconto
+#   a-002.txt    escluso   sessione di sola creazione dei personaggi

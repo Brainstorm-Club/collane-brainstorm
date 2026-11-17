@@ -113,8 +113,8 @@
 <header class="testa">
   <p class="occhiello">Brainstorm Club · note di bottega</p>
   <h1>Anatomia di una skill</h1>
-  <p class="sommario lede">Come è fatto il plugin <code>brainstormclub</code> — otto comandi,
-  una skill, undici reference, quattro script e cinque agenti — e che cosa se ne impara per costruirne
+  <p class="sommario lede">Come è fatto il plugin <code>brainstormclub</code> — dieci comandi,
+  una skill, dodici reference, sette script e cinque agenti — e che cosa se ne impara per costruirne
   uno proprio. Il caso di studio è vero: trasformare i log di una campagna di gioco di ruolo in
   libri pubblicati — senza che il modello finisca per pensare al posto di chi firma.</p>
 </header>
@@ -131,6 +131,8 @@
     <li><a href="#agenti">Gli agenti: mandati, non ruoli</a></li>
     <li><a href="#registro">Il registro: una sola fonte di verità</a></li>
     <li><a href="#anagrafe">L'anagrafe: un registro che cambia nel tempo</a></li>
+    <li><a href="#nuova">Creare una collana nuova</a></li>
+    <li><a href="#pianificate">Le attività pianificate</a></li>
     <li><a href="#costruire">Costruirne una: otto passi</a></li>
     <li><a href="#trappole">Trappole</a></li>
     <li><a href="#installare">Installare e distribuire</a></li>
@@ -159,8 +161,9 @@ pubblicato, un file corretto nel repository e sbagliato sul sito.</p>
 
 <h2 id="comandi"><span class="num">02</span>I comandi, uno per uno</h2>
 
-<p>Prima di vedere come è fatto, ecco che cosa si può chiedere. Otto comandi: uno per guardare
-tutte le collane, sei per lavorare dentro una collana, uno per l'anagrafe dei personaggi. Si
+<p>Prima di vedere come è fatto, ecco che cosa si può chiedere. Dieci comandi: uno per guardare
+tutte le collane, sei per le collane del club, uno per qualunque altra collana, uno per crearne
+una nuova, uno per l'anagrafe dei personaggi. Si
 lanciano dalla radice <code>brainstorm/</code>; installati come plugin compaiono anche con il
 prefisso <code>/brainstormclub:collane-brainstorm:</code>.</p>
 
@@ -173,6 +176,8 @@ prefisso <code>/brainstormclub:collane-brainstorm:</code>.</p>
   <tr><td><code>/brainstormclub:dnd-jr &lt;fase&gt;</code></td><td>Tiro Salvezza · D&amp;D 5e nel Vecchio Mondo</td><td>la fanzine del Master Ozymandias il Grande</td></tr>
   <tr><td><code>/brainstormclub:apocalisse &lt;fase&gt;</code></td><td>Terre Desolate · Apocalisse</td><td>codici ritrovati, una voce per codice, cornice dell'Archivista</td></tr>
   <tr><td><code>/brainstormclub:heroes &lt;fase&gt;</code></td><td>Dossier Scavengers · Heroes Unlimited</td><td>referto dell'Analista più deposizioni, nero-comico di scarto</td></tr>
+  <tr><td><code>/brainstormclub:collana &lt;chiave&gt; &lt;fase&gt;</code></td><td>qualunque</td><td>la stessa pipeline per ogni collana, comprese quelle create in locale</td></tr>
+  <tr><td><code>/brainstormclub:nuova-collana</code></td><td>—</td><td>progetta una collana da zero con dieci domande e ne crea lo scheletro</td></tr>
   <tr><td><code>/brainstormclub:personaggi &lt;collana&gt; &lt;lavoro&gt;</code></td><td>una a scelta</td><td>l'anagrafe dei personaggi: chi compare dove, come cambia nell'ordine della storia, ritratti</td></tr>
 </table>
 
@@ -212,7 +217,10 @@ confermare.</p>
 python3 scripts/controlla_volume.py heroes taglie-di-londra # pre-build
 python3 scripts/controlla_copertina.py apocalisse appestato # formato, 2:3, peso
 python3 scripts/personaggi.py . dnd-jr stato                # anagrafe contro i testi
-python3 scripts/personaggi.py . heroes prompt darko         # ritratto</code></pre>
+python3 scripts/personaggi.py . heroes prompt darko         # ritratto
+python3 scripts/log_nuovi.py .                              # log senza racconto o cambiati
+python3 scripts/sentinella_sito.py .                        # sito locale contro dominio
+python3 scripts/nuova_collana.py . scheda.json --prova      # scheletro di collana</code></pre>
 
 <h2 id="anatomia"><span class="num">03</span>Anatomia: cinque pezzi</h2>
 
@@ -223,7 +231,7 @@ mestieri diversi, e la difficoltà sta nel non confonderli.</p>
 <svg viewBox="0 0 860 470" role="img" aria-label="Schema dei cinque componenti del plugin: comandi, skill, reference, script, agenti">
   <!-- comandi -->
   <rect class="box-r" x="20" y="20" width="200" height="110" rx="8"/>
-  <text class="tit" x="36" y="46">commands/ · 8</text>
+  <text class="tit" x="36" y="46">commands/ · 10</text>
   <text class="et" x="36" y="68">/brainstormclub:korvaal /brainstormclub:heroes …</text>
   <text class="et" x="36" y="86">chi sei, dove sei,</text>
   <text class="et" x="36" y="104">quale fase</text>
@@ -239,7 +247,7 @@ mestieri diversi, e la difficoltà sta nel non confonderli.</p>
 
   <!-- references -->
   <rect class="box" x="640" y="20" width="200" height="110" rx="8"/>
-  <text class="tit" x="656" y="46">references/ · 11</text>
+  <text class="tit" x="656" y="46">references/ · 12</text>
   <text class="et" x="656" y="68">una per fase</text>
   <text class="et" x="656" y="86">+ giochi.md</text>
   <text class="et" x="656" y="104">+ patto · regole-ferme</text>
@@ -253,11 +261,11 @@ mestieri diversi, e la difficoltà sta nel non confonderli.</p>
 
   <!-- scripts -->
   <rect class="box" x="175" y="250" width="220" height="140" rx="8"/>
-  <text class="tit" x="191" y="276">scripts/ · 4 + registro</text>
+  <text class="tit" x="191" y="276">scripts/ · 7 + registro</text>
   <text class="et" x="191" y="298">stato.py</text>
   <text class="et" x="191" y="316">controlla_volume.py</text>
   <text class="et" x="191" y="334">controlla_copertina.py</text>
-  <text class="et" x="191" y="352">personaggi.py</text>
+  <text class="et" x="191" y="352">personaggi · log_nuovi · …</text>
   <text class="et" x="191" y="376" style="fill:var(--rosso)">misurano, non giudicano</text>
 
   <!-- agents -->
@@ -601,7 +609,7 @@ diversi, e leggere i log è un quarto.</p>
 volume che sul disco si chiama <code>5-teste</code> produce <code>le_cinque_teste.epub</code> e
 online diventa <code>le-cinque-teste</code>.</p>
 
-<p>Questa conoscenza non va ripetuta in otto comandi e undici reference: va in
+<p>Questa conoscenza non va ripetuta in dieci comandi e dodici reference: va in
 <strong>un file di dati</strong>, <code>scripts/collane.json</code>, che gli script leggono e la
 prosa cita.</p>
 
@@ -684,7 +692,75 @@ cambia, quando il ritratto scade, e chi ricompare dopo la morte.</figcaption>
   baricentro del patto sta sull'Editore.</li>
 </ul>
 
-<h2 id="costruire"><span class="num">11</span>Costruirne una: otto passi</h2>
+<h2 id="nuova"><span class="num">11</span>Creare una collana nuova</h2>
+
+<p>Una collana non è una cartella: è <strong>una voce, una confezione e un tono</strong> applicati
+a una campagna. Lo scheletro lo crea uno script in un secondo; il lavoro vero è deciderle prima.
+<code>/brainstormclub:nuova-collana</code> lo fa con dieci domande, una per volta, usando le sei
+collane del club come modelli da cui partire <em>e da cui distinguersi</em>.</p>
+
+<figure>
+<svg viewBox="0 0 860 250" role="img" aria-label="Dalla domanda alla collana: co-design, scheda approvata, scheletro, registro locale, lavoro con il comando generico">
+  <rect class="box" x="20" y="30" width="180" height="84" rx="8"/>
+  <text class="tit" x="36" y="56">co-design</text><text class="et" x="36" y="76">gioco · voce · note</text><text class="et" x="36" y="92">confezione · tono · tesi</text><text class="et" x="36" y="108">copertine · nomi</text>
+  <rect class="box-r" x="230" y="30" width="180" height="84" rx="8"/>
+  <text class="tit" x="246" y="56" style="fill:var(--rosso)">⟂ scheda</text><text class="et" x="246" y="76">JSON mostrato</text><text class="et" x="246" y="92">all'autore, che</text><text class="et" x="246" y="108">la approva</text>
+  <rect class="box" x="440" y="30" width="180" height="84" rx="8"/>
+  <text class="tit" x="456" y="56">nuova_collana.py</text><text class="et" x="456" y="76">in prova, poi crea</text><text class="et" x="456" y="92">dai modelli; non</text><text class="et" x="456" y="108">sovrascrive mai</text>
+  <rect class="box" x="650" y="30" width="190" height="84" rx="8"/>
+  <text class="tit" x="666" y="56">la collana</text><text class="et" x="666" y="76">CLAUDE.md · brief</text><text class="et" x="666" y="92">canone · stile ritratti</text><text class="et" x="666" y="108">build con copertina</text>
+  <path class="linea" d="M200 72 H222"/><path class="linea" d="M216 66 l10 6 -10 6" fill="var(--bordo)"/>
+  <path class="linea-r" d="M410 72 H432"/><path class="linea-r" d="M426 66 l10 6 -10 6" fill="var(--rosso)"/>
+  <path class="linea" d="M620 72 H642"/><path class="linea" d="M636 66 l10 6 -10 6" fill="var(--bordo)"/>
+  <rect class="box" x="440" y="160" width="400" height="70" rx="8" stroke-dasharray="6 5"/>
+  <text class="tit" x="456" y="186">collane.local.json, nella radice</text>
+  <text class="et" x="456" y="206">si somma al registro del plugin, che resta generico:</text>
+  <text class="et" x="456" y="222">aggiornare il plugin non cancella le collane dell'utente</text>
+  <path class="linea" d="M530 114 V152"/><path class="linea" d="M524 144 l6 10 6 -10" fill="var(--bordo)"/>
+  <text class="et" x="20" y="186">poi si lavora come con le altre:</text>
+  <text class="tit" x="20" y="208">/brainstormclub:collana &lt;chiave&gt; &lt;fase&gt;</text>
+</svg>
+<figcaption>Il cancello sta nel mezzo: niente scheletro finché l'autore non ha approvato la scheda.</figcaption>
+</figure>
+
+<table>
+  <tr><th>modello di voce</th><th>collane</th><th>quando</th></tr>
+  <tr><td>narratore unico</td><td>Brancalonia, Tiro Salvezza</td><td>il tavolo ha un narratore naturale; comico o picaresco; note come rubrica</td></tr>
+  <tr><td>polifonia</td><td>Korvaal, Terre Desolate</td><td>personaggi con un mondo interiore; ogni racconto cambia testimone</td></tr>
+  <tr><td>cornice + deposizioni</td><td>ACTA HERETICA, Dossier Scavengers</td><td>gruppo corale e un'istituzione che archivia; il tono nasce dallo scarto</td></tr>
+</table>
+
+<p>La lezione per chi costruisce skill: <strong>la parte generica e la parte dell'utente vanno in
+due posti diversi</strong>. I modelli stanno nel plugin e si aggiornano con lui; le collane create
+stanno nel registro locale e nelle cartelle dell'utente. Se fossero nello stesso file, ogni
+aggiornamento cancellerebbe il lavoro di qualcuno.</p>
+
+<h2 id="pianificate"><span class="num">12</span>Le attività pianificate</h2>
+
+<p>Alcuni controlli si fanno meglio senza chiederli: tre attività locali dell'app desktop, nella
+sezione <em>Scheduled</em>, che si lanciano a mano (la cadenza, se serve, si fissa dall'app).</p>
+
+<table>
+  <tr><th>attività</th><th>che cosa fa</th><th>dove scrive</th></tr>
+  <tr><td><strong>Bollettino delle collane</strong></td><td><code>stato.py</code> e <code>log_nuovi.py</code> su tutte le collane; le tre cose da fare per prime</td><td><code>bollettini/AAAA-MM-GG-collane.md</code></td></tr>
+  <tr><td><strong>Sentinella del sito</strong></td><td>EPUB del sito contro quelli costruiti, URL della sitemap sul dominio, pagine interne che devono dare 404; la lista per l'FTP</td><td><code>bollettini/AAAA-MM-GG-sito.md</code></td></tr>
+  <tr><td><strong>Lettore dei log nuovi</strong></td><td>per ogni log nuovo o cambiato senza referto, una bozza di referto di lettura</td><td><code>&lt;collana&gt;/assets/referti/…-bozza.md</code></td></tr>
+</table>
+
+<div class="scheda">
+  <span class="et">Che cosa non fanno, mai</span>
+  <p>Non toccano libri, canone o schede, non scrivono <code>firmato:</code>, non generano copertine,
+  non caricano via FTP, non fanno commit. <strong>Preparano il tavolo; decide l'autore.</strong> I
+  bollettini sono privati: la cartella è esclusa da git. Un'attività senza nessuno davanti è proprio
+  il caso in cui i cancelli del patto devono reggere da soli.</p>
+</div>
+
+<p>Due dettagli che valgono per qualunque automazione del genere: la misura va a uno script
+(<code>log_nuovi.py</code>, <code>sentinella_sito.py</code>), il giudizio all'agente — e
+l'automazione deve sapere quando <strong>tacere</strong>: il lettore dei log, se non c'è niente di
+nuovo, non scrive niente.</p>
+
+<h2 id="costruire"><span class="num">13</span>Costruirne una: otto passi</h2>
 
 <ol>
   <li><strong>Censire il lavoro vero, non immaginarlo.</strong> Qui: sei <code>CLAUDE.md</code>, le
@@ -709,7 +785,7 @@ cambia, quando il ritratto scade, e chi ricompare dopo la morte.</figcaption>
   progetto: la indica. È la differenza fra uno strumento che invecchia e uno che accompagna.</li>
 </ol>
 
-<h2 id="trappole"><span class="num">12</span>Trappole</h2>
+<h2 id="trappole"><span class="num">14</span>Trappole</h2>
 
 <table>
   <tr><th>trappola</th><th>sintomo</th><th>rimedio</th></tr>
@@ -725,7 +801,7 @@ cambia, quando il ritratto scade, e chi ricompare dopo la morte.</figcaption>
   <tr><td>Nessun cancello umano</td><td>il lavoro procede oltre il punto in cui serviva una persona</td><td>scriverlo, ripeterlo, farlo fallire</td></tr>
 </table>
 
-<h2 id="installare"><span class="num">13</span>Installare e distribuire</h2>
+<h2 id="installare"><span class="num">15</span>Installare e distribuire</h2>
 
 <p>La struttura minima perché una cartella sia un plugin installabile:</p>
 

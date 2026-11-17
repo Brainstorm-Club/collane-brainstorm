@@ -1,0 +1,2 @@
+# Una riga per racconto, in ordine di lettura:
+#   <nome-file-in-racconti-senza-.md>   <prefisso-note-univoco-nel-volume>

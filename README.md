@@ -40,6 +40,8 @@ Tutto in [`references/patto.md`](skills/collane-brainstorm/references/patto.md).
 | `/brainstormclub:apocalisse` | Terre Desolate | Apocalisse (Acheron) |
 | `/brainstormclub:heroes` | Dossier Scavengers | Heroes Unlimited (Palladium) |
 | `/brainstormclub:personaggi` | una a scelta | l'anagrafe dei personaggi: evoluzione nei libri e ritratti |
+| `/brainstormclub:collana` | una a scelta | la stessa pipeline per qualunque collana, comprese quelle create in locale |
+| `/brainstormclub:nuova-collana` | — | progetta una collana nuova (gioco, voce, confezione, tono, copertine) e ne crea lo scheletro |
 
 Ogni comando prende una **fase**:
 
@@ -75,13 +77,17 @@ plugin-collane/
 │   ├── SKILL.md       il registro delle collane, le fasi, le regole ferme
 │   └── references/    una reference per fase (personaggi compresa) + patto.md + giochi.md + regole-ferme.md
 ├── agents/            lettore-log · redattore · correttore-bozze · revisore-stile · anagrafe
+├── templates/collana/ il modello di una collana nuova
 ├── docs/index.html  come è fatto questo plugin, e come se ne costruisce uno
 └── scripts/
     ├── collane.json            registro delle collane (percorsi, slug, alias dei nomi file)
     ├── stato.py                panoramica della pipeline
     ├── controlla_volume.py     pre-build: firma, note orfane, manifest, prefissi, meta, spie di bozza
     ├── controlla_copertina.py  formato, 2:3, risoluzione, peso, tetto di 3 MB dell'EPUB
-    └── personaggi.py           anagrafe: ordine della storia, apparizioni, morti, ritratti scaduti, indice, prompt
+    ├── personaggi.py           anagrafe: ordine della storia, apparizioni, morti, ritratti scaduti, indice, prompt
+    ├── log_nuovi.py            log senza racconto o cambiati dopo
+    ├── sentinella_sito.py      sito locale contro dominio: EPUB, sitemap, pagine interne
+    └── nuova_collana.py        scheletro di una collana nuova da una scheda
 ```
 
 Gli script si lanciano dalla radice `brainstorm/` e non modificano niente — tranne `personaggi.py nuovo` (crea uno scheletro, mai sopra una scheda esistente) e `personaggi.py indice` (rigenera `INDICE.md`):
@@ -127,6 +133,44 @@ prompt era stato scritto.
 Il ritratto funziona come le copertine: `_stile.md` è il contenitore comune della collana (stile,
 luce, *Avoid*, con il segnaposto `{SOGGETTO}`), la scheda porta solo il soggetto.
 `personaggi.py prompt <scheda>` li compone. L'immagine la genera l'utente.
+
+## Creare una collana nuova
+
+`/brainstormclub:nuova-collana` porta l'autore attraverso dieci domande, una alla volta: gioco e log,
+modello di voce (narratore unico, polifonia, cornice più deposizioni), chi racconta, forma delle note,
+confezione, tono e tesi, apertura dei volumi, stile di copertine e ritratti, nomi e slug, lunghezza.
+Le sei collane del club sono i modelli da cui partire e da cui distinguersi.
+
+Le risposte diventano una **scheda** JSON che l'autore approva; poi
+
+```bash
+python3 scripts/nuova_collana.py . scheda.json --prova
+python3 scripts/nuova_collana.py . scheda.json
+```
+
+crea la cartella con `CLAUDE.md`, brief, canone vuoto, colofone, CSS, stile dei ritratti, modello di
+volume e `build_epub.sh` (che non costruisce senza copertina), e registra la collana in
+`collane.local.json` della radice. Il registro del plugin resta generico: chi aggiorna il plugin non
+perde le proprie collane. Da lì si lavora con `/brainstormclub:collana <chiave> <fase>`.
+
+## Le attività pianificate
+
+Tre attività locali, nella sezione *Scheduled* dell'app desktop, **lanciate a mano** (nessuna cadenza
+fissata; se ne vuoi una, la imposti dall'app):
+
+| attività | che cosa fa | dove scrive |
+|---|---|---|
+| **Bollettino delle collane** | `stato.py` + `log_nuovi.py` su tutte le collane; le tre cose da fare per prime | `brainstorm/bollettini/AAAA-MM-GG-collane.md` |
+| **Sentinella del sito** | `sentinella_sito.py`: EPUB del sito contro quelli costruiti, URL della sitemap sul dominio, pagine interne che devono dare 404; la lista dei file da caricare via FTP | `brainstorm/bollettini/AAAA-MM-GG-sito.md` |
+| **Lettore dei log nuovi** | per ogni log nuovo o cambiato senza referto, una bozza di referto di lettura | `<collana>/assets/referti/referto-log-<n>-bozza.md` |
+
+I bollettini sono **sempre privati**: la cartella è esclusa da git e non vanno da nessun'altra parte.
+Nessuna attività tocca libri, canone, schede, firme, copertine o FTP: preparano il tavolo, decide
+l'autore. Girano solo con l'app aperta.
+
+`log_nuovi.py` considera «coperto» un log citato per nome nelle bibbie, nel canone o nel CLAUDE.md
+della collana; chi non cita i log per nome li dichiara in `log/COPERTURA.txt`
+(`<file>  <racconto|escluso>  [nota]`).
 
 ## Il manuale
 

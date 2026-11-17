@@ -48,7 +48,8 @@ def stato_collana(radice, chiave, c):
         print("   cartella assente")
         return
 
-    log = elenca(os.path.join(prog, "log"), (".md", ".txt"))
+    log = [f for f in elenca(os.path.join(prog, "log"), (".md", ".txt"))
+           if f != "COPERTURA.txt" and not f.lower().startswith("readme")]
     capitoli = c["schema"] == "capitoli"
     unita = elenca(os.path.join(prog, "libri" if capitoli else "volumi"), cartelle=True)
     racconti = [] if capitoli else [f[:-3] for f in elenca(os.path.join(prog, "racconti"), (".md",))
@@ -135,6 +136,9 @@ def main():
     filtro = sys.argv[2] if len(sys.argv) > 2 else None
     reg = json.load(open(os.path.join(QUI, "collane.json"), encoding="utf-8"))
     collane = reg["collane"]
+    locale = os.path.join(radice, "collane.local.json")   # collane create in locale
+    if os.path.isfile(locale):
+        collane.update(json.load(open(locale, encoding="utf-8")).get("collane", {}))
     if filtro:
         if filtro not in collane:
             print(f"collana sconosciuta: {filtro} (ho {', '.join(collane)})")

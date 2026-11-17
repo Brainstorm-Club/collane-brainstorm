@@ -45,6 +45,9 @@ Tutto in `references/patto.md` — **leggilo prima di qualunque fase che produce
 | `/brainstormclub:apocalisse` | Terre Desolate (Codici del Silenzio) | `apocalisse/` | polifonia + cornice dell'Archivista | volumi |
 | `/brainstormclub:heroes` | Dossier Scavengers | `heroes/` | referto dell'Analista + deposizioni | volumi |
 
+Ogni altra collana — comprese quelle create con **`/brainstormclub:nuova-collana`** e registrate in
+`collane.local.json` della radice — si lavora con **`/brainstormclub:collana <chiave> <fase>`**.
+
 Il `CLAUDE.md` di ogni cartella è **l'autorità** su voce, tono, confezione e stato del ciclo: leggilo
 sempre all'inizio, insieme a `assets/PROMPT_nuovi_racconti.md` e `assets/canone_serie.md`. Questa
 skill dice *come si lavora*; quei file dicono *che cosa è vero in quella collana*. Se divergono,
@@ -62,6 +65,7 @@ Ogni comando apre su una fase. Carica la reference della fase, non tutte.
 | `log` | leggere i log, confrontarli coi racconti, trovare materiale non usato, morti da onorare, discrepanze | `references/fase-log.md` |
 | `racconto` | co-design socratico → outline → bibbia → stesura a blocchi | `references/fase-racconto.md` |
 | `revisione` | le tre passate obbligatorie dopo **ogni** modifica al testo | `references/fase-revisione.md` |
+| `nuova-collana` | progettare una collana da zero (voce, confezione, tono, copertine) e crearne lo scheletro — comando `/brainstormclub:nuova-collana` | `references/fase-nuova-collana.md` |
 | `personaggi` | l'anagrafe: chi compare dove, come cambia nell'ordine della storia, stato e morte, prompt del ritratto — comando `/brainstormclub:personaggi` | `references/fase-personaggi.md` |
 | `copertina` | scrivere il prompt, poi **fermarsi**; e controllare l'immagine quando arriva | `references/fase-copertina.md` |
 | `epub` | pre-build, build, verifica dell'uscita | `references/fase-epub.md` |
@@ -110,6 +114,13 @@ Cinque agenti portano il mandato già scritto e lavorano in sola lettura, conseg
 Le tre passate restano **in sequenza** sullo stesso racconto; in parallelo si lanciano su racconti
 diversi.
 
+## Le attività pianificate
+
+Tre attività locali dell'app desktop, lanciate a mano (nessuna cadenza fissata): **bollettino delle
+collane**, **sentinella del sito**, **lettore dei log nuovi**. Scrivono solo rapporti — i primi due in
+`brainstorm/bollettini/`, privata e fuori da git; il terzo bozze di referto in
+`<collana>/assets/referti/` — e non toccano mai libri, canone, firme, copertine o FTP.
+
 ## Gli script
 
 Stanno in `scripts/` accanto a questa skill e si lanciano dalla radice `brainstorm/`:
@@ -122,6 +133,9 @@ python3 ${CLAUDE_PLUGIN_ROOT}/scripts/controlla_volume.py brancalonia 5-teste --
 python3 ${CLAUDE_PLUGIN_ROOT}/scripts/controlla_copertina.py apocalisse appestato        # formato, 2:3, peso
 python3 ${CLAUDE_PLUGIN_ROOT}/scripts/personaggi.py . heroes stato                      # anagrafe vs testi
 python3 ${CLAUDE_PLUGIN_ROOT}/scripts/personaggi.py . heroes prompt darko               # ritratto
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/log_nuovi.py .                                    # log senza racconto o cambiati
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/sentinella_sito.py .                              # sito locale vs dominio
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/nuova_collana.py . scheda.json --prova             # scheletro di collana
 ```
 
 Misurano, non giudicano (`personaggi.py` scrive solo `nuovo` — uno scheletro, mai sopra una scheda esistente — e `INDICE.md`, dichiarato generato): quello che c'è *dentro* la copertina o dentro la prosa lo guardi tu.
