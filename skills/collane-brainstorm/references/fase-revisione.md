@@ -38,6 +38,19 @@ Qui cambia per collana, ed è la passata che non si può automatizzare:
 | Dark Heresy | referto freddo del verbale contro il calore delle deposizioni; l'orrore è la macchina imperiale |
 | Heroes | 50/50 beffa-brutalità, comico **di scarto** (lingua del fascicolo contro fatti osceni), understatement finale |
 
+## Il limite delle tre passate
+
+Le tre passate le fa lo stesso tipo di modello che ha scritto il testo. Il contesto separato degli
+agenti attenua l'indulgenza, non la elimina. Quindi:
+
+- i referti sono **materiale per l'autore**, non un verdetto: «tre passate pulite» non vuol dire
+  «testo buono», vuol dire che è pronto per **la lettura dell'autore**, che resta l'unica firma;
+- il revisore di stile chiude col **contrario** (*mirror-busting*): perché la scelta principale di
+  voce o di tono poteva essere sbagliata;
+- **nessun bloccante in un testo nuovo** è un'anomalia da guardare;
+- se scatta una **soglia di rinuncia** (`patto.md` §4), il capitolo si rifà dall'outline: non lo si
+  rattoppa per far passare la revisione successiva.
+
 ## Che cosa consegna una revisione
 
 Non «ho revisionato». Un elenco di **interventi fatti** e di **cose trovate e non corrette** con il

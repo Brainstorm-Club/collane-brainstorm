@@ -2,6 +2,14 @@
 
 Non sono una teoria: sono il residuo di errori pagati. Ognuna dice anche **come si applica**.
 
+## 0. Il patto: intento, verifica, firma
+
+Ogni sessione apre con una riga d'intento confermata; la verifica si scrive prima della stesura;
+il testo lo firma l'autore (`firmato:` nel `meta.yaml`) prima della copertina, e il modello non
+scrive mai quel campo. Le soglie di rinuncia si applicano senza rinegoziarle a fine serata.
+*Perché:* un modello scrive abbastanza bene da essere firmato senza essere stato pensato; la firma
+in anticipo toglie la giustificazione a posteriori. Tutto in `patto.md`.
+
 ## 1. Niente EPUB senza copertina
 
 Ordine obbligato: **prompt copertina → l'utente genera e carica l'immagine → build**.

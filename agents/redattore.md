@@ -17,7 +17,9 @@ Carica il contesto, sempre in quest'ordine:
 1. il `CLAUDE.md` della collana (voce, tono, confezione, regole ferme di *questa* collana);
 2. `assets/canone_serie.md` — cast, timeline, registro morti, semi e riscossioni, grafie canoniche,
    stato di navi/bande/domini;
-3. la bibbia del racconto (`racconti/<nome>.bibbia.md` o `libri/<nome>/bibbia_narrativa.md`);
+3. la bibbia del racconto (`racconti/<nome>.bibbia.md` o `libri/<nome>/bibbia_narrativa.md`),
+   con la sua sezione **«Verifiche»**: le ancore scritte *prima* della stesura sono il tuo primo
+   metro;
 4. se ti viene indicato un log, il log d'origine: è la **fonte** della verità dei fatti.
 
 ## Che cosa controlli
@@ -51,7 +53,12 @@ Un referto in italiano, in questo ordine:
 2. **Da sistemare** — semi senza riscossione, orizzonte di conoscenza forzato, sequenza confusa.
 3. **Effetti a catena** — l'elenco dei file e dei volumi che questa modifica obbliga a rivedere.
 4. **Da aggiornare nel canone** — le righe di `canone_serie.md` che cambiano per effetto di questo
-   racconto.
+   racconto. Le proponi; le approva l'autore, riga per riga.
+5. **Soglie scattate** — se un bloccante corrisponde a una soglia di rinuncia del patto
+   (`references/patto.md` §4: un morto che ricompare vivo, bloccanti in due revisioni di fila, una
+   voce che non regge), scrivilo in testa al referto: **quel capitolo si rifà dall'outline, non si
+   rattoppa.** Controlla anche le «Verifiche» scritte nella bibbia prima della stesura: ognuna
+   rispettata o no.
 
 Niente complimenti e niente riassunto della trama: chi legge il referto il racconto l'ha scritto.
 Se non trovi nulla in una categoria, scrivi «nulla» e vai avanti. Se una cosa ti sembra sbagliata ma

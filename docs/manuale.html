@@ -113,10 +113,10 @@
 <header class="testa">
   <p class="occhiello">Brainstorm Club · note di bottega</p>
   <h1>Anatomia di una skill</h1>
-  <p class="sommario lede">Come è fatto il plugin <code>collane-brainstorm</code> — sette comandi,
-  una skill, nove reference, tre script e quattro agenti — e che cosa se ne impara per costruirne
+  <p class="sommario lede">Come è fatto il plugin <code>collane-brainstorm</code> — otto comandi,
+  una skill, undici reference, quattro script e cinque agenti — e che cosa se ne impara per costruirne
   uno proprio. Il caso di studio è vero: trasformare i log di una campagna di gioco di ruolo in
-  libri pubblicati.</p>
+  libri pubblicati — senza che il modello finisca per pensare al posto di chi firma.</p>
 </header>
 
 <nav class="indice">
@@ -125,10 +125,12 @@
     <li><a href="#anatomia">Anatomia: cinque pezzi</a></li>
     <li><a href="#contesto">I tre livelli di contesto</a></li>
     <li><a href="#flusso">Il flusso che la skill difende</a></li>
+    <li><a href="#triangolo">Il Triangolo dentro la pipeline</a></li>
     <li><a href="#script">Gli script: misurare, non giudicare</a></li>
     <li><a href="#agenti">Gli agenti: mandati, non ruoli</a></li>
     <li><a href="#registro">Il registro: una sola fonte di verità</a></li>
-    <li><a href="#costruire">Costruirne una: sette passi</a></li>
+    <li><a href="#anagrafe">L'anagrafe: un registro che cambia nel tempo</a></li>
+    <li><a href="#costruire">Costruirne una: otto passi</a></li>
     <li><a href="#trappole">Trappole</a></li>
     <li><a href="#installare">Installare e distribuire</a></li>
   </ol>
@@ -163,7 +165,7 @@ mestieri diversi, e la difficoltà sta nel non confonderli.</p>
 <svg viewBox="0 0 860 470" role="img" aria-label="Schema dei cinque componenti del plugin: comandi, skill, reference, script, agenti">
   <!-- comandi -->
   <rect class="box-r" x="20" y="20" width="200" height="110" rx="8"/>
-  <text class="tit" x="36" y="46">commands/ · 7</text>
+  <text class="tit" x="36" y="46">commands/ · 8</text>
   <text class="et" x="36" y="68">/korvaal /heroes …</text>
   <text class="et" x="36" y="86">chi sei, dove sei,</text>
   <text class="et" x="36" y="104">quale fase</text>
@@ -179,10 +181,10 @@ mestieri diversi, e la difficoltà sta nel non confonderli.</p>
 
   <!-- references -->
   <rect class="box" x="640" y="20" width="200" height="110" rx="8"/>
-  <text class="tit" x="656" y="46">references/ · 9</text>
+  <text class="tit" x="656" y="46">references/ · 11</text>
   <text class="et" x="656" y="68">una per fase</text>
   <text class="et" x="656" y="86">+ giochi.md</text>
-  <text class="et" x="656" y="104">+ regole-ferme.md</text>
+  <text class="et" x="656" y="104">+ patto · regole-ferme</text>
   <text class="et" x="656" y="122" style="fill:var(--rosso)">si carica una sola</text>
 
   <!-- frecce riga 1 -->
@@ -192,20 +194,22 @@ mestieri diversi, e la difficoltà sta nel non confonderli.</p>
   <path class="linea" d="M624 69 l10 6 -10 6" fill="var(--bordo)"/>
 
   <!-- scripts -->
-  <rect class="box" x="175" y="250" width="220" height="120" rx="8"/>
-  <text class="tit" x="191" y="276">scripts/ · 3 + registro</text>
+  <rect class="box" x="175" y="250" width="220" height="140" rx="8"/>
+  <text class="tit" x="191" y="276">scripts/ · 4 + registro</text>
   <text class="et" x="191" y="298">stato.py</text>
   <text class="et" x="191" y="316">controlla_volume.py</text>
   <text class="et" x="191" y="334">controlla_copertina.py</text>
-  <text class="et" x="191" y="356" style="fill:var(--rosso)">misurano, non giudicano</text>
+  <text class="et" x="191" y="352">personaggi.py</text>
+  <text class="et" x="191" y="376" style="fill:var(--rosso)">misurano, non giudicano</text>
 
   <!-- agents -->
-  <rect class="box" x="465" y="250" width="220" height="120" rx="8"/>
-  <text class="tit" x="481" y="276">agents/ · 4</text>
+  <rect class="box" x="465" y="250" width="220" height="140" rx="8"/>
+  <text class="tit" x="481" y="276">agents/ · 5</text>
   <text class="et" x="481" y="298">lettore-log</text>
   <text class="et" x="481" y="316">redattore · correttore</text>
   <text class="et" x="481" y="334">revisore-stile</text>
-  <text class="et" x="481" y="356" style="fill:var(--rosso)">sola lettura, referto</text>
+  <text class="et" x="481" y="352">anagrafe</text>
+  <text class="et" x="481" y="376" style="fill:var(--rosso)">sola lettura, referto</text>
 
   <path class="linea" d="M430 130 V210 H285 V242"/>
   <path class="linea" d="M279 234 l6 10 6 -10" fill="var(--bordo)"/>
@@ -255,7 +259,8 @@ successivo.</p>
   <path class="linea-r" d="M60 92 V118"/><path class="linea-r" d="M54 110 l6 10 6 -10" fill="var(--rosso)"/>
   <path class="linea" d="M120 180 V206"/><path class="linea" d="M114 198 l6 10 6 -10" fill="var(--bordo)"/>
 
-  <text class="et" x="150" y="298" style="fill:var(--rosso)">+ il CLAUDE.md della collana: la fonte di verità, letta sempre, perché cambia e la skill no.</text>
+  <text class="et" x="150" y="290" style="fill:var(--rosso)">+ il CLAUDE.md della collana: la fonte di verità, letta sempre, perché cambia e la skill no.</text>
+  <text class="et" x="150" y="308" style="fill:var(--rosso)">+ patto.md, la prima volta in sessione: chi pensa, chi verifica, chi firma.</text>
 </svg>
 <figcaption>Rivelazione progressiva: ogni livello nomina il successivo e si ferma lì.</figcaption>
 </figure>
@@ -275,61 +280,159 @@ lavoro</strong>. Ognuna ha un ingresso, un'uscita e — questo è il punto — i
 saltano.</p>
 
 <figure>
-<svg viewBox="0 0 860 400" role="img" aria-label="Pipeline: log, racconto, revisione, copertina, attesa, epub, sito">
+<svg viewBox="0 0 860 430" role="img" aria-label="Pipeline: intento, log, racconto, revisione, firma dell'autore, copertina, controlli, epub, sito">
   <!-- riga 1 -->
-  <rect class="box" x="20" y="30" width="150" height="70" rx="8"/>
-  <text class="tit" x="36" y="58">log</text><text class="et" x="36" y="78">eventi, morti,</text><text class="et" x="36" y="94">scarti, discrepanze</text>
+  <rect class="box" x="20" y="30" width="140" height="74" rx="8" stroke-dasharray="6 5"/>
+  <text class="tit" x="34" y="56">intento</text><text class="et" x="34" y="76">una riga</text><text class="et" x="34" y="92">confermata</text>
 
-  <rect class="box" x="210" y="30" width="150" height="70" rx="8"/>
-  <text class="tit" x="226" y="58">racconto</text><text class="et" x="226" y="78">domande → outline</text><text class="et" x="226" y="94">→ bibbia → prosa</text>
+  <rect class="box" x="185" y="30" width="140" height="74" rx="8"/>
+  <text class="tit" x="199" y="56">log</text><text class="et" x="199" y="76">eventi, morti,</text><text class="et" x="199" y="92">scarti</text>
 
-  <rect class="box" x="400" y="30" width="150" height="70" rx="8"/>
-  <text class="tit" x="416" y="58">revisione</text><text class="et" x="416" y="78">redattore → bozze</text><text class="et" x="416" y="94">→ stile</text>
+  <rect class="box" x="350" y="30" width="140" height="74" rx="8"/>
+  <text class="tit" x="364" y="56">racconto</text><text class="et" x="364" y="76">outline, bibbia</text><text class="et" x="364" y="92">+ verifiche, prosa</text>
 
-  <rect class="box" x="590" y="30" width="150" height="70" rx="8"/>
-  <text class="tit" x="606" y="58">copertina</text><text class="et" x="606" y="78">prompt scritto,</text><text class="et" x="606" y="94">poi ci si ferma</text>
+  <rect class="box" x="515" y="30" width="140" height="74" rx="8"/>
+  <text class="tit" x="529" y="56">revisione</text><text class="et" x="529" y="76">tre passate</text><text class="et" x="529" y="92">+ il contrario</text>
 
-  <path class="linea" d="M170 65 H202"/><path class="linea" d="M194 59 l10 6 -10 6" fill="var(--bordo)"/>
-  <path class="linea" d="M360 65 H392"/><path class="linea" d="M384 59 l10 6 -10 6" fill="var(--bordo)"/>
-  <path class="linea" d="M550 65 H582"/><path class="linea" d="M542 59 l10 6 -10 6" fill="var(--bordo)"/>
-  <!-- loop revisione -->
-  <path class="linea" d="M475 100 V128 H285 V104"/>
-  <path class="linea" d="M279 112 l6 -10 6 10" fill="var(--bordo)"/>
-  <text class="et" x="300" y="146">ogni modifica al testo rimanda alle tre passate</text>
+  <rect class="box-r" x="680" y="30" width="160" height="74" rx="8"/>
+  <text class="tit" x="694" y="56" style="fill:var(--rosso)">⟂ firma</text><text class="et" x="694" y="76">l'autore legge</text><text class="et" x="694" y="92">tutto e firma</text>
 
-  <!-- cancello -->
-  <rect class="box-r" x="590" y="178" width="250" height="78" rx="8"/>
-  <text class="tit" x="606" y="204" style="fill:var(--rosso)">⟂ cancello umano</text>
-  <text class="et" x="606" y="224">l'immagine la genera e la carica</text>
-  <text class="et" x="606" y="240">l'utente. Niente EPUB senza copertina.</text>
-  <path class="linea-r" d="M665 100 V170"/><path class="linea-r" d="M659 162 l6 10 6 -10" fill="var(--rosso)"/>
+  <path class="linea" d="M160 67 H177"/><path class="linea" d="M171 61 l10 6 -10 6" fill="var(--bordo)"/>
+  <path class="linea" d="M325 67 H342"/><path class="linea" d="M336 61 l10 6 -10 6" fill="var(--bordo)"/>
+  <path class="linea" d="M490 67 H507"/><path class="linea" d="M501 61 l10 6 -10 6" fill="var(--bordo)"/>
+  <path class="linea-r" d="M655 67 H672"/><path class="linea-r" d="M666 61 l10 6 -10 6" fill="var(--rosso)"/>
 
-  <!-- riga 2 -->
-  <rect class="box" x="330" y="300" width="180" height="70" rx="8"/>
-  <text class="tit" x="346" y="328">epub</text><text class="et" x="346" y="348">pre-build → build</text><text class="et" x="346" y="364">→ verifica</text>
+  <!-- loop revisione + soglia -->
+  <path class="linea" d="M585 104 V132 H420 V108"/>
+  <path class="linea" d="M414 116 l6 -10 6 10" fill="var(--bordo)"/>
+  <text class="et" x="352" y="150">ogni modifica rimanda alle tre passate;</text>
+  <text class="et" x="352" y="166">una soglia scattata rimanda all'outline</text>
 
-  <rect class="box" x="560" y="300" width="180" height="70" rx="8"/>
-  <text class="tit" x="576" y="328">sito</text><text class="et" x="576" y="348">rigenera le pagine;</text><text class="et" x="576" y="364">l'FTP lo fa l'utente</text>
+  <!-- cancello copertina -->
+  <rect class="box-r" x="580" y="196" width="260" height="74" rx="8"/>
+  <text class="tit" x="594" y="222" style="fill:var(--rosso)">⟂ copertina</text>
+  <text class="et" x="594" y="242">prompt scritto, poi ci si ferma:</text>
+  <text class="et" x="594" y="258">l'immagine la carica l'utente</text>
+  <path class="linea-r" d="M760 104 V188"/><path class="linea-r" d="M754 180 l6 10 6 -10" fill="var(--rosso)"/>
 
-  <path class="linea-r" d="M665 256 V276 H420 V292"/><path class="linea-r" d="M414 284 l6 10 6 -10" fill="var(--rosso)"/>
-  <path class="linea" d="M510 335 H552"/><path class="linea" d="M544 329 l10 6 -10 6" fill="var(--bordo)"/>
+  <!-- riga 3 -->
+  <rect class="box" x="20" y="330" width="250" height="74" rx="8" stroke-dasharray="6 5"/>
+  <text class="tit" x="34" y="356">⟂ controlli automatici</text>
+  <text class="et" x="34" y="376">firma · note · manifest · copertina</text>
+  <text class="et" x="34" y="392">prima del build, non dopo</text>
 
-  <rect class="box" x="30" y="300" width="250" height="70" rx="8" stroke-dasharray="6 5"/>
-  <text class="tit" x="46" y="328">controlli automatici</text>
-  <text class="et" x="46" y="348">controlla_volume · controlla_copertina</text>
-  <text class="et" x="46" y="364">prima del build, non dopo</text>
-  <path class="linea" d="M280 335 H322"/><path class="linea" d="M314 329 l10 6 -10 6" fill="var(--bordo)"/>
+  <rect class="box" x="320" y="330" width="200" height="74" rx="8"/>
+  <text class="tit" x="334" y="356">epub</text><text class="et" x="334" y="376">build → verifica</text><text class="et" x="334" y="392">tetto 3 MB</text>
+
+  <rect class="box" x="570" y="330" width="270" height="74" rx="8"/>
+  <text class="tit" x="584" y="356">sito</text><text class="et" x="584" y="376">rigenera le pagine;</text><text class="et" x="584" y="392">l'FTP lo fa l'utente</text>
+
+  <path class="linea-r" d="M730 270 V300 H145 V322"/><path class="linea-r" d="M139 314 l6 10 6 -10" fill="var(--rosso)"/>
+  <path class="linea" d="M270 367 H312"/><path class="linea" d="M306 361 l10 6 -10 6" fill="var(--bordo)"/>
+  <path class="linea" d="M520 367 H562"/><path class="linea" d="M556 361 l10 6 -10 6" fill="var(--bordo)"/>
 </svg>
-<figcaption>Due cancelli rossi: il primo è umano (la copertina), il secondo è meccanico (il pre-build).
-Il resto è una catena ordinaria.</figcaption>
+<figcaption>Tre cancelli rossi: due umani (la firma sul testo, la copertina) e uno meccanico (il
+pre-build, che verifica anche la firma). L'intento, tratteggiato, apre ogni comando.</figcaption>
 </figure>
 
-<p>Vale la pena isolare il cancello umano, perché è il pezzo che più spesso manca nelle skill scritte
-in fretta: <strong>un punto in cui la cosa giusta da fare è fermarsi e dirlo</strong>. Qui è la
-copertina — la genera l'utente, e finché non c'è non si costruisce niente. Scritto nella skill,
-ripetuto in ogni comando, e fatto fallire dagli script dei progetti.</p>
+<p>Vale la pena isolare i cancelli umani, perché sono il pezzo che più spesso manca nelle skill
+scritte in fretta: <strong>un punto in cui la cosa giusta da fare è fermarsi e dirlo</strong>. Qui
+sono due. La <strong>firma</strong>: l'autore legge il racconto per intero e scrive
+<code>firmato:</code> nel <code>meta.yaml</code> — il modello non scrive mai quel campo. La
+<strong>copertina</strong>: la genera l'utente, e finché non c'è non si costruisce niente. Tutti e
+due sono scritti nella skill, ripetuti in ogni comando e fatti fallire da uno script: un cancello
+che si può dimenticare non è un cancello.</p>
 
-<h2 id="script"><span class="num">05</span>Gli script: misurare, non giudicare</h2>
+<h2 id="triangolo"><span class="num">05</span>Il Triangolo dentro la pipeline</h2>
+
+<p>Una skill che fa scrivere prosa a un modello ha un rischio che non dipende dalla qualità dello
+strumento: che il testo venga <strong>firmato senza essere stato pensato</strong>. Questa skill lo
+affronta con il <strong>Triangolo del Pensare-Con</strong> di <em>Pensare con LLM — the right
+way</em> (cap. 2): tre posture da presidiare <em>insieme</em>, non in sequenza, più una soglia
+firmata in anticipo che decide dove grava la pressione.</p>
+
+<figure>
+<svg viewBox="0 0 860 470" role="img" aria-label="Triangolo del Pensare-Con: Intento in alto, Avversario in basso a sinistra, Editore in basso a destra, e dove ciascuno vive nella skill">
+  <polygon points="430,70 175,390 685,390" fill="none" stroke="var(--rosso)" stroke-width="2"/>
+  <!-- centro -->
+  <text class="tit" x="430" y="268" text-anchor="middle">la decisione resta</text>
+  <text class="tit" x="430" y="286" text-anchor="middle">dell'autore</text>
+  <text class="et" x="430" y="308" text-anchor="middle" style="fill:var(--rosso)">quale vertice presidio adesso?</text>
+  <!-- intento -->
+  <rect class="box-r" x="300" y="14" width="260" height="54" rx="8"/>
+  <text class="tit" x="430" y="36" text-anchor="middle">INTENTO</text>
+  <text class="et" x="430" y="56" text-anchor="middle">che cosa cerco, e che cosa ne farò</text>
+  <text class="et" x="578" y="30">· una riga d'intento in ogni comando</text>
+  <text class="et" x="578" y="46">· esplorare ≠ chiudere · bozza ≠ definitivo</text>
+  <text class="et" x="578" y="62">· co-design socratico, outline approvato</text>
+  <!-- avversario -->
+  <rect class="box-r" x="40" y="392" width="230" height="54" rx="8"/>
+  <text class="tit" x="155" y="414" text-anchor="middle">AVVERSARIO</text>
+  <text class="et" x="155" y="434" text-anchor="middle">la verifica si scrive prima</text>
+  <text class="et" x="20" y="180">· «Verifiche» nella bibbia,</text>
+  <text class="et" x="20" y="196">  prima della stesura</text>
+  <text class="et" x="20" y="214">· script: misurano</text>
+  <text class="et" x="20" y="232">· tre passate: referti,</text>
+  <text class="et" x="20" y="248">  non assoluzioni</text>
+  <text class="et" x="20" y="266">· il contrario (mirror-busting)</text>
+  <text class="et" x="20" y="284">· soglie di rinuncia</text>
+  <!-- editore -->
+  <rect class="box-r" x="590" y="392" width="230" height="54" rx="8"/>
+  <text class="tit" x="705" y="414" text-anchor="middle">EDITORE</text>
+  <text class="et" x="705" y="434" text-anchor="middle">la firma è dell'autore</text>
+  <text class="et" x="660" y="180">· firmato: nel meta.yaml,</text>
+  <text class="et" x="660" y="196">  il build si blocca senza</text>
+  <text class="et" x="660" y="214">· il modello non lo scrive mai</text>
+  <text class="et" x="660" y="232">· canone approvato riga</text>
+  <text class="et" x="660" y="248">  per riga</text>
+  <text class="et" x="660" y="266">· cosa va online e l'FTP:</text>
+  <text class="et" x="660" y="284">  decide l'autore</text>
+</svg>
+<figcaption>Tre vertici, una sola decisione al centro. Ogni pratica elencata è un file, un campo o
+un controllo della skill — non un'intenzione.</figcaption>
+</figure>
+
+<table>
+  <tr><th>vertice</th><th>se cede</th><th>che cosa lo tiene in piedi nella skill</th></tr>
+  <tr><td><strong>Intento</strong></td><td>«vediamo cosa esce»: ci si ritrova a difendere un racconto che non si è scelto</td><td>il passo 0 di ogni comando; la domanda esplorare/verificare nel lettore dei log</td></tr>
+  <tr><td><strong>Avversario</strong></td><td>«suona bene»: il testo convince per ragioni che non c'entrano con la sua qualità</td><td>le «Verifiche» in bibbia; gli script; il contrario nel revisore di stile; le soglie di rinuncia nel referto del redattore</td></tr>
+  <tr><td><strong>Editore</strong></td><td>«lo mando in build»: il libro è formalmente nostro, sostanzialmente di nessuno</td><td>il campo <code>firmato:</code> e il blocco in <code>controlla_volume.py</code>; <code>stato.py</code> che marca «non firmato»</td></tr>
+</table>
+
+<div class="scheda">
+  <span class="et">Il limite, detto ad alta voce</span>
+  <p>Le tre passate di revisione le fa lo stesso tipo di modello che ha scritto il testo. Il contesto
+  separato degli agenti attenua l'indulgenza, non la elimina: è un <strong>Avversario
+  delegato</strong>. Per questo la skill non lo spaccia per verifica finale. I referti sono
+  <em>materiale per l'autore</em>, il revisore chiude argomentando il contrario della scelta
+  principale, «nessun bloccante in un testo nuovo» è trattato come un'anomalia — e l'unica lettura
+  che vale come firma è quella dell'autore.</p>
+</div>
+
+<h3>Il baricentro: la pressione si decide per classe di output</h3>
+
+<p>Il Triangolo non è equilatero. Applicare il rigore massimo a tutto produce stanchezza e
+abbandono del metodo; applicarlo a niente produce firme per stanchezza. La skill dichiara la
+pressione <strong>prima</strong>, in base a quanto costa l'errore:</p>
+
+<table>
+  <tr><th>output</th><th>costo dell'errore</th><th>baricentro</th></tr>
+  <tr><td>prompt di copertina</td><td>basso: si rigenera</td><td>Intento — delega disciplinata</td></tr>
+  <tr><td>bozza di capitolo</td><td>medio: si riscrive</td><td>Intento</td></tr>
+  <tr><td>referto dei log</td><td>alto: tutto ci si appoggia</td><td>Avversario — niente invenzioni</td></tr>
+  <tr><td>racconto definitivo</td><td>alto: lo leggono i giocatori</td><td>Avversario + Editore — pensare-con pieno</td></tr>
+  <tr><td>canone di serie</td><td>altissimo: si propaga</td><td>Editore — riga per riga</td></tr>
+  <tr><td>fascicolo pubblicabile, sito</td><td>altissimo: online, diritti</td><td>Editore</td></tr>
+</table>
+
+<p>E le <strong>soglie di rinuncia</strong> sono scritte prima, per non rinegoziarle a fine serata:
+un morto che ricompare vivo fa rifare il capitolo dall'outline, non lo fa rattoppare; bloccanti in
+due revisioni di fila riportano all'outline; un ciclo intero in cui non si è mai buttato niente vuol
+dire che l'Avversario è collassato. Il tutto sta in <code>references/patto.md</code>, che a scala di
+collana è il <strong>patto delle quattro decisioni</strong>: cosa si delega, come si verifica, chi
+firma, con quale soglia ci si ferma.</p>
+
+<h2 id="script"><span class="num">06</span>Gli script: misurare, non giudicare</h2>
 
 <p>La divisione del lavoro che regge: <strong>lo script misura quello che si misura, il modello
 giudica quello che si giudica.</strong> Un controllo di note orfane non va chiesto al modello (le
@@ -344,13 +447,18 @@ conta male e costa); il tono di un racconto non va chiesto a uno script (non ce 
   </tr>
   <tr>
     <td><code>controlla_volume.py</code></td>
-    <td>manifest completo, prefissi-note che collidono, note orfane, <code>description:</code> mancante, spie di bozza nell'apparato</td>
-    <td>se quella frase è davvero fuori posto o è in voce</td>
+    <td>manifest completo, prefissi-note che collidono, note orfane, <code>description:</code> mancante, <strong>firma dell'autore assente</strong>, spie di bozza nell'apparato</td>
+    <td>se quella frase è davvero fuori posto o è in voce; se la firma è stata data <em>leggendo</em></td>
   </tr>
   <tr>
     <td><code>controlla_copertina.py</code></td>
     <td>formato, 2:3, risoluzione, peso, tetto di 3 MB dell'EPUB</td>
     <td>se la copertina è <em>quella giusta</em>: va guardata</td>
+  </tr>
+  <tr>
+    <td><code>personaggi.py</code></td>
+    <td>dove un nome compare davvero nei testi, nell'ordine della storia; righe mancanti nelle schede; morti che ricompaiono; ritratti scaduti</td>
+    <td>se «la navigatrice» è un personaggio; se un tratto è permanente o di scena</td>
   </tr>
 </table>
 
@@ -376,7 +484,7 @@ conta male e costa); il tono di un racconto non va chiesto a uno script (non ce 
   lanci, probabilmente stai misurando la cosa sbagliata.</strong></p>
 </div>
 
-<h2 id="agenti"><span class="num">06</span>Gli agenti: mandati, non ruoli</h2>
+<h2 id="agenti"><span class="num">07</span>Gli agenti: mandati, non ruoli</h2>
 
 <p>Un agente conviene quando c'è <strong>un mestiere intero</strong> da delegare, che legge molto e
 restituisce poco. Qui erano già scritti nel lavoro: le tre passate di revisione sono tre mestieri
@@ -422,17 +530,20 @@ diversi, e leggere i log è un quarto.</p>
   revisore produce testo riscritto da tre mani diverse.</li>
   <li><strong>Un formato di uscita fisso.</strong> «Bloccanti / da sistemare / effetti a catena / da
   aggiornare nel canone»: chi riceve il referto sa già dove guardare.</li>
+  <li><strong>Il contrario, obbligatorio.</strong> Il revisore di stile chiude argomentando perché la
+  scelta principale di voce o di tono poteva essere sbagliata: l'autore vede la strada che non ha
+  preso, e la scelta diventa sua invece di trovarsela fatta.</li>
   <li><strong>Il permesso di non sapere.</strong> «Se ti sembra sbagliato ma non hai la fonte,
   marcalo <code>[da verificare]</code>»: è la riga che evita i referti inventati.</li>
 </ul>
 
-<h2 id="registro"><span class="num">07</span>Il registro: una sola fonte di verità</h2>
+<h2 id="registro"><span class="num">08</span>Il registro: una sola fonte di verità</h2>
 
 <p>Sei collane, sei cartelle, sei convenzioni di nomi — e il sito che le ribattezza tutte. Il
 volume che sul disco si chiama <code>5-teste</code> produce <code>le_cinque_teste.epub</code> e
 online diventa <code>le-cinque-teste</code>.</p>
 
-<p>Questa conoscenza non va ripetuta in sette comandi e nove reference: va in
+<p>Questa conoscenza non va ripetuta in otto comandi e undici reference: va in
 <strong>un file di dati</strong>, <code>scripts/collane.json</code>, che gli script leggono e la
 prosa cita.</p>
 
@@ -450,7 +561,72 @@ prosa cita.</p>
 farà, perché il progetto cambia — lo si scopre subito: lo script dice «da pubblicare sul sito» per
 un libro che online c'è già.</p>
 
-<h2 id="costruire"><span class="num">08</span>Costruirne una: sette passi</h2>
+<h2 id="anagrafe"><span class="num">09</span>L'anagrafe: un registro che cambia nel tempo</h2>
+
+<p>Il registro delle collane è fermo: percorsi, slug, alias. Ma una collana contiene anche dati che
+<strong>cambiano lungo la storia</strong>: un personaggio si prende una cicatrice nel quinto libro,
+muore nel settimo, e un prequel lo rimette in scena prima di tutto questo. Chi deve disegnarlo, o
+scriverlo di nuovo, ha bisogno di sapere com'era <em>in quel punto</em>.</p>
+
+<p>Per questo il comando <code>/personaggi</code> tiene un'<strong>anagrafe</strong>: una scheda
+per personaggio nella collana (<code>assets/personaggi/</code>), con l'aspetto canonico — ogni tratto
+con la sua fonte <code>file:riga</code> — e una tabella d'evoluzione, una riga per racconto,
+nell'ordine della storia e non in quello di pubblicazione.</p>
+
+<figure>
+<svg viewBox="0 0 860 300" role="img" aria-label="Linea del tempo di un personaggio: apparizioni, cambio d'aspetto, ritratto valido, ritratto scaduto, morte e apparizione sospetta">
+  <text class="et" x="20" y="24" style="fill:var(--rosso)">ordine della storia (non di pubblicazione)</text>
+  <path class="linea" d="M40 110 H820"/>
+  <path class="linea" d="M812 104 l10 6 -10 6" fill="var(--bordo)"/>
+  <!-- racconti -->
+  <circle cx="80" cy="110" r="9" class="box"/><text class="et" x="58" y="140">prequel</text>
+  <circle cx="220" cy="110" r="9" class="box"/><text class="et" x="200" y="140">libro 1</text>
+  <circle cx="360" cy="110" r="9" class="box-r"/><text class="et" x="340" y="140">libro 2</text>
+  <circle cx="500" cy="110" r="9" class="box"/><text class="et" x="480" y="140">libro 3</text>
+  <circle cx="640" cy="110" r="9" class="box-r"/><text class="et" x="620" y="140">libro 4</text>
+  <circle cx="780" cy="110" r="9" class="box" stroke-dasharray="3 3"/><text class="et" x="760" y="140">libro 5</text>
+  <!-- annotazioni sopra -->
+  <text class="et" x="306" y="64">la cicatrice:</text>
+  <text class="et" x="306" y="80">l'aspetto cambia</text>
+  <path class="linea-r" d="M360 86 V100"/>
+  <text class="et" x="604" y="64" style="fill:var(--rosso)">† morto_in</text>
+  <path class="linea-r" d="M640 70 V100"/>
+  <text class="et" x="724" y="64" style="fill:var(--rosso)">ricompare?</text>
+  <text class="et" x="724" y="80">ricordo o errore</text>
+  <path class="linea-r" d="M780 86 V100" stroke-dasharray="3 3"/>
+  <!-- ritratto -->
+  <rect class="box" x="40" y="176" width="340" height="46" rx="8"/>
+  <text class="tit" x="56" y="198">ritratto valido a: libro 1</text>
+  <text class="et" x="56" y="214">senza cicatrice: giusto fino al libro 1</text>
+  <rect class="box-r" x="400" y="176" width="420" height="46" rx="8"/>
+  <text class="tit" x="416" y="198" style="fill:var(--rosso)">scaduto dal libro 2</text>
+  <text class="et" x="416" y="214">personaggi.py prompt lo dice prima di generare</text>
+  <!-- stile -->
+  <rect class="box" x="40" y="240" width="780" height="44" rx="8" stroke-dasharray="6 5"/>
+  <text class="et" x="56" y="260">ritratto = _stile.md della collana (contenitore comune, come le copertine)</text>
+  <text class="et" x="56" y="276">         + {SOGGETTO} della scheda (solo tratti con la fonte)</text>
+</svg>
+<figcaption>Quello che lo script vede su una linea del tempo: dove il nome compare, quando l'aspetto
+cambia, quando il ritratto scade, e chi ricompare dopo la morte.</figcaption>
+</figure>
+
+<p>Tre lezioni che valgono oltre questo caso:</p>
+<ul>
+  <li><strong>Lo stato si misura sui testi, non si dichiara.</strong> La scheda dice in quali
+  racconti compare un personaggio; lo script lo <em>conta</em> nei testi e segnala la differenza.
+  Un registro che nessuno confronta con la realtà invecchia in silenzio.</li>
+  <li><strong>Il tempo del dato non è quello del file.</strong> «Scaduto» non vuol dire «modificato
+  da molto»: vuol dire che nella <em>storia</em> l'aspetto è cambiato dopo il punto per cui il
+  prompt era stato scritto. Per capirlo lo script ha bisogno dell'ordine cronologico, che sta nel
+  registro (<code>ordine_volumi</code>).</li>
+  <li><strong>Lo script scrive solo dove non può fare danni.</strong> <code>nuovo</code> crea uno
+  scheletro con le righe già al loro posto e i <code>?</code> da riempire leggendo — e non
+  sovrascrive mai; <code>indice</code> rigenera un file dichiarato generato. Le schede vere le
+  propone l'agente <code>anagrafe</code> e le approva l'autore: è canone di dettaglio, e il
+  baricentro del patto sta sull'Editore.</li>
+</ul>
+
+<h2 id="costruire"><span class="num">10</span>Costruirne una: otto passi</h2>
 
 <ol>
   <li><strong>Censire il lavoro vero, non immaginarlo.</strong> Qui: sei <code>CLAUDE.md</code>, le
@@ -468,11 +644,14 @@ un libro che online c'è già.</p>
   legittimamente del suo tavolo).</li>
   <li><strong>Scrivere i comandi per ultimi.</strong> Sono la superficie: si scrivono bene solo
   quando sotto c'è qualcosa. Generarli da un template con i dati per caso evita sei divergenze.</li>
+  <li><strong>Scrivere il patto.</strong> Che cosa si delega al modello e che cosa no, come si
+  verifica, chi firma, con quale soglia ci si ferma — e il cancello che lo fa rispettare. Va scritto
+  prima di usare la skill sul serio: la firma costruita dopo è razionalizzazione.</li>
   <li><strong>Dichiarare che cosa resta fuori.</strong> La skill non possiede la verità del
   progetto: la indica. È la differenza fra uno strumento che invecchia e uno che accompagna.</li>
 </ol>
 
-<h2 id="trappole"><span class="num">09</span>Trappole</h2>
+<h2 id="trappole"><span class="num">11</span>Trappole</h2>
 
 <table>
   <tr><th>trappola</th><th>sintomo</th><th>rimedio</th></tr>
@@ -481,10 +660,14 @@ un libro che online c'è già.</p>
   <tr><td>Script che giudicano</td><td>falsi positivi presi per verità</td><td>misurare; il giudizio resta al modello, e lo script lo dice</td></tr>
   <tr><td>Dati duplicati nella prosa</td><td>un percorso corretto in tre file su cinque</td><td>un registro, citato</td></tr>
   <tr><td>Agenti-ruolo</td><td>referti generici, complimenti</td><td>mandato, formato d'uscita, strumenti minimi</td></tr>
+  <tr><td>Avversario delegato a sé stesso</td><td>tre revisioni pulite prese per «testo buono»</td><td>referti come materiale per l'autore; il contrario; nessun bloccante = anomalia</td></tr>
+  <tr><td>Firma implicita</td><td>il testo va in build perché nessuno l'ha fermato</td><td>un campo di firma che il modello non scrive, e uno script che blocca senza</td></tr>
+  <tr><td>Registro che non si confronta coi dati</td><td>schede ordinate e sbagliate: il personaggio è cambiato e nessuno l'ha visto</td><td>uno script che conta sui testi e segnala la differenza</td></tr>
+  <tr><td>Rigore uguale per tutto</td><td>stanchezza e abbandono del metodo, o firme per stanchezza</td><td>baricentro dichiarato per classe di output</td></tr>
   <tr><td>Nessun cancello umano</td><td>il lavoro procede oltre il punto in cui serviva una persona</td><td>scriverlo, ripeterlo, farlo fallire</td></tr>
 </table>
 
-<h2 id="installare"><span class="num">10</span>Installare e distribuire</h2>
+<h2 id="installare"><span class="num">12</span>Installare e distribuire</h2>
 
 <p>La struttura minima perché una cartella sia un plugin installabile:</p>
 

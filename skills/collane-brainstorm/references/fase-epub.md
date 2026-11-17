@@ -11,7 +11,8 @@ python3 ${CLAUDE_PLUGIN_ROOT}/scripts/controlla_copertina.py heroes taglie-di-lo
 ```
 
 Controlla: manifest completo, prefissi-note univoci, **note orfane**, note definite e mai
-richiamate, `meta.yaml` con `title` e `description`, copertina presente, e le spie di bozza in
+richiamate, `meta.yaml` con `title`, `description` e **`firmato:`** (la firma dell'autore: se
+manca, non si builda e non la scrivi tu), copertina presente, e le spie di bozza in
 `front.md` / `timeline.md`.
 
 **Gli avvisi su front/timeline vanno letti uno per uno.** Quei due file **entrano nell'EPUB**: un
@@ -53,7 +54,9 @@ Lo script stampa già il suo check (cover presente, voci d'indice, note orfane).
 
 - **Niente DOCX, niente PDF**: le collane sono EPUB + Markdown. I PDF sono dei fascicoli da tavolo,
   che è un'altra cosa (`fase-fascicolo.md`).
-- **Niente build prima della copertina.**
+- **Niente build prima della copertina, e niente copertina prima della firma.**
+- **Volumi già pubblicati prima del patto** non hanno `firmato:`: al prossimo rebuild l'autore li
+  rilegge e li firma. Non aggiungere il campo in blocco per far passare il controllo.
 - **Niente copia del racconto dentro il volume**: il manifest lo referenzia, sempre.
 
 ## Casi già visti

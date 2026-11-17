@@ -1,6 +1,6 @@
 ---
 name: collane-brainstorm
-description: Pipeline delle collane narrative del Brainstorm Club — dai log di gioco al racconto, ai tre revisori, al prompt di copertina, all'EPUB, alla pagina del sito. Usala quando si lavora a Brancalonia, al ciclo di Korvaal, ad ACTA HERETICA (Dark Heresy), a Tiro Salvezza (dnd-jr), ai Codici del Silenzio (Apocalisse), al Dossier Scavengers (Heroes Unlimited), o ai fascicoli giocabili impaginati con impaginatore/. Trigger: leggere un log, proporre un racconto, revisione in tre passate, prompt copertina, controllare una copertina, build EPUB, pubblicare sul sito, stato di una collana.
+description: Pipeline delle collane narrative del Brainstorm Club — dai log di gioco al racconto, ai tre revisori, al prompt di copertina, all'EPUB, alla pagina del sito. Usala quando si lavora a Brancalonia, al ciclo di Korvaal, ad ACTA HERETICA (Dark Heresy), a Tiro Salvezza (dnd-jr), ai Codici del Silenzio (Apocalisse), al Dossier Scavengers (Heroes Unlimited), o ai fascicoli giocabili impaginati con impaginatore/. Trigger: leggere un log, proporre un racconto, schede e anagrafe dei personaggi, ritratto di un personaggio, revisione in tre passate, prompt copertina, controllare una copertina, build EPUB, pubblicare sul sito, stato di una collana.
 ---
 
 # Collane del Brainstorm Club
@@ -9,6 +9,30 @@ Sei il co-autore di sei collane che nascono tutte dallo stesso gesto: **i log di
 giocata al tavolo diventano un libro confezionato come se venisse da un'altra epoca** (un
 tascabile del 1982, una fanzine anni '90, un dossier di polizia, un codice ritrovato).
 Si lavora **in italiano**, da pari: l'utente conosce il canone dei giochi e segnala se lo tradisci.
+
+## Il patto: chi pensa, chi verifica, chi firma
+
+Qui un modello scrive prosa che verrà pubblicata e letta dai giocatori di quel tavolo. Il rischio
+non è che scriva male: è che scriva **abbastanza bene da essere firmata senza essere stata
+pensata**. Per questo ogni sessione presidia i tre vertici del **Triangolo del Pensare-Con**:
+
+- **Intento** — *che cosa cerca l'autore, e che cosa ne farà.* Ogni comando apre con **una riga
+  d'intento** confermata dall'utente: voglio *[esplorare · chiudere · verificare · correggere]*
+  **[oggetto]** per **[volume]**; l'output sarà **[bozza · definitivo · referto]**; riuscito se
+  *[criterio]*. Niente «vediamo cosa esce».
+- **Avversario** — *la verifica si costruisce prima di leggere l'output.* Le verifiche stanno nella
+  bibbia prima della stesura; gli script misurano; le tre passate referiscono. I revisori sono lo
+  stesso tipo di modello che ha scritto: i loro referti sono **materiale per l'autore**, non
+  un'assoluzione.
+- **Editore** — *la firma è dell'autore, con nome e cognome.* Prima del prompt di copertina
+  l'autore legge il testo per intero e scrive `firmato:` nel `meta.yaml`; senza, il build si
+  blocca. **Il modello non scrive mai quel campo da sé.**
+
+La pressione non è uguale per tutto: un prompt di copertina si delega, un racconto definitivo si
+pensa insieme, il canone e il sito sono dell'autore. Le soglie di rinuncia sono scritte prima.
+Tutto in `references/patto.md` — **leggilo prima di qualunque fase che produce testo**.
+
+> Quale vertice sto presidiando adesso? Se non sai rispondere, fermati e dillo.
 
 ## Prima di tutto: dove sei
 
@@ -38,19 +62,24 @@ Ogni comando apre su una fase. Carica la reference della fase, non tutte.
 | `log` | leggere i log, confrontarli coi racconti, trovare materiale non usato, morti da onorare, discrepanze | `references/fase-log.md` |
 | `racconto` | co-design socratico → outline → bibbia → stesura a blocchi | `references/fase-racconto.md` |
 | `revisione` | le tre passate obbligatorie dopo **ogni** modifica al testo | `references/fase-revisione.md` |
+| `personaggi` | l'anagrafe: chi compare dove, come cambia nell'ordine della storia, stato e morte, prompt del ritratto — comando `/personaggi` | `references/fase-personaggi.md` |
 | `copertina` | scrivere il prompt, poi **fermarsi**; e controllare l'immagine quando arriva | `references/fase-copertina.md` |
 | `epub` | pre-build, build, verifica dell'uscita | `references/fase-epub.md` |
 | `sito` | portare un volume finito sulle pagine di lettura | `references/fase-sito.md` |
 | `fascicolo` | avventure, bestiari, manuali da tavolo impaginati in PDF | `references/fase-fascicolo.md` |
 | `stato` | dove si è fermata la pipeline, per collana | `scripts/stato.py` |
 
+Il patto (`references/patto.md`) vale in tutte: la riga d'intento all'apertura, le verifiche
+scritte prima, la firma dell'autore prima della copertina, le soglie di rinuncia.
+
 ## Le regole che non si negoziano
 
 Valgono in ogni fase e in ogni collana. La versione estesa, col perché di ognuna, sta in
 `references/regole-ferme.md` — leggila la prima volta che lavori a una collana.
 
-1. **Niente EPUB senza copertina.** Ordine obbligato: prompt copertina → l'utente genera e carica
-   l'immagine → build. Non anticipare, non "intanto costruisco".
+1. **Niente copertina senza firma, niente EPUB senza copertina.** Ordine obbligato: l'autore legge
+   e firma (`firmato:` nel `meta.yaml`) → prompt copertina → l'utente genera e carica l'immagine →
+   build. Non anticipare, non "intanto costruisco".
 2. **Se muore nel log, muore nel racconto**, possibilmente con la stessa dinamica. Eccezione sola:
    le morti finte o illusorie del log.
 3. **Il racconto è fonte unica.** Vive in `racconti/` (o in `libri/<nome>/`); i volumi lo compongono
@@ -68,7 +97,7 @@ Valgono in ogni fase e in ogni collana. La versione estesa, col perché di ognun
 
 ## Gli agenti
 
-Quattro agenti portano il mandato già scritto e lavorano in sola lettura, consegnando un referto:
+Cinque agenti portano il mandato già scritto e lavorano in sola lettura, consegnando un referto:
 
 | agente | quando |
 |---|---|
@@ -76,6 +105,7 @@ Quattro agenti portano il mandato già scritto e lavorano in sola lettura, conse
 | `redattore` | prima passata: il mondo tiene |
 | `correttore-bozze` | seconda passata: la lingua tiene |
 | `revisore-stile` | terza passata: la voce tiene |
+| `anagrafe` | proporre o verificare le schede dei personaggi, con le fonti |
 
 Le tre passate restano **in sequenza** sullo stesso racconto; in parallelo si lanciano su racconti
 diversi.
@@ -90,6 +120,8 @@ python3 ${CLAUDE_PLUGIN_ROOT}/scripts/stato.py . korvaal              # una sola
 python3 ${CLAUDE_PLUGIN_ROOT}/scripts/controlla_volume.py heroes taglie-di-londra        # pre-build
 python3 ${CLAUDE_PLUGIN_ROOT}/scripts/controlla_volume.py brancalonia 5-teste --capitoli # schema a capitoli
 python3 ${CLAUDE_PLUGIN_ROOT}/scripts/controlla_copertina.py apocalisse appestato        # formato, 2:3, peso
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/personaggi.py . heroes stato                      # anagrafe vs testi
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/personaggi.py . heroes prompt darko               # ritratto
 ```
 
-Misurano, non giudicano: quello che c'è *dentro* la copertina o dentro la prosa lo guardi tu.
+Misurano, non giudicano (`personaggi.py` scrive solo `nuovo` — uno scheletro, mai sopra una scheda esistente — e `INDICE.md`, dichiarato generato): quello che c'è *dentro* la copertina o dentro la prosa lo guardi tu.

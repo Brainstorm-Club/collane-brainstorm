@@ -1,12 +1,15 @@
 # Fase `copertina` — il prompt, l'attesa, il controllo
 
-**La copertina è parte della confezione quanto il testo.** Un EPUB senza copertina non si costruisce
+**La copertina è parte della confezione quanto il testo.** Ed è la classe di output con il
+baricentro più leggero (`patto.md` §4): si rigenera, quindi si itera liberamente — la verifica è
+guardare l'immagine. Un EPUB senza copertina non si costruisce
 (la regola 1), e la copertina non si improvvisa: prima si scrive il prompt, poi l'immagine la genera
 e la carica **l'utente**.
 
 ## 1. Il prompt
 
-Si scrive quando il racconto (o il volume) è **completo e revisionato**, in
+Si scrive quando il racconto (o il volume) è **completo, revisionato e firmato** dall'autore
+(`firmato:` nel `meta.yaml`, vedi `patto.md` §3) — se la firma manca, fermati e chiedila. Va in
 `copertine/prompt-copertina-<vol>.md` — in Brancalonia `copertine/prompt-libro-<nome>.md`.
 
 Il file non è solo il prompt: è il **documento di continuità della collana**. Struttura che

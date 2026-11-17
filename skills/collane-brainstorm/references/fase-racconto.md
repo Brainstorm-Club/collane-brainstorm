@@ -1,6 +1,8 @@
 # Fase `racconto` — dal log alla prosa
 
-Dieci passi, nell'ordine. I primi tre si fanno **con l'utente**, non per l'utente.
+Undici passi, nell'ordine. I primi tre si fanno **con l'utente**, non per l'utente, e il nono lo
+fa **solo** l'utente. Prima di cominciare: la riga d'intento (`patto.md` §1) — esplorare o chiudere?
+bozza o definitivo?
 
 ## 1. Co-design socratico
 
@@ -39,7 +41,10 @@ rischia, dove il log è contraddittorio). **Da approvare prima di scrivere.**
 ## 4. Bibbia del racconto
 
 `racconti/<nome>.bibbia.md` (o `libri/<nome>/bibbia_narrativa.md`): voce, baricentro,
-semi e riscossioni, vincoli di canone, morti da onorare. È il file che permette a un'altra sessione
+semi e riscossioni, vincoli di canone, morti da onorare — e una sezione **«Verifiche»** scritta
+**prima** della stesura: le ancore di fatto e di canone che il testo deve rispettare, l'orizzonte di
+conoscenza della voce, la soglia di rinuncia di questo racconto. È il vertice Avversario del patto
+(`patto.md` §2): la verifica costruita dopo cerca solo conferme. È il file che permette a un'altra sessione
 di riprendere il lavoro senza rileggere tutto.
 
 ## 5. Stesura a blocchi
@@ -49,7 +54,10 @@ Il testo in `racconti/<nome>.md`: capitoli come `##`, stacchi di scena `---`, no
 `libri/<nome>/NN_nome.md`.
 
 Si scrive a blocchi e si mostra a blocchi. Un racconto intero riversato tutto insieme non si può
-correggere.
+correggere — e non si può firmare.
+
+Le soglie di rinuncia valgono durante la stesura: se dopo tre blocchi il racconto non ha ancora il
+suo baricentro, ci si ferma e si torna al co-design (`patto.md` §4).
 
 ## 6. Lunghezza
 
@@ -70,11 +78,26 @@ Quando il racconto cambia lo stato di qualcuno o qualcosa (morti, mutilazioni, e
 patti, catture, oggetti), **aggiorna `assets/canone_serie.md`** e verifica a catena i racconti
 **cronologicamente successivi** e i volumi che li contengono.
 
-## 9. Confezione
+## 8b. L'anagrafe dei personaggi
+
+Le schede dei personaggi che compaiono nel racconto vanno allineate prima della firma
+(`/personaggi <collana> aggiorna`): `personaggi.py stato` dice quali righe mancano e se un morto
+ricompare. È un controllo di coerenza in più, e tiene i ritratti aggiornati.
+
+## 9. La firma dell'autore
+
+Prima della confezione, l'autore **legge il racconto per intero** e lo fa suo: riscrive a mano
+almeno un passaggio, sa dire che cosa avrebbe scritto senza il modello, risponde delle scelte.
+Poi scrive `firmato: "Nome Cognome, AAAA-MM-GG"` nel `meta.yaml` del volume.
+
+**Quel campo non lo scrivi tu**, nemmeno se ti chiedono di «sistemare il meta». Senza firma
+`controlla_volume.py` blocca il build. È il vertice Editore (`patto.md` §3).
+
+## 10. Confezione
 
 Poi si passa al prompt copertina (`fase-copertina.md`) e **ci si ferma**.
 
-## 10. Volumi
+## 11. Volumi
 
 Aggiungi il racconto ai `manifest.txt` pertinenti con un **prefisso-note** univoco nel volume
 (2–3 lettere), aggiorna `front.md` (indice) e `timeline.md`, e solo allora builda.

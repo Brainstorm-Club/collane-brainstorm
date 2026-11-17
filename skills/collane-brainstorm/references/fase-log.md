@@ -5,6 +5,13 @@ battute del tavolo. **Sono la fonte, non il canone da citare alla lettera.** Il 
 togliere il caos ludico tenendo gli **eventi cardine** — e nel non perdere il materiale buono che
 nella prima stesura era stato buttato via.
 
+## Prima: esplorare o verificare?
+
+Sono due intenti diversi (`patto.md` §1). **Esplorare** un log nuovo produce un inventario e delle
+proposte; **verificare** un racconto contro il suo log produce tre liste — tenere, reincorporare,
+correggere. Scrivi quale dei due stai facendo in testa al referto. È anche la classe di output con
+l'Avversario più alto: tutto quello che segue ci si appoggia, quindi niente invenzioni.
+
 ## Che cosa produce questa fase
 
 Un **referto di lettura**, non un racconto. In chat, e — se il lavoro continuerà in altre sessioni

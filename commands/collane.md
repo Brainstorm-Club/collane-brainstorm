@@ -20,5 +20,6 @@ argument-hint: "[collana] (brancalonia|korvaal|dark-heresy|dnd-jr|apocalisse|her
 I comandi per lavorare davvero sono uno per collana:
 `/brancalonia` · `/korvaal` · `/dark-heresy` · `/dnd-jr` · `/apocalisse` · `/heroes`,
 ognuno con una fase: `log`, `racconto`, `revisione`, `copertina`, `epub`, `sito`, `fascicolo`, `stato`.
+Per i personaggi di una collana: `/personaggi <collana>`.
 
 Ricorda: il sito si carica **via FTP a mano, dall'utente**. Una build non è una pubblicazione.

@@ -1,7 +1,7 @@
 {
   "name": "collane-brainstorm",
   "description": "Pipeline delle collane narrative del Brainstorm Club: dai log di gioco al racconto, alla copertina, all'EPUB, al sito. Un comando per ogni campagna.",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "author": {
     "name": "Brainstorm Club"
   },

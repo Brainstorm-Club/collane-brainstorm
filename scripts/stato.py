@@ -6,11 +6,14 @@
 Per ogni volume dice dove si è fermato il lavoro — prompt copertina, copertina,
 EPUB, pubblicazione sul sito — e se l'EPUB è più vecchio delle sue fonti (cioè
 va ricostruito). I log senza racconto sono materiale non ancora usato.
+Un volume senza `firmato:` nel meta.yaml è un testo che l'autore non ha ancora
+fatto suo: finché manca, la pipeline si ferma lì.
 
 Non modifica niente. Legge collane.json, che sta accanto a questo script.
 """
 import json
 import os
+import re
 import sys
 
 QUI = os.path.dirname(os.path.abspath(__file__))
@@ -88,7 +91,13 @@ def stato_collana(radice, chiave, c):
                                       f"{c['prefisso_sito']}{slug_sito}.epub")
             t_pub = mtime(pubblicato)
 
-        if not cover and not prompt:
+        meta = os.path.join(vdir, "meta.yaml")
+        firmato = os.path.isfile(meta) and bool(re.search(
+            r"^firmato:\s*[\"']?[^\"'\s]", open(meta, encoding="utf-8").read(), re.M))
+
+        if not t_epub and not firmato:
+            passo = "testo da leggere e firmare (firmato: nel meta.yaml)"
+        elif not cover and not prompt:
             passo = "da scrivere il prompt copertina"
         elif not cover:
             passo = "in attesa della copertina dall'utente"
@@ -106,6 +115,8 @@ def stato_collana(radice, chiave, c):
             passo = "allineato"
 
         peso = f" {os.path.getsize(epub)/1024/1024:.1f} MB" if t_epub else ""
+        if t_epub and not firmato:
+            peso += " · non firmato"
         print(f"   · {v:<28} {passo}{peso}")
 
     orfani = [r for r in racconti if r not in usati]

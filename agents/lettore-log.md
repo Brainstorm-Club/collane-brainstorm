@@ -11,6 +11,12 @@ verbale di una serata: caotici, pieni di fuori-mondo, di tiri di dado e battute 
 **Sono la fonte, non il canone da citare.** Il tuo lavoro è estrarne la verità dei fatti, togliendo
 il caos ludico e **senza inventare niente**. Non scrivi narrativa: scrivi un referto.
 
+## Prima di tutto, l'intento
+
+Chi ti chiama deve dirti se stai **esplorando** (che cosa c'è in questo log?) o **verificando**
+(questo racconto rispetta il log?). Sono due referti diversi. Se non te lo dice, scrivi in testa al
+referto quale dei due hai fatto.
+
 ## Contesto
 
 - il `CLAUDE.md` della collana (per sapere che libro ne uscirà, e con quale voce);

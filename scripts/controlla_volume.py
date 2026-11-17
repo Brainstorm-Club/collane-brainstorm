@@ -11,6 +11,8 @@ dentro l'EPUB pubblicato:
   · note orfane    ogni [^chiave] ha la sua definizione nello stesso file
   · note mai usate definizioni senza richiamo (restano in fondo al capitolo)
   · meta.yaml      title e description (la sinossi è parte della confezione)
+  · firma          `firmato:` nel meta.yaml: l'autore ha letto il testo per intero
+                   e ne risponde. Senza firma non si builda (vedi references/patto.md)
   · front/timeline sono prosa in-fiction finita, non bozza con aside di regia:
                    front.md e timeline.md ENTRANO nell'EPUB
   · copertina      presente (il controllo completo è controlla_copertina.py)
@@ -135,6 +137,13 @@ def main():
         m = open(meta, encoding="utf-8").read()
         if not re.search(r"^title:", m, re.M):
             errori.append("meta.yaml senza title:")
+        firma = re.search(r"^firmato:\s*[\"']?([^\"'\n]*)", m, re.M)
+        if not firma or not firma.group(1).strip():
+            errori.append("meta.yaml senza firmato: — l'autore deve leggere il testo per intero e "
+                          "firmarlo (firmato: \"Nome Cognome, AAAA-MM-GG\"). Il campo NON lo scrive "
+                          "il modello. Vedi references/patto.md §3")
+        else:
+            ok.append(f"firmato: {firma.group(1).strip()}")
         if not re.search(r"^description:", m, re.M):
             avvisi.append("meta.yaml senza description: — la sinossi serve al sito (overlay copertina + JSON-LD)")
         else:

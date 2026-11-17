@@ -50,7 +50,17 @@
           "epub": "la_rosa_davorio",
           "sito": "la-rosa-davorio"
         }
-      }
+      },
+      "ordine_volumi": [
+        "rosaspina",
+        "burattinaio",
+        "cinghiali",
+        "zitellone",
+        "5-teste",
+        "grigione",
+        "castellammare",
+        "rosa-davorio"
+      ]
     },
     "korvaal": {
       "progetto": "roguetrader/ciclo-korvaal",
@@ -74,7 +84,10 @@
           "sito": "omnibus",
           "nota": "EPUB sì, pagina web no: ripeterebbe i racconti degli altri volumi"
         }
-      }
+      },
+      "ordine_volumi": [
+        "omnibus"
+      ]
     },
     "dark-heresy": {
       "progetto": "roguetrader/dark-heresy",
@@ -97,7 +110,14 @@
           "epub": "eredita-haarlock",
           "sito": null
         }
-      }
+      },
+      "ordine_volumi": [
+        "miniera",
+        "relitto",
+        "carnevale",
+        "cospirazione",
+        "segreto"
+      ]
     },
     "dnd-jr": {
       "progetto": "dnd-jr",
@@ -121,7 +141,14 @@
           "sito": null,
           "nota": "sospeso"
         }
-      }
+      },
+      "ordine_volumi": [
+        "talabec",
+        "torre",
+        "principe",
+        "diplomazia",
+        "invasione"
+      ]
     },
     "apocalisse": {
       "progetto": "apocalisse",
@@ -144,7 +171,12 @@
           "epub": "ronan-di-kimmeria",
           "sito": "ronan"
         }
-      }
+      },
+      "ordine_volumi": [
+        "appestato",
+        "ronan-di-kimmeria",
+        "tolomeo"
+      ]
     },
     "heroes": {
       "progetto": "heroes",
@@ -168,7 +200,12 @@
           "sito": null,
           "nota": "omnibus sospeso"
         }
-      }
+      },
+      "ordine_volumi": [
+        "taglie-di-londra",
+        "la-caccia-ai-cinque",
+        "il-panfilo"
+      ]
     }
   },
   "sito": {
@@ -179,5 +216,6 @@
     "home": "sito/index.html",
     "deploy": "FTP a mano, fatto dall'utente: una build non è una pubblicazione"
   },
-  "_alias": "alias: per i volumi il cui file EPUB o il cui slug sul sito non coincide col nome della cartella. sito=null → quel volume non va pubblicato come pagina web."
+  "_alias": "alias: per i volumi il cui file EPUB o il cui slug sul sito non coincide col nome della cartella. sito=null → quel volume non va pubblicato come pagina web.",
+  "_ordine": "ordine_volumi: i volumi (o i libri, schema capitoli) nell'ordine CRONOLOGICO della storia, lo stesso del sito. personaggi.py ne espande i manifest per sapere in che ordine leggere i racconti. Per Korvaal basta l'omnibus, che è già cronologico."
 }
