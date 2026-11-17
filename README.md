@@ -1,5 +1,7 @@
 # collane-brainstorm
 
+**Manuale online:** <https://brainstorm-club.github.io/collane-brainstorm/>
+
 Plugin per Claude Code che impacchetta il modo in cui al **Brainstorm Club** si trasformano i log
 di una campagna in un libro confezionato: **log → racconto → tre revisori → firma dell'autore →
 copertina → EPUB → sito**. Un comando per ogni campagna, più gli script che fanno i controlli che prima si facevano a
@@ -71,7 +73,7 @@ plugin-collane/
 │   ├── SKILL.md       il registro delle collane, le fasi, le regole ferme
 │   └── references/    una reference per fase (personaggi compresa) + patto.md + giochi.md + regole-ferme.md
 ├── agents/            lettore-log · redattore · correttore-bozze · revisore-stile · anagrafe
-├── docs/manuale.html  come è fatto questo plugin, e come se ne costruisce uno
+├── docs/index.html  come è fatto questo plugin, e come se ne costruisce uno
 └── scripts/
     ├── collane.json            registro delle collane (percorsi, slug, alias dei nomi file)
     ├── stato.py                panoramica della pipeline
@@ -126,7 +128,7 @@ luce, *Avoid*, con il segnaposto `{SOGGETTO}`), la scheda porta solo il soggetto
 
 ## Il manuale
 
-[`docs/manuale.html`](docs/manuale.html) — come è fatto questo plugin e che cosa se ne impara per
+[`docs/index.html`](docs/index.html) — come è fatto questo plugin e che cosa se ne impara per
 costruirne uno: i cinque pezzi, i tre livelli di contesto, i cancelli del flusso, il Triangolo del
 Pensare-Con dentro la pipeline, la divisione fra
 quel che misura uno script e quel che giudica il modello, gli agenti come mandati. Con i diagrammi.
@@ -159,7 +161,7 @@ In alternativa, senza plugin: copiare `skills/collane-brainstorm/` in `~/.claude
 Il plugin è scritto per le sei collane del club, ma la struttura è riusabile: le collane stanno
 tutte in `scripts/collane.json` e nella tabella di `SKILL.md`. Per adattarlo a un altro tavolo si
 riscrive il registro, `references/giochi.md` e i comandi; gli script, le fasi e gli agenti restano.
-Il [manuale](docs/manuale.html) spiega perché è fatto così.
+Il [manuale](docs/index.html) spiega perché è fatto così.
 
 ## Che cosa dà per scontato
 
