@@ -137,13 +137,14 @@ def main():
         m = open(meta, encoding="utf-8").read()
         if not re.search(r"^title:", m, re.M):
             errori.append("meta.yaml senza title:")
-        firma = re.search(r"^firmato:\s*[\"']?([^\"'\n]*)", m, re.M)
-        if not firma or not firma.group(1).strip():
+        firma = re.search(r"^firmato:[ \t]*(.*)$", m, re.M)
+        valore = firma.group(1).strip().strip("\"'").strip() if firma else ""
+        if not valore:
             errori.append("meta.yaml senza firmato: — l'autore deve leggere il testo per intero e "
                           "firmarlo (firmato: \"Nome Cognome, AAAA-MM-GG\"). Il campo NON lo scrive "
                           "il modello. Vedi references/patto.md §3")
         else:
-            ok.append(f"firmato: {firma.group(1).strip()}")
+            ok.append(f"firmato: {valore}")
         if not re.search(r"^description:", m, re.M):
             avvisi.append("meta.yaml senza description: — la sinossi serve al sito (overlay copertina + JSON-LD)")
         else:
