@@ -130,7 +130,7 @@
       "voce": "narratore unico — il Master, «Ozymandias il Grande»",
       "confezione": "fanzine di GdR dei primi anni '90",
       "prompt_copertina": "copertine/prompt-copertina-<vol>.md",
-      "copertina": "copertine/<vol>.png",
+      "copertina": "copertine/<vol>.jpg|.png",
       "build": "bash build_epub.sh <vol>",
       "log": "log/NN.md",
       "brief": "assets/PROMPT_nuovi_racconti.md",
@@ -147,7 +147,9 @@
         "torre",
         "principe",
         "diplomazia",
-        "invasione"
+        "invasione",
+        "bosco",
+        "vecchi"
       ]
     },
     "apocalisse": {
