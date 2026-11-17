@@ -38,12 +38,12 @@ Tutto in `references/patto.md` — **leggilo prima di qualunque fase che produce
 
 | comando | collana | cartella | voce | schema |
 |---|---|---|---|---|
-| `/brancalonia` | Regno di Taglia | `brancalonia/` | narratore unico, Nanoc Orabrabli | capitoli |
-| `/korvaal` | Il ciclo di Korvaal | `roguetrader/ciclo-korvaal/` | polifonia, una voce solista per racconto | volumi |
-| `/dark-heresy` | ACTA HERETICA | `roguetrader/dark-heresy/` | verbale di Eruditus + deposizioni | volumi |
-| `/dnd-jr` | Tiro Salvezza | `dnd-jr/` | il Master, «Ozymandias il Grande» | volumi |
-| `/apocalisse` | Terre Desolate (Codici del Silenzio) | `apocalisse/` | polifonia + cornice dell'Archivista | volumi |
-| `/heroes` | Dossier Scavengers | `heroes/` | referto dell'Analista + deposizioni | volumi |
+| `/brainstormclub:brancalonia` | Regno di Taglia | `brancalonia/` | narratore unico, Nanoc Orabrabli | capitoli |
+| `/brainstormclub:korvaal` | Il ciclo di Korvaal | `roguetrader/ciclo-korvaal/` | polifonia, una voce solista per racconto | volumi |
+| `/brainstormclub:dark-heresy` | ACTA HERETICA | `roguetrader/dark-heresy/` | verbale di Eruditus + deposizioni | volumi |
+| `/brainstormclub:dnd-jr` | Tiro Salvezza | `dnd-jr/` | il Master, «Ozymandias il Grande» | volumi |
+| `/brainstormclub:apocalisse` | Terre Desolate (Codici del Silenzio) | `apocalisse/` | polifonia + cornice dell'Archivista | volumi |
+| `/brainstormclub:heroes` | Dossier Scavengers | `heroes/` | referto dell'Analista + deposizioni | volumi |
 
 Il `CLAUDE.md` di ogni cartella è **l'autorità** su voce, tono, confezione e stato del ciclo: leggilo
 sempre all'inizio, insieme a `assets/PROMPT_nuovi_racconti.md` e `assets/canone_serie.md`. Questa
@@ -62,7 +62,7 @@ Ogni comando apre su una fase. Carica la reference della fase, non tutte.
 | `log` | leggere i log, confrontarli coi racconti, trovare materiale non usato, morti da onorare, discrepanze | `references/fase-log.md` |
 | `racconto` | co-design socratico → outline → bibbia → stesura a blocchi | `references/fase-racconto.md` |
 | `revisione` | le tre passate obbligatorie dopo **ogni** modifica al testo | `references/fase-revisione.md` |
-| `personaggi` | l'anagrafe: chi compare dove, come cambia nell'ordine della storia, stato e morte, prompt del ritratto — comando `/personaggi` | `references/fase-personaggi.md` |
+| `personaggi` | l'anagrafe: chi compare dove, come cambia nell'ordine della storia, stato e morte, prompt del ritratto — comando `/brainstormclub:personaggi` | `references/fase-personaggi.md` |
 | `copertina` | scrivere il prompt, poi **fermarsi**; e controllare l'immagine quando arriva | `references/fase-copertina.md` |
 | `epub` | pre-build, build, verifica dell'uscita | `references/fase-epub.md` |
 | `sito` | portare un volume finito sulle pagine di lettura | `references/fase-sito.md` |

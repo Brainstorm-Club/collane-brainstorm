@@ -1,4 +1,4 @@
-# collane-brainstorm
+# collane-brainstorm — plugin `brainstormclub`
 
 **Manuale online:** <https://brainstorm-club.github.io/collane-brainstorm/>
 
@@ -6,6 +6,8 @@ Plugin per Claude Code che impacchetta il modo in cui al **Brainstorm Club** si 
 di una campagna in un libro confezionato: **log → racconto → tre revisori → firma dell'autore →
 copertina → EPUB → sito**. Un comando per ogni campagna, più gli script che fanno i controlli che prima si facevano a
 occhio (e che ogni tanto saltavano).
+
+Tutti i comandi hanno il prefisso comune **`/brainstormclub:`** (il nome del plugin): `/brainstormclub:korvaal stato`, `/brainstormclub:personaggi dnd-jr censisci`.
 
 ## Il patto: chi pensa, chi verifica, chi firma
 
@@ -30,26 +32,26 @@ Tutto in [`references/patto.md`](skills/collane-brainstorm/references/patto.md).
 
 | comando | collana | gioco |
 |---|---|---|
-| `/collane` | tutte | panoramica e prossima mossa |
-| `/brancalonia` | Regno di Taglia | Brancalonia (Acheron Games) |
-| `/korvaal` | Il ciclo di Korvaal | Rogue Trader (W40K) |
-| `/dark-heresy` | ACTA HERETICA | Dark Heresy (Settore Calixis) |
-| `/dnd-jr` | Tiro Salvezza | D&D 5e nel Vecchio Mondo di Warhammer |
-| `/apocalisse` | Terre Desolate | Apocalisse (Acheron) |
-| `/heroes` | Dossier Scavengers | Heroes Unlimited (Palladium) |
-| `/personaggi` | una a scelta | l'anagrafe dei personaggi: evoluzione nei libri e ritratti |
+| `/brainstormclub:collane` | tutte | panoramica e prossima mossa |
+| `/brainstormclub:brancalonia` | Regno di Taglia | Brancalonia (Acheron Games) |
+| `/brainstormclub:korvaal` | Il ciclo di Korvaal | Rogue Trader (W40K) |
+| `/brainstormclub:dark-heresy` | ACTA HERETICA | Dark Heresy (Settore Calixis) |
+| `/brainstormclub:dnd-jr` | Tiro Salvezza | D&D 5e nel Vecchio Mondo di Warhammer |
+| `/brainstormclub:apocalisse` | Terre Desolate | Apocalisse (Acheron) |
+| `/brainstormclub:heroes` | Dossier Scavengers | Heroes Unlimited (Palladium) |
+| `/brainstormclub:personaggi` | una a scelta | l'anagrafe dei personaggi: evoluzione nei libri e ritratti |
 
 Ogni comando prende una **fase**:
 
 ```
-/korvaal stato
-/heroes log
-/apocalisse racconto
-/dnd-jr revisione
-/brancalonia copertina
-/dark-heresy epub miniera
-/korvaal sito origini
-/brancalonia fascicolo
+/brainstormclub:korvaal stato
+/brainstormclub:heroes log
+/brainstormclub:apocalisse racconto
+/brainstormclub:dnd-jr revisione
+/brainstormclub:brancalonia copertina
+/brainstormclub:dark-heresy epub miniera
+/brainstormclub:korvaal sito origini
+/brainstormclub:brancalonia fascicolo
 ```
 
 | fase | che cosa fa |
@@ -58,7 +60,7 @@ Ogni comando prende una **fase**:
 | `log` | legge i log: eventi cardine, registro morti, materiale non usato, discrepanze |
 | `racconto` | co-design socratico → outline → bibbia → stesura a blocchi |
 | `revisione` | le tre passate: Redattore → Correttore di bozze → Revisore di stile |
-| `personaggi` | l'anagrafe della collana: chi compare dove, come cambia, stato e morte, prompt del ritratto (comando `/personaggi`) |
+| `personaggi` | l'anagrafe della collana: chi compare dove, come cambia, stato e morte, prompt del ritratto (comando `/brainstormclub:personaggi`) |
 | `copertina` | scrive il prompt, poi **si ferma**; e controlla l'immagine quando arriva |
 | `epub` | pre-build (firma compresa), build, verifica dell'uscita |
 | `sito` | porta un volume finito sulle pagine di lettura (il caricamento FTP resta a mano) |
@@ -68,7 +70,7 @@ Ogni comando prende una **fase**:
 
 ```
 plugin-collane/
-├── commands/          un comando per collana + /collane + /personaggi
+├── commands/          un comando per collana + /brainstormclub:collane + /brainstormclub:personaggi
 ├── skills/collane-brainstorm/
 │   ├── SKILL.md       il registro delle collane, le fasi, le regole ferme
 │   └── references/    una reference per fase (personaggi compresa) + patto.md + giochi.md + regole-ferme.md
@@ -112,7 +114,7 @@ Sullo stesso racconto vanno **in sequenza**; in parallelo si lanciano su raccont
 
 ## L'anagrafe dei personaggi
 
-`/personaggi <collana>` tiene una scheda per personaggio in `<progetto>/assets/personaggi/`:
+`/brainstormclub:personaggi <collana>` tiene una scheda per personaggio in `<progetto>/assets/personaggi/`:
 chi è, com'è fatto (ogni tratto con la sua fonte `file:riga`), e una tabella d'evoluzione con una
 riga per ogni racconto in cui compare, **nell'ordine della storia** — i prequel vengono prima, e la
 cicatrice presa nel quinto libro non c'è nel primo.
@@ -143,7 +145,7 @@ claude plugin marketplace add Brainstorm-Club/collane-brainstorm
 ```
 
 ```bash
-claude plugin install collane-brainstorm@brainstorm-club
+claude plugin install brainstormclub@brainstorm-club
 ```
 
 Da una copia locale (si aggiorna da sola quando modifichi i file):

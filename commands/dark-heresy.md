@@ -37,7 +37,7 @@ Schema: volumi — `racconti/<nome>.md` composti da `volumi/<vol>/manifest.txt`.
    ```
 
 Per la fase **`personaggi`** (anagrafe, evoluzione, ritratti) segui il comando dedicato
-`/personaggi dark-heresy …` e la reference `references/fase-personaggi.md`.
+`/brainstormclub:personaggi dark-heresy …` e la reference `references/fase-personaggi.md`.
 
 ## Da non dimenticare, qui
 

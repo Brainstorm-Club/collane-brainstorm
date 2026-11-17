@@ -9,7 +9,7 @@
   },
   "plugins": [
     {
-      "name": "collane-brainstorm",
+      "name": "brainstormclub",
       "source": "./",
       "description": "Pipeline delle collane narrative: log → racconto → revisione → copertina → EPUB → sito. Un comando per campagna."
     }

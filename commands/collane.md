@@ -18,8 +18,8 @@ argument-hint: "[collana] (brancalonia|korvaal|dark-heresy|dnd-jr|apocalisse|her
    motivandola, **una** cosa da fare adesso — non un elenco di tutto il possibile.
 
 I comandi per lavorare davvero sono uno per collana:
-`/brancalonia` · `/korvaal` · `/dark-heresy` · `/dnd-jr` · `/apocalisse` · `/heroes`,
+`/brainstormclub:brancalonia` · `/brainstormclub:korvaal` · `/brainstormclub:dark-heresy` · `/brainstormclub:dnd-jr` · `/brainstormclub:apocalisse` · `/brainstormclub:heroes`,
 ognuno con una fase: `log`, `racconto`, `revisione`, `copertina`, `epub`, `sito`, `fascicolo`, `stato`.
-Per i personaggi di una collana: `/personaggi <collana>`.
+Per i personaggi di una collana: `/brainstormclub:personaggi <collana>`.
 
 Ricorda: il sito si carica **via FTP a mano, dall'utente**. Una build non è una pubblicazione.

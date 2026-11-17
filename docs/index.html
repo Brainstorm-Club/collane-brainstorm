@@ -113,7 +113,7 @@
 <header class="testa">
   <p class="occhiello">Brainstorm Club · note di bottega</p>
   <h1>Anatomia di una skill</h1>
-  <p class="sommario lede">Come è fatto il plugin <code>collane-brainstorm</code> — otto comandi,
+  <p class="sommario lede">Come è fatto il plugin <code>brainstormclub</code> — otto comandi,
   una skill, undici reference, quattro script e cinque agenti — e che cosa se ne impara per costruirne
   uno proprio. Il caso di studio è vero: trasformare i log di una campagna di gioco di ruolo in
   libri pubblicati — senza che il modello finisca per pensare al posto di chi firma.</p>
@@ -162,23 +162,23 @@ pubblicato, un file corretto nel repository e sbagliato sul sito.</p>
 <p>Prima di vedere come è fatto, ecco che cosa si può chiedere. Otto comandi: uno per guardare
 tutte le collane, sei per lavorare dentro una collana, uno per l'anagrafe dei personaggi. Si
 lanciano dalla radice <code>brainstorm/</code>; installati come plugin compaiono anche con il
-prefisso <code>/collane-brainstorm:</code>.</p>
+prefisso <code>/brainstormclub:collane-brainstorm:</code>.</p>
 
 <table>
   <tr><th>comando</th><th>collana · gioco</th><th>a che cosa serve</th></tr>
-  <tr><td><code>/collane [collana]</code></td><td>tutte</td><td>mostra dove si è fermata la pipeline di ogni volume e propone <strong>una</strong> mossa da fare adesso</td></tr>
-  <tr><td><code>/brancalonia &lt;fase&gt;</code></td><td>Regno di Taglia · Brancalonia</td><td>libri a capitoli firmati Nanoc Orabrabli; in più i fascicoli giocabili di <code>avventure/</code></td></tr>
-  <tr><td><code>/korvaal &lt;fase&gt;</code></td><td>Il ciclo di Korvaal · Rogue Trader</td><td>polifonia, una voce solista per racconto, tascabili FANTAFLOTTA</td></tr>
-  <tr><td><code>/dark-heresy &lt;fase&gt;</code></td><td>ACTA HERETICA · Dark Heresy</td><td>verbale di Eruditus più deposizioni, arco Haarlock</td></tr>
-  <tr><td><code>/dnd-jr &lt;fase&gt;</code></td><td>Tiro Salvezza · D&amp;D 5e nel Vecchio Mondo</td><td>la fanzine del Master Ozymandias il Grande</td></tr>
-  <tr><td><code>/apocalisse &lt;fase&gt;</code></td><td>Terre Desolate · Apocalisse</td><td>codici ritrovati, una voce per codice, cornice dell'Archivista</td></tr>
-  <tr><td><code>/heroes &lt;fase&gt;</code></td><td>Dossier Scavengers · Heroes Unlimited</td><td>referto dell'Analista più deposizioni, nero-comico di scarto</td></tr>
-  <tr><td><code>/personaggi &lt;collana&gt; &lt;lavoro&gt;</code></td><td>una a scelta</td><td>l'anagrafe dei personaggi: chi compare dove, come cambia nell'ordine della storia, ritratti</td></tr>
+  <tr><td><code>/brainstormclub:collane [collana]</code></td><td>tutte</td><td>mostra dove si è fermata la pipeline di ogni volume e propone <strong>una</strong> mossa da fare adesso</td></tr>
+  <tr><td><code>/brainstormclub:brancalonia &lt;fase&gt;</code></td><td>Regno di Taglia · Brancalonia</td><td>libri a capitoli firmati Nanoc Orabrabli; in più i fascicoli giocabili di <code>avventure/</code></td></tr>
+  <tr><td><code>/brainstormclub:korvaal &lt;fase&gt;</code></td><td>Il ciclo di Korvaal · Rogue Trader</td><td>polifonia, una voce solista per racconto, tascabili FANTAFLOTTA</td></tr>
+  <tr><td><code>/brainstormclub:dark-heresy &lt;fase&gt;</code></td><td>ACTA HERETICA · Dark Heresy</td><td>verbale di Eruditus più deposizioni, arco Haarlock</td></tr>
+  <tr><td><code>/brainstormclub:dnd-jr &lt;fase&gt;</code></td><td>Tiro Salvezza · D&amp;D 5e nel Vecchio Mondo</td><td>la fanzine del Master Ozymandias il Grande</td></tr>
+  <tr><td><code>/brainstormclub:apocalisse &lt;fase&gt;</code></td><td>Terre Desolate · Apocalisse</td><td>codici ritrovati, una voce per codice, cornice dell'Archivista</td></tr>
+  <tr><td><code>/brainstormclub:heroes &lt;fase&gt;</code></td><td>Dossier Scavengers · Heroes Unlimited</td><td>referto dell'Analista più deposizioni, nero-comico di scarto</td></tr>
+  <tr><td><code>/brainstormclub:personaggi &lt;collana&gt; &lt;lavoro&gt;</code></td><td>una a scelta</td><td>l'anagrafe dei personaggi: chi compare dove, come cambia nell'ordine della storia, ritratti</td></tr>
 </table>
 
 <h3>Le fasi dei comandi di collana</h3>
 
-<p>Ogni comando di collana prende una fase, per esempio <code>/heroes epub taglie-di-londra</code>.
+<p>Ogni comando di collana prende una fase, per esempio <code>/brainstormclub:heroes epub taglie-di-londra</code>.
 Prima di tutto il modello riformula la richiesta in <strong>una riga d'intento</strong> e te la fa
 confermare.</p>
 
@@ -188,14 +188,14 @@ confermare.</p>
   <tr><td><code>log</code></td><td>legge i log: eventi cardine, registro morti, materiale mai usato, discrepanze, grafie, proposta di racconto</td><td>consegna un referto, non prosa</td></tr>
   <tr><td><code>racconto</code></td><td>co-design socratico → outline → bibbia con le «Verifiche» → stesura a blocchi</td><td>l'outline va approvato prima di scrivere</td></tr>
   <tr><td><code>revisione</code></td><td>le tre passate in ordine: redattore, correttore di bozze, revisore di stile (che chiude col contrario)</td><td>i referti sono materiale per l'autore</td></tr>
-  <tr><td><code>personaggi</code></td><td>rimanda a <code>/personaggi</code> per allineare le schede del racconto</td><td>prima della firma</td></tr>
+  <tr><td><code>personaggi</code></td><td>rimanda a <code>/brainstormclub:personaggi</code> per allineare le schede del racconto</td><td>prima della firma</td></tr>
   <tr><td><code>copertina</code></td><td>scrive il prompt di copertina; quando l'immagine arriva, la misura e la guarda</td><td><strong>si ferma</strong>: l'immagine la genera l'autore</td></tr>
   <tr><td><code>epub</code></td><td>pre-build (firma, note orfane, manifest, apparato), build, verifica del peso e dell'indice</td><td>senza firma o copertina non costruisce</td></tr>
   <tr><td><code>sito</code></td><td>copia EPUB e copertina, rigenera le pagine di lettura, elenca i file da caricare</td><td>l'FTP lo fa l'autore</td></tr>
   <tr><td><code>fascicolo</code></td><td>avventure, bestiari, manuali da tavolo impaginati in PDF con l'impaginatore</td><td>senza <code>--url</code> resta interno</td></tr>
 </table>
 
-<h3>I lavori di <code>/personaggi</code></h3>
+<h3>I lavori di <code>/brainstormclub:personaggi</code></h3>
 
 <table>
   <tr><th>lavoro</th><th>che cosa fa</th></tr>
@@ -224,7 +224,7 @@ mestieri diversi, e la difficoltà sta nel non confonderli.</p>
   <!-- comandi -->
   <rect class="box-r" x="20" y="20" width="200" height="110" rx="8"/>
   <text class="tit" x="36" y="46">commands/ · 8</text>
-  <text class="et" x="36" y="68">/korvaal /heroes …</text>
+  <text class="et" x="36" y="68">/brainstormclub:korvaal /brainstormclub:heroes …</text>
   <text class="et" x="36" y="86">chi sei, dove sei,</text>
   <text class="et" x="36" y="104">quale fase</text>
   <text class="et" x="36" y="122" style="fill:var(--rosso)">~40 righe l'uno</text>
@@ -304,7 +304,7 @@ successivo.</p>
 <svg viewBox="0 0 860 320" role="img" aria-label="Tre livelli di contesto: comando, skill, reference di fase">
   <rect class="box-r" x="30" y="30" width="800" height="62" rx="8"/>
   <text class="tit" x="50" y="56">1 · il comando  —  sempre</text>
-  <text class="et" x="50" y="78">/heroes epub taglie-di-londra → collana, cartella, voce, schema, fase richiesta. Poche righe.</text>
+  <text class="et" x="50" y="78">/brainstormclub:heroes epub taglie-di-londra → collana, cartella, voce, schema, fase richiesta. Poche righe.</text>
 
   <rect class="box" x="90" y="118" width="740" height="62" rx="8"/>
   <text class="tit" x="110" y="144">2 · SKILL.md  —  quando il comando lo dice</text>
@@ -626,7 +626,7 @@ un libro che online c'è già.</p>
 muore nel settimo, e un prequel lo rimette in scena prima di tutto questo. Chi deve disegnarlo, o
 scriverlo di nuovo, ha bisogno di sapere com'era <em>in quel punto</em>.</p>
 
-<p>Per questo il comando <code>/personaggi</code> tiene un'<strong>anagrafe</strong>: una scheda
+<p>Per questo il comando <code>/brainstormclub:personaggi</code> tiene un'<strong>anagrafe</strong>: una scheda
 per personaggio nella collana (<code>assets/personaggi/</code>), con l'aspetto canonico — ogni tratto
 con la sua fonte <code>file:riga</code> — e una tabella d'evoluzione, una riga per racconto,
 nell'ordine della storia e non in quello di pubblicazione.</p>
@@ -739,7 +739,7 @@ cambia, quando il ritratto scade, e chi ricompare dopo la morte.</figcaption>
 └── scripts/               raggiungibili come ${CLAUDE_PLUGIN_ROOT}/scripts/…</code></pre>
 
 <pre><code>claude plugin marketplace add /percorso/plugin-collane
-claude plugin install collane-brainstorm@brainstorm-club</code></pre>
+claude plugin install brainstormclub@brainstorm-club</code></pre>
 
 <p>Il <code>description</code> della skill è la cosa più importante del file: è il testo su cui si
 decide se caricarla. Deve nominare i trigger reali — qui i nomi delle sei campagne e i verbi del
@@ -753,7 +753,7 @@ dell'architettura.</p>
   giorni non ha più bisogno di ricordarsi le cose che adesso sono scritte.</p>
 </div>
 
-<p class="firma">Brainstorm Club · plugin <code>collane-brainstorm</code> · documento interno di
+<p class="firma">Brainstorm Club · plugin <code>brainstormclub</code> · documento interno di
 bottega. Il caso di studio è il plugin che contiene questa pagina: <code>docs/index.html</code>.</p>
 
 </div>

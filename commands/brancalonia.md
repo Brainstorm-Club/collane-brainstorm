@@ -37,7 +37,7 @@ Schema: capitoli — un libro è un racconto solo, in `libri/<nome>/` (epigrafe 
    ```
 
 Per la fase **`personaggi`** (anagrafe, evoluzione, ritratti) segui il comando dedicato
-`/personaggi brancalonia …` e la reference `references/fase-personaggi.md`.
+`/brainstormclub:personaggi brancalonia …` e la reference `references/fase-personaggi.md`.
 
 ## Da non dimenticare, qui
 

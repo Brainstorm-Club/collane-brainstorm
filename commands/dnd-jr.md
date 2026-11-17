@@ -37,7 +37,7 @@ Schema: volumi — `racconti/<nome>.md` composti da `volumi/<vol>/manifest.txt`.
    ```
 
 Per la fase **`personaggi`** (anagrafe, evoluzione, ritratti) segui il comando dedicato
-`/personaggi dnd-jr …` e la reference `references/fase-personaggi.md`.
+`/brainstormclub:personaggi dnd-jr …` e la reference `references/fase-personaggi.md`.
 
 ## Da non dimenticare, qui
 

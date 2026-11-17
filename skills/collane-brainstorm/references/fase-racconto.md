@@ -81,7 +81,7 @@ patti, catture, oggetti), **aggiorna `assets/canone_serie.md`** e verifica a cat
 ## 8b. L'anagrafe dei personaggi
 
 Le schede dei personaggi che compaiono nel racconto vanno allineate prima della firma
-(`/personaggi <collana> aggiorna`): `personaggi.py stato` dice quali righe mancano e se un morto
+(`/brainstormclub:personaggi <collana> aggiorna`): `personaggi.py stato` dice quali righe mancano e se un morto
 ricompare. È un controllo di coerenza in più, e tiene i ritratti aggiornati.
 
 ## 9. La firma dell'autore
